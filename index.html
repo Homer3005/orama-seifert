@@ -27,14 +27,16 @@
     nav.scrolled { background: rgba(253,248,243,0.96); backdrop-filter: blur(14px);
       box-shadow: 0 1px 0 rgba(184,145,90,0.15); }
     .nav-logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 400;
-      letter-spacing: 0.08em; color: var(--white); transition: color 0.4s; }
+      letter-spacing: 0.08em; color: var(--gold); transition: color 0.4s; }
+    .nav-logo:hover { color: var(--white); }
     nav.scrolled .nav-logo { color: var(--lilac); }
     .nav-right { display: flex; align-items: center; gap: 2.5rem; }
     .nav-links { display: flex; gap: 2.2rem; list-style: none; }
     .nav-links a { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
-      color: rgba(255,255,255,0.92); transition: color 0.3s; }
+      color: var(--gold); transition: color 0.3s; }
+    .nav-links a:hover { color: var(--white); }
     nav.scrolled .nav-links a { color: var(--lilac); }
-    .nav-links a:hover { color: var(--gold) !important; }
+    nav.scrolled .nav-links a:hover { color: var(--gold); }
 
     /* HERO — name top left */
     #home-hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; }
