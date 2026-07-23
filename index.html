@@ -234,18 +234,27 @@
     .section-title em { font-style: italic; color: var(--gold); font-weight: 400; }
     .offerings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
       max-width: 1200px; margin: 0 auto; }
-    .offer-card { background: var(--white); padding: 3rem 2.6rem; display: flex; flex-direction: column;
-      transition: box-shadow 0.3s, transform 0.3s; border: 1px solid rgba(123,125,184,0.1); }
-    .offer-card:hover { box-shadow: 0 12px 40px rgba(123,125,184,0.14); transform: translateY(-3px); }
+    /* Karten als Milchglas ueber dem Graeserfoto. Textfarben ziehen auf Cream mit,
+       sonst unlesbar. Fallback siehe @supports. */
+    .offer-card { background: rgba(253,248,243,0.16);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      padding: 3rem 2.6rem; display: flex; flex-direction: column;
+      transition: box-shadow 0.3s, transform 0.3s;
+      border: 1px solid rgba(253,248,243,0.40); border-radius: 12px; }
+    /* Wo backdrop-filter fehlt, ist 0.16 fast durchsichtig -> Karte als dunkler Vollton */
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .offer-card { background: rgba(30,36,24,0.72); }
+    }
+    .offer-card:hover { box-shadow: 0 12px 40px rgba(20,15,40,0.25); transform: translateY(-3px); }
     .offer-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500;
-      color: var(--lilac); margin-bottom: 1.2rem; line-height: 1.2; }
-    .offer-desc { font-size: 1rem; line-height: 1.8; color: #6a5a7a;
+      color: var(--cream); margin-bottom: 1.2rem; line-height: 1.2; }
+    .offer-desc { font-size: 1rem; line-height: 1.8; color: rgba(253,248,243,0.85);
       margin-bottom: 2rem; flex: 1; }
     .offer-btn { display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--white); background: var(--lilac); padding: 0.9rem 2rem;
-      border: 1px solid var(--lilac); border-radius: 4px; transition: all 0.3s; align-self: flex-start;
+      color: var(--cream); background: transparent; padding: 0.9rem 2rem;
+      border: 1px solid rgba(253,248,243,0.6); border-radius: 4px; transition: all 0.3s; align-self: flex-start;
       white-space: nowrap; text-align: center; min-width: 11rem; }
-    .offer-btn:hover { background: var(--gold); border-color: var(--gold); }
+    .offer-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); }
 
     /* ABOUT TEASER */
     /* min-height von 75vh auf 62vh: kuerzere Spalte -> weniger Zoom, das Motiv wird weiter
