@@ -74,14 +74,10 @@
       font-weight: 500; line-height: 1.05; color: var(--white); max-width: 720px;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.55s forwards; }
     .hero-headline em { font-style: italic; font-weight: 400; }
-    .hero-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 4rem;
+    .hero-bottom { display: flex; align-items: flex-end;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.9s forwards; }
     .hero-body { font-size: 1.15rem; line-height: 1.8; color: rgba(255,255,255,0.85);
       width: clamp(35rem, 33.33vw, 36rem); }
-    .hero-cta { display: inline-block; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--white); border: 1px solid rgba(255,255,255,0.6); padding: 1rem 2.4rem;
-      border-radius: 4px; transition: all 0.35s var(--ease); white-space: nowrap; }
-    .hero-cta:hover { background: var(--white); color: var(--ink); }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     /* TESTIMONIALS CAROUSEL */
@@ -304,7 +300,6 @@
       </div>
       <div class="hero-bottom">
         <p class="hero-body">Orama is a multifaceted spiritual guide for leaders, creatives and practitioners of the healing and energy arts. Her expanded vision connects you deeper to your own light — mirroring qualities, dissolving limiting patterns and infusing integrity into all areas of life.</p>
-        <a href="#" class="hero-cta" onclick="return showPage('booking')">Get into contact</a>
       </div>
     </div>
   </section>
