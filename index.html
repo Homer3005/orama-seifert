@@ -32,9 +32,10 @@
     .nav-logo:hover { color: var(--white); }
     nav.scrolled .nav-logo { color: var(--lilac); }
     nav.scrolled .nav-logo:hover { color: var(--gold); }
-    .nav-links { grid-column: 1; justify-self: start; display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links { grid-column: 1; justify-self: start; display: flex; flex-wrap: wrap;
+      gap: 0.6rem 2.2rem; list-style: none; }
     .nav-links a { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--gold); transition: color 0.3s; }
+      white-space: nowrap; color: var(--gold); transition: color 0.3s; }
     .nav-links a:hover { color: var(--white); }
     nav.scrolled .nav-links a { color: var(--lilac); }
     nav.scrolled .nav-links a:hover { color: var(--gold); }
@@ -217,7 +218,7 @@
       .nav-links { grid-area: links; flex-wrap: wrap; gap: 0.7rem 1.1rem; }
       .nav-links a { font-size: 0.66rem; letter-spacing: 0.12em; }
       .nav-book { grid-area: book; align-self: center; padding: 0.5rem 1.1rem; }
-      .hero-content { padding: 6rem 1.5rem 3rem; }
+      .hero-content { padding: 9.5rem 1.5rem 3rem; }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
       .hero-body { width: 100%; max-width: 480px; }
       .praise-band { padding: 5rem 2rem; }
