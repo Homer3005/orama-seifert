@@ -22,21 +22,27 @@
 
     /* NAV */
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      display: flex; align-items: center; justify-content: space-between;
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; column-gap: 2rem;
       padding: 1.8rem 3.5rem; transition: background 0.5s var(--ease), box-shadow 0.5s var(--ease); }
     nav.scrolled { background: rgba(253,248,243,0.96); backdrop-filter: blur(14px);
       box-shadow: 0 1px 0 rgba(184,145,90,0.15); }
-    .nav-logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 400;
+    .nav-logo { grid-column: 2; justify-self: center; text-align: center;
+      font-family: var(--serif); font-size: 2rem; font-weight: 400; white-space: nowrap;
       letter-spacing: 0.08em; color: var(--gold); transition: color 0.4s; }
     .nav-logo:hover { color: var(--white); }
     nav.scrolled .nav-logo { color: var(--lilac); }
-    .nav-right { display: flex; align-items: center; gap: 2.5rem; }
-    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links { grid-column: 1; justify-self: start; display: flex; gap: 2.2rem; list-style: none; }
     .nav-links a { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
       color: var(--gold); transition: color 0.3s; }
     .nav-links a:hover { color: var(--white); }
     nav.scrolled .nav-links a { color: var(--lilac); }
     nav.scrolled .nav-links a:hover { color: var(--gold); }
+    .nav-book { grid-column: 3; justify-self: end; font-size: 0.78rem;
+      letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap;
+      color: var(--gold); border: 1px solid currentColor; border-radius: 4px;
+      padding: 0.6rem 1.4rem; transition: color 0.3s, border-color 0.3s; }
+    .nav-book:hover { color: var(--white); }
+    nav.scrolled .nav-book { color: var(--lilac); }
 
     /* HERO — name top left */
     #home-hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; }
@@ -202,9 +208,12 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     @media(max-width:900px) {
-      nav { padding: 1.2rem 1.5rem; }
-      .nav-links { gap: 1.1rem; }
+      nav { grid-template-columns: 1fr auto; column-gap: 1rem; row-gap: 0.9rem;
+        grid-template-areas: "logo logo" "links book"; padding: 1.1rem 1.5rem; }
+      .nav-logo { grid-area: logo; font-size: 1.5rem; }
+      .nav-links { grid-area: links; flex-wrap: wrap; gap: 0.7rem 1.1rem; }
       .nav-links a { font-size: 0.66rem; letter-spacing: 0.12em; }
+      .nav-book { grid-area: book; align-self: center; padding: 0.5rem 1.1rem; }
       .hero-content { padding: 6rem 1.5rem 3rem; }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
       .praise-band { padding: 5rem 2rem; }
@@ -236,16 +245,15 @@
 <body>
 
 <nav id="main-nav">
+  <ul class="nav-links">
+    <li><a href="#" onclick="return showPage('booking', 'akashic')">Akashic Readings</a></li>
+    <li><a href="#" onclick="return showPage('booking', 'consultation')">One on One</a></li>
+    <li><a href="#" onclick="return showPage('booking', 'workshops')">Workshops</a></li>
+    <li><a href="#" onclick="return showPage('booking', 'workshops')">Trainings</a></li>
+    <li><a href="#" onclick="return showPage('about')">About</a></li>
+  </ul>
   <a class="nav-logo" href="#" onclick="return showPage('home')">Orama Seifert</a>
-  <div class="nav-right">
-    <ul class="nav-links">
-      <li><a href="#" onclick="return showPage('booking', 'akashic')">Akashic Readings</a></li>
-      <li><a href="#" onclick="return showPage('booking', 'consultation')">One on One</a></li>
-      <li><a href="#" onclick="return showPage('booking', 'workshops')">Workshops</a></li>
-      <li><a href="#" onclick="return showPage('booking', 'workshops')">Trainings</a></li>
-      <li><a href="#" onclick="return showPage('about')">About</a></li>
-    </ul>
-  </div>
+  <a class="nav-book" href="#" onclick="return showPage('booking')">Book A Session</a>
 </nav>
 
 <!-- HOME -->
