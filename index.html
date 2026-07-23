@@ -72,11 +72,30 @@
     .hero-cta:hover { background: var(--white); color: var(--ink); }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* PRAISE */
-    .praise-band { background: var(--cream); padding: 8rem 5rem; text-align: center; }
-    .praise-text { font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-      font-style: italic; font-weight: 300; color: var(--lilac);
-      max-width: 720px; margin: 0 auto; line-height: 1.5; }
+    /* TESTIMONIALS CAROUSEL */
+    .testimonials { background: var(--sand); padding: 7rem 5rem; text-align: center; }
+    .carousel { position: relative; max-width: 900px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
+    .carousel-viewport { flex: 1 1 auto; max-width: 640px; }
+    .carousel-track { display: grid; }
+    .carousel-slide { grid-area: 1 / 1; align-self: center; margin: 0; opacity: 0;
+      transition: opacity 0.7s var(--ease); }
+    .carousel-slide.is-active { opacity: 1; }
+    .carousel-quote { font-family: var(--serif); font-style: italic; font-weight: 300;
+      color: var(--lilac); font-size: clamp(1.5rem, 2.4vw, 2.2rem); line-height: 1.5;
+      max-width: 640px; margin: 0 auto; }
+    .carousel-attr { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold); margin-top: 1.5rem; }
+    .carousel-arrow { flex: 0 0 auto; background: none; border: 0; cursor: pointer;
+      color: var(--gold); padding: 0.5rem; line-height: 0; transition: color 0.3s;
+      display: inline-flex; align-items: center; justify-content: center; }
+    .carousel-arrow:hover { color: var(--lilac); }
+    .carousel-arrow svg { width: 26px; height: 26px; display: block; }
+    .carousel-dots { display: flex; justify-content: center; gap: 0.6rem; margin-top: 2.2rem; }
+    .carousel-dot { width: 8px; height: 8px; border-radius: 50%; border: 0; padding: 0;
+      cursor: pointer; background: var(--gold); opacity: 0.3; transition: opacity 0.3s; }
+    .carousel-dot.is-active { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) { .carousel-slide { transition: none; } }
 
     /* OFFERINGS */
     #offerings { background: var(--sand); padding: 7rem 4rem; }
@@ -116,10 +135,6 @@
       color: var(--lilac); border: 1px solid var(--lilac); padding: 0.9rem 2rem;
       border-radius: 4px; transition: all 0.3s; align-self: flex-start; }
     .btn-outline:hover { background: var(--lilac); color: var(--white); }
-
-    /* PRAISE SECONDARY */
-    .praise-secondary { background: var(--sand); padding: 7rem 5rem; text-align: center; }
-    .praise-secondary .praise-text { color: var(--ink); }
 
     /* GROUP FEATURE */
     .group-feature { display: grid; grid-template-columns: 55% 45%; min-height: 65vh; }
@@ -223,7 +238,10 @@
       .hero-content { padding: 9.5rem 1.5rem 3rem; }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
       .hero-body { width: 100%; max-width: 480px; }
-      .praise-band { padding: 5rem 2rem; }
+      .testimonials { padding: 5rem 1.25rem; }
+      .carousel { gap: 0.4rem; }
+      .carousel-arrow { padding: 0.35rem; }
+      .carousel-arrow svg { width: 22px; height: 22px; }
       #offerings { padding: 4rem 1.5rem; }
       .offerings-grid { grid-template-columns: 1fr; gap: 1rem; }
       .offer-card { padding: 2.5rem 1.8rem; }
@@ -279,9 +297,62 @@
     </div>
   </section>
 
-  <div class="praise-band reveal">
-    <p class="praise-text">Come to her when you want to experience your higher self as something that is here, right now — when you are ready to deepen your healing journey and fulfil the promises to your Self.</p>
-  </div>
+  <section class="testimonials" id="testimonials" aria-roledescription="carousel" aria-label="Client testimonials">
+    <div class="carousel">
+      <button class="carousel-arrow" id="testi-prev" type="button" aria-label="Previous testimonial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 6 9 12 15 18"/></svg>
+      </button>
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="testi-track">
+          <figure class="carousel-slide is-active" role="group" aria-roledescription="slide" aria-label="1 of 8">
+            <blockquote class="carousel-quote">“Since last year’s reading, my life has changed in many ways. With deep gratitude and love.”</blockquote>
+            <figcaption class="carousel-attr">Akashic Reading</figcaption>
+          </figure>
+          <figure class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 8">
+            <blockquote class="carousel-quote">“Dear Orama, thank you for reading this beautiful training for me. My life has been amazing since I received it in February. I am very happy to share this new constellation work with my participants.”</blockquote>
+            <figcaption class="carousel-attr">Akashic Reading</figcaption>
+          </figure>
+          <figure class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 8">
+            <blockquote class="carousel-quote">“I am flabbergasted! Money has been addressed so many times, and this morning, in two hours at my place, I understood what is meant by life flow, creation and holding its values. Thank you, Orama, and everyone in this community for pointing it out and sharing it. I love what I re-learn here about myself and about us.”</blockquote>
+            <figcaption class="carousel-attr">Business Group Course</figcaption>
+          </figure>
+          <figure class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 8">
+            <blockquote class="carousel-quote">“I truly loved it. A major flow of creation started to pour from my heaven after our first meeting. By recognizing oneself we gain confidence and strengthen the feeling of being exactly right as we are. Thank you, Orama. I am looking very much forward to our next meeting.”</blockquote>
+            <figcaption class="carousel-attr">Business Group Course</figcaption>
+          </figure>
+          <figure class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 8">
+            <blockquote class="carousel-quote">“With your being you are a wonderful light to the world. You sing and live the new time, and you create ways to build bridges. In all of this, you embody a great calm and expanded, foresighted perspective.”</blockquote>
+            <figcaption class="carousel-attr">One on One Strategic Session</figcaption>
+          </figure>
+          <figure class="carousel-slide" role="group" aria-roledescription="slide" aria-label="6 of 8">
+            <blockquote class="carousel-quote">“I cannot thank you enough, Orama, for stepping in to help me in the emergency situation even though you were on your way to the airport. I felt like I was dying on some level, but now I have come back stronger than ever.”</blockquote>
+            <figcaption class="carousel-attr">One on One Energy Work and Consultation</figcaption>
+          </figure>
+          <figure class="carousel-slide" role="group" aria-roledescription="slide" aria-label="7 of 8">
+            <blockquote class="carousel-quote">“Thank you for taking the time to put this crazy-wild-ride-raw-but-beautiful into words. And for your superb way of encouraging, loving and supporting others. You are a gem.”</blockquote>
+            <figcaption class="carousel-attr">One on One Consultation</figcaption>
+          </figure>
+          <figure class="carousel-slide" role="group" aria-roledescription="slide" aria-label="8 of 8">
+            <blockquote class="carousel-quote">“Thank you all so much for sharing. I am beyond grateful to be part of this group, of this process – so many parallels, so much to explore, so much to realise. I’m excited to see how everything will unfold, and I feel I am just so much hoping to untie myself in and from so many places. Thank you so much, dear Orama, for this beautiful space.”</blockquote>
+            <figcaption class="carousel-attr">Dancing Cloud Group Course</figcaption>
+          </figure>
+        </div>
+      </div>
+      <button class="carousel-arrow" id="testi-next" type="button" aria-label="Next testimonial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+    </div>
+    <div class="carousel-dots" id="testi-dots" role="group" aria-label="Choose testimonial">
+      <button class="carousel-dot is-active" type="button" aria-label="Go to testimonial 1"></button>
+      <button class="carousel-dot" type="button" aria-label="Go to testimonial 2"></button>
+      <button class="carousel-dot" type="button" aria-label="Go to testimonial 3"></button>
+      <button class="carousel-dot" type="button" aria-label="Go to testimonial 4"></button>
+      <button class="carousel-dot" type="button" aria-label="Go to testimonial 5"></button>
+      <button class="carousel-dot" type="button" aria-label="Go to testimonial 6"></button>
+      <button class="carousel-dot" type="button" aria-label="Go to testimonial 7"></button>
+      <button class="carousel-dot" type="button" aria-label="Go to testimonial 8"></button>
+    </div>
+  </section>
 
   <section id="offerings">
     <div class="offerings-head reveal">
@@ -321,10 +392,6 @@
       <a class="btn-outline" href="#" onclick="return showPage('about')">Read more</a>
     </div>
   </section>
-
-  <div class="praise-secondary reveal">
-    <p class="praise-text">Orama has been one of those children, that grown ups came to for answers.</p>
-  </div>
 
   <section class="group-feature">
     <div class="group-img"><img src="images/group.jpg" alt="Group Workshop" /></div>
@@ -539,6 +606,54 @@
     document.querySelectorAll('.reveal').forEach(el => { el.classList.remove('visible'); obs.observe(el); });
   }
   initReveal();
+
+  // Testimonial carousel
+  (function () {
+    const root = document.getElementById('testimonials');
+    if (!root) return;
+    const slides = Array.prototype.slice.call(root.querySelectorAll('.carousel-slide'));
+    const dots   = Array.prototype.slice.call(root.querySelectorAll('.carousel-dot'));
+    const prevBtn = document.getElementById('testi-prev');
+    const nextBtn = document.getElementById('testi-next');
+    const n = slides.length;
+    if (!n) return;
+    const AUTO = 10000, RESUME = 15000;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let cur = 0, autoTimer = null, resumeTimer = null;
+
+    function render() {
+      slides.forEach(function (s, i) {
+        const on = i === cur;
+        s.classList.toggle('is-active', on);
+        s.setAttribute('aria-hidden', on ? 'false' : 'true');
+      });
+      dots.forEach(function (d, i) {
+        const on = i === cur;
+        d.classList.toggle('is-active', on);
+        if (on) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+      });
+    }
+    function goTo(i) { cur = (i + n) % n; render(); }
+    function nextSlide() { goTo(cur + 1); }
+    function prevSlide() { goTo(cur - 1); }
+
+    function stopTimer() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
+    function startAuto() { if (reduce) return; stopTimer(); autoTimer = setInterval(nextSlide, AUTO); }
+    function pause() {
+      stopTimer();
+      if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null; }
+      if (!reduce) resumeTimer = setTimeout(startAuto, RESUME);
+    }
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    dots.forEach(function (d, i) { d.addEventListener('click', function () { goTo(i); }); });
+    // A click anywhere in the carousel (arrows and dots bubble up too) pauses the automatic rotation
+    root.addEventListener('click', pause);
+
+    render();
+    startAuto();
+  })();
 </script>
 </body>
 </html>
