@@ -641,14 +641,12 @@
   <div class="footer-bottom">© 2026 Orama Seifert · All rights reserved</div>
 </footer>
 
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-
 <script>
   function showPage(page, anchor) {
     document.body.dataset.page = page;
     ['home','about','booking'].forEach(p => {
-      document.getElementById(p+'-page').style.display = (p===page) ? 'block' : 'none';
+      const el = document.getElementById(p+'-page');
+      if (el) el.style.display = (p===page) ? 'block' : 'none';
     });
     window.scrollTo({top:0, behavior:'smooth'});
     if (anchor && page === 'booking') {
@@ -669,17 +667,68 @@
     workshops:    ''
   };
 
+  // Calendly laedt NICHTS beim Seitenaufruf. Erst nach ausdruecklicher
+  // Einwilligung werden widget.css/js dynamisch nachgeladen. Die Zustimmung
+  // gilt nur fuer die laufende Sitzung — kein localStorage, kein Cookie.
+  let calendlyConsented = false;
+  let calendlyAssets = null;
+
+  function loadCalendlyAssets() {
+    if (calendlyAssets) return calendlyAssets;
+    calendlyAssets = new Promise(function (resolve, reject) {
+      const css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = 'https://assets.calendly.com/assets/external/widget.css';
+      document.head.appendChild(css);
+      const js = document.createElement('script');
+      js.src = 'https://assets.calendly.com/assets/external/widget.js';
+      js.async = true;
+      js.onload = resolve;
+      js.onerror = reject;
+      document.body.appendChild(js);
+    });
+    return calendlyAssets;
+  }
+
+  function launchCalendly(url) {
+    loadCalendlyAssets().then(function () {
+      if (window.Calendly && Calendly.initPopupWidget) {
+        Calendly.initPopupWidget({url: url});
+      } else {
+        window.open(url, '_blank');
+      }
+    });
+  }
+
   function openCalendly(type) {
     const url = calendlyLinks[type];
+    const host = document.getElementById('calendly-embed');
     if (!url) {
-      document.getElementById('calendly-embed').scrollIntoView({behavior:'smooth', block:'center'});
+      // Keine URL hinterlegt -> heutiges Verhalten: zum Kasten scrollen, nichts laden
+      host.scrollIntoView({behavior: 'smooth', block: 'center'});
       return false;
     }
-    if (window.Calendly && Calendly.initPopupWidget) {
-      Calendly.initPopupWidget({url: url});
-    } else {
-      window.open(url, '_blank');
+    if (calendlyConsented) {
+      // Einwilligung liegt fuer diese Sitzung vor -> direkt oeffnen
+      launchCalendly(url);
+      return false;
     }
+    // Erste Buchung: Hinweis zeigen, noch NICHTS von Calendly laden
+    host.innerHTML =
+      '<div class="calendly-inline">' +
+        '<p class="eyebrow">Before you continue</p>' +
+        '<br>' +
+        '<p>The booking calendar is provided by Calendly Inc. (USA). Opening it transmits ' +
+        'your IP address and browser data to Calendly. See our ' +
+        '<a href="#" onclick="return showPage(\'privacy\')" style="text-decoration:underline">privacy policy</a>.</p>' +
+        '<br>' +
+        '<button type="button" class="btn-filled" id="calendly-consent-btn">Open booking calendar</button>' +
+      '</div>';
+    host.scrollIntoView({behavior: 'smooth', block: 'center'});
+    document.getElementById('calendly-consent-btn').addEventListener('click', function () {
+      calendlyConsented = true;   // gilt nur fuer die laufende Sitzung
+      launchCalendly(url);
+    });
     return false;
   }
 
