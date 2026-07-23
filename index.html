@@ -164,7 +164,10 @@
     .hero-bottom { display: flex; align-items: flex-end;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.9s forwards; }
     .hero-body { font-size: 1.15rem; line-height: 1.8; color: rgba(255,255,255,0.85);
-      width: clamp(35rem, 33.33vw, 36rem); }
+      /* Schmaler (24-32rem statt 35-36rem), damit die letzten Zeilen im abgedunkelten Bereich
+         bleiben (Quer-Verlauf endet bei 42%). Zeilenlaenge bei 32rem gemessen 61-70 Zeichen
+         (im Zielband 60-75), daher Schriftgrad unveraendert. */
+      width: clamp(24rem, 28vw, 32rem); }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     /* TESTIMONIALS CAROUSEL */
