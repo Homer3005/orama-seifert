@@ -68,12 +68,12 @@
     .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column;
       justify-content: space-between; min-height: 100vh; padding: 8rem 4rem 5rem; }
     .hero-top-line { font-family: var(--sans); font-size: 0.95rem; letter-spacing: 0.32em;
-      text-transform: uppercase; color: var(--lilac); margin-bottom: 1.5rem;
+      text-transform: uppercase; color: var(--lilac2); font-weight: 400; margin-bottom: 1.5rem;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.3s forwards; }
     .hero-headline { font-family: var(--serif); font-size: clamp(3rem, 5vw, 5rem);
       font-weight: 500; line-height: 1.05; color: var(--white); max-width: 720px;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.55s forwards; }
-    .hero-headline em { font-style: italic; font-weight: 400; color: var(--lilac); }
+    .hero-headline em { font-style: italic; font-weight: 400; color: var(--lilac2); }
     .hero-bottom { display: flex; align-items: flex-end;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.9s forwards; }
     .hero-body { font-size: 1.15rem; line-height: 1.8; color: rgba(255,255,255,0.85);
@@ -81,7 +81,13 @@
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     /* TESTIMONIALS CAROUSEL */
-    .testimonials { background: var(--sand); padding: 7rem 5rem; text-align: center; }
+    /* Aufhellung nur im Textband (vertikale Mitte 0.55), Rand bleibt klar; Himmelsband ueber center 38% hinter den Text. */
+    .testimonials { position: relative; min-height: 70vh;
+      display: flex; flex-direction: column; justify-content: center;
+      background:
+        linear-gradient(180deg, rgba(253,248,243,0) 0%, rgba(253,248,243,0.55) 50%, rgba(253,248,243,0) 100%),
+        url("images/window.jpg") center 38% / cover no-repeat;
+      padding: 7rem 5rem; text-align: center; }
     .carousel { position: relative; max-width: 900px; margin: 0 auto;
       display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
     .carousel-viewport { flex: 1 1 auto; max-width: 640px; }
@@ -90,25 +96,37 @@
       pointer-events: none; transition: opacity 0.7s var(--ease); }
     .carousel-slide.is-active { opacity: 1; pointer-events: auto; }
     .carousel-quote { font-family: var(--serif); font-style: italic; font-weight: 300;
-      color: var(--lilac); font-size: clamp(1.5rem, 2.4vw, 2.2rem); line-height: 1.5;
+      color: var(--ink); font-size: clamp(1.5rem, 2.4vw, 2.2rem); line-height: 1.5;
       max-width: 640px; margin: 0 auto; }
     .carousel-attr { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.22em;
-      text-transform: uppercase; color: var(--gold); margin-top: 1.5rem; }
+      text-transform: uppercase; color: var(--ink); margin-top: 1.5rem; }
     .carousel-arrow { flex: 0 0 auto; background: none; border: 0; cursor: pointer;
-      color: var(--gold); padding: 0.5rem; line-height: 0; transition: color 0.3s;
+      color: var(--ink); padding: 0.5rem; line-height: 0; transition: color 0.3s;
       display: inline-flex; align-items: center; justify-content: center; }
-    .carousel-arrow:hover { color: var(--lilac); }
+    .carousel-arrow:hover { color: var(--gold); }
     .carousel-arrow svg { width: 26px; height: 26px; display: block; }
     .carousel-dots { display: flex; justify-content: center; gap: 0.6rem; margin-top: 2.2rem; }
     .carousel-dot { width: 8px; height: 8px; border-radius: 50%; border: 0; padding: 0;
-      cursor: pointer; background: var(--gold); opacity: 0.3; transition: opacity 0.3s; }
+      cursor: pointer; background: var(--ink); opacity: 0.3; transition: opacity 0.3s; }
     .carousel-dot.is-active { opacity: 1; }
     @media (prefers-reduced-motion: reduce) { .carousel-slide { transition: none; } }
 
-    /* OFFERINGS */
-    #offerings { background: var(--sand); padding: 7rem 4rem; }
+    /* OFFERINGS — auf der Textur, Inhalt ueber abgedunkeltem ::before */
+    #offerings { position: relative; padding: 7rem 4rem;
+      background: url("images/texture.jpg") center / cover no-repeat scroll; }
+    #offerings::before { content: ""; position: absolute; inset: 0;
+      background: rgba(58,48,96,0.45); z-index: 0; }
+    #offerings > * { position: relative; z-index: 1; }
+    /* Parallax nur ab 900px auf Zeigergeraeten; Touch/iOS Safari und reduced-motion bleiben scroll */
+    @media (min-width: 900px) and (pointer: fine) {
+      #offerings { background-attachment: fixed; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #offerings { background-attachment: scroll; }
+    }
     .offerings-head { text-align: center; margin-bottom: 4rem; }
-    .offerings-head .offerings-title { font-size: clamp(1.55rem, 2.9vw, 2.5rem);
+    .offerings-head .eyebrow { color: var(--cream); }
+    .offerings-head .offerings-title { color: var(--cream); font-size: clamp(1.55rem, 2.9vw, 2.5rem);
       max-width: 640px; margin: 0 auto; text-wrap: balance; hyphens: none; }
     .eyebrow { font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
       color: var(--gold); margin-bottom: 1.2rem; }
