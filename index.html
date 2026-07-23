@@ -377,11 +377,14 @@
       .nav-book { grid-area: book; align-self: center; padding: 0.5rem 1.1rem; }
       .hero-content { padding: 9.5rem 1.5rem 3rem; }
       /* Mobil laeuft die Schrift ueber die volle Breite — ein Quer-Verlauf hilft nicht.
-         Stattdessen ein senkrechter Verlauf ueber das ganze Bild. */
+         Stattdessen ein senkrechter Verlauf ueber das ganze Bild, angehoben auf 0.72/0.60/0.78
+         fuer die Lilac2-Lesbarkeit. Mobil sitzt der Text ohnehin ueber ihr: Lesbarkeit vor
+         Bildhelligkeit. Ausschnitt: hochkant ist das Bild hoehenbegrenzt, der senkrechte
+         object-position-Wert wirkt nicht — daher keine eigene mobile object-position noetig. */
       .hero-overlay { background: linear-gradient(180deg,
-        rgba(20,15,40,0.60) 0%,
-        rgba(20,15,40,0.40) 45%,
-        rgba(20,15,40,0.70) 100%); }
+        rgba(20,15,40,0.72) 0%,
+        rgba(20,15,40,0.60) 45%,
+        rgba(20,15,40,0.78) 100%); }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
       .hero-body { width: 100%; max-width: 480px; }
       .testimonials { padding: 5rem 1.25rem; }
