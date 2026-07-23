@@ -100,13 +100,25 @@
       color: var(--white); border: 1px solid currentColor; border-radius: 4px;
       padding: 0.6rem 1.4rem; transition: color 0.3s, border-color 0.3s; }
     .nav-book:hover { color: var(--gold); }
-    /* Case 2 — booking hero is light, white would be unreadable (contrast 1.05:1) */
+    /* Case 2 — light backgrounds (booking hero, legal pages); white would be unreadable */
     body[data-page="booking"] nav:not(.scrolled) .nav-logo,
     body[data-page="booking"] nav:not(.scrolled) .nav-links a,
-    body[data-page="booking"] nav:not(.scrolled) .nav-book { color: var(--lilac); }
+    body[data-page="booking"] nav:not(.scrolled) .nav-book,
+    body[data-page="imprint"] nav:not(.scrolled) .nav-logo,
+    body[data-page="imprint"] nav:not(.scrolled) .nav-links a,
+    body[data-page="imprint"] nav:not(.scrolled) .nav-book,
+    body[data-page="privacy"] nav:not(.scrolled) .nav-logo,
+    body[data-page="privacy"] nav:not(.scrolled) .nav-links a,
+    body[data-page="privacy"] nav:not(.scrolled) .nav-book { color: var(--lilac); }
     body[data-page="booking"] nav:not(.scrolled) .nav-logo:hover,
     body[data-page="booking"] nav:not(.scrolled) .nav-links a:hover,
-    body[data-page="booking"] nav:not(.scrolled) .nav-book:hover { color: var(--gold); }
+    body[data-page="booking"] nav:not(.scrolled) .nav-book:hover,
+    body[data-page="imprint"] nav:not(.scrolled) .nav-logo:hover,
+    body[data-page="imprint"] nav:not(.scrolled) .nav-links a:hover,
+    body[data-page="imprint"] nav:not(.scrolled) .nav-book:hover,
+    body[data-page="privacy"] nav:not(.scrolled) .nav-logo:hover,
+    body[data-page="privacy"] nav:not(.scrolled) .nav-links a:hover,
+    body[data-page="privacy"] nav:not(.scrolled) .nav-book:hover { color: var(--gold); }
     /* Case 3 — scrolled beats both of the above */
     nav.scrolled .nav-logo { color: var(--lilac); }
     nav.scrolled .nav-logo:hover { color: var(--gold); }
@@ -310,6 +322,27 @@
     .calendly-inline .ph-icon { font-size: 2.2rem; opacity: 0.25; margin-bottom: 1rem; color: var(--lilac); }
     .calendly-inline p { font-size: 0.95rem; line-height: 1.7; color: var(--lilac); max-width: 480px; margin: 0 auto; }
 
+    /* LEGAL PAGES — Legal Notice / Privacy, linksbuendig, Measure ~65 Zeichen */
+    .legal-draft { max-width: 40rem; margin: 8.5rem auto 0; padding: 0.9rem 1.25rem;
+      border: 1px solid var(--gold); background: rgba(184,145,90,0.1); color: var(--bark);
+      font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+      text-align: center; font-weight: 500; }
+    .legal-page-body { max-width: 36rem; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+    .legal-page-body .section-title { text-align: left; margin-bottom: 2.5rem; }
+    .legal-page-body h3 { font-family: var(--serif); font-size: 1.45rem; font-weight: 500;
+      color: var(--lilac); margin: 2.6rem 0 1rem; }
+    .legal-page-body h4 { font-family: var(--sans); font-size: 0.9rem; letter-spacing: 0.06em;
+      color: var(--ink); font-weight: 500; margin: 1.6rem 0 0.5rem; }
+    .legal-page-body p { font-size: 1.02rem; line-height: 1.85; color: #5a4a6a; margin-bottom: 1.1rem; }
+    .legal-page-body a { color: var(--lilac); text-decoration: underline; }
+    .legal-variant { border-left: 2px solid rgba(123,125,184,0.35);
+      padding: 0.2rem 0 0.2rem 1.5rem; margin: 1.8rem 0 2.6rem; }
+    .legal-variant-label { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; margin-bottom: 0.8rem; }
+    .legal-field { margin-bottom: 0.9rem; }
+    .legal-field b { display: block; font-family: var(--sans); font-size: 0.82rem;
+      letter-spacing: 0.04em; color: var(--ink); font-weight: 500; margin-bottom: 0.15rem; }
+
     .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -351,6 +384,8 @@
       .about-page-hero-overlay { padding: 2rem; }
       .substack-feature { padding: 4rem 1.5rem; }
       .substack-inner { padding: 2.5rem 1.8rem; }
+      .legal-draft { margin-top: 9rem; }
+      .legal-page-body { padding: 2.5rem 1.5rem 3rem; }
     }
   </style>
 </head>
@@ -618,6 +653,46 @@
 
 </div>
 
+<!-- LEGAL NOTICE -->
+<!-- HINWEIS: Der Sitz der Anbieterin ist noch offen (Deutschland oder Spanien).
+     Beide Varianten sind als Geruest angelegt. Vor dem Livegang wird GENAU EINE
+     der beiden Varianten (A Spanien / B Deutschland) auf dieser Seite UND in der
+     Privacy Policy geloescht. -->
+<div id="imprint-page" style="display:none">
+  <p class="legal-draft">DRAFT — not for publication. Pending legal review.</p>
+  <div class="legal-page-body">
+    <h1 class="section-title">Legal Notice</h1>
+    <p>This legal notice is a working draft. Every entry in double brackets is a placeholder that must be completed and verified by legal counsel before publication. The provider's place of establishment has not yet been determined; two jurisdiction variants are drafted below, and one of them will be removed before go-live.</p>
+
+    <div class="legal-variant">
+      <p class="legal-variant-label">Variante A — Spanien (LSSI-CE Art. 10)</p>
+      <div class="legal-field"><b>Name / company name</b>[[PLATZHALTER: Vollstaendiger Name / Firmenname]]</div>
+      <div class="legal-field"><b>Legal form</b>[[PLATZHALTER: Rechtsform, falls Gesellschaft]]</div>
+      <div class="legal-field"><b>Summonable address</b>[[PLATZHALTER: Strasse und Hausnummer]], [[PLATZHALTER: PLZ und Ort]], [[PLATZHALTER: Land]]</div>
+      <div class="legal-field"><b>Email</b>[[PLATZHALTER: E-Mail-Adresse]]</div>
+      <div class="legal-field"><b>Second direct contact</b>[[PLATZHALTER: Telefon oder anderer direkter Kontaktweg]]</div>
+      <div class="legal-field"><b>Tax number (NIF / CIF)</b>[[PLATZHALTER: NIF oder CIF]]</div>
+      <div class="legal-field"><b>Register entry</b>[[PLATZHALTER: Eintrag im Registro Mercantil, falls vorhanden]]</div>
+      <div class="legal-field"><b>Professional title and chamber</b>[[PLATZHALTER: Berufsbezeichnung und Kammer, falls reglementiert]]</div>
+      <div class="legal-field"><b>Responsible for content</b>[[PLATZHALTER: Name der verantwortlichen Person]]</div>
+      <div class="legal-field"><b>EU dispute resolution</b>[[PLATZHALTER: Aktuellen Hinweis zur Verbraucher-/Online-Streitbeilegung durch Rechtsberatung einsetzen; Rechtslage zur EU-ODR-Plattform pruefen]]</div>
+    </div>
+
+    <div class="legal-variant">
+      <p class="legal-variant-label">Variante B — Deutschland (DDG)</p>
+      <div class="legal-field"><b>Name / company name and legal form</b>[[PLATZHALTER: Vollstaendiger Name / Firmenname]] — [[PLATZHALTER: Rechtsform und Vertretungsberechtigte(r), falls Gesellschaft]]</div>
+      <div class="legal-field"><b>Summonable address (no P.O. box)</b>[[PLATZHALTER: Strasse und Hausnummer]], [[PLATZHALTER: PLZ und Ort]]</div>
+      <div class="legal-field"><b>Email</b>[[PLATZHALTER: E-Mail-Adresse]]</div>
+      <div class="legal-field"><b>Second direct contact</b>[[PLATZHALTER: Telefon oder anderer direkter Kontaktweg]]</div>
+      <div class="legal-field"><b>VAT / tax number</b>[[PLATZHALTER: USt-IdNr. gem. §27a UStG bzw. Steuernummer, falls vorhanden]]</div>
+      <div class="legal-field"><b>Register entry</b>[[PLATZHALTER: Registergericht und Handelsregisternummer, falls vorhanden]]</div>
+      <div class="legal-field"><b>Professional title and chamber</b>[[PLATZHALTER: Berufsbezeichnung und Kammer, falls reglementiert]]</div>
+      <div class="legal-field"><b>Responsible for content (§18 Abs. 2 MStV)</b>[[PLATZHALTER: Name und Anschrift der verantwortlichen Person]]</div>
+      <div class="legal-field"><b>EU dispute resolution</b>[[PLATZHALTER: Hinweis nach §36 VSBG (Verbraucherstreitbeilegung) durch Rechtsberatung einsetzen; Rechtslage zur EU-ODR-Plattform pruefen]]</div>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div>
     <div class="footer-logo">Orama Seifert</div>
@@ -635,8 +710,8 @@
     <a href="https://www.facebook.com/contact.orama/" target="_blank">Facebook</a>
     <a href="#instagram" target="_blank">Instagram</a>
     <a href="mailto:contact@oramaseifert.com">Email</a>
-    <a href="#">Imprint</a>
-    <a href="#">Privacy</a>
+    <a href="#" onclick="return showPage('imprint')">Imprint</a>
+    <a href="#" onclick="return showPage('privacy')">Privacy</a>
   </div>
   <div class="footer-bottom">© 2026 Orama Seifert · All rights reserved</div>
 </footer>
@@ -644,7 +719,7 @@
 <script>
   function showPage(page, anchor) {
     document.body.dataset.page = page;
-    ['home','about','booking'].forEach(p => {
+    ['home','about','booking','imprint','privacy'].forEach(p => {
       const el = document.getElementById(p+'-page');
       if (el) el.style.display = (p===page) ? 'block' : 'none';
     });
