@@ -26,24 +26,36 @@
       padding: 1.8rem 3.5rem; transition: background 0.5s var(--ease), box-shadow 0.5s var(--ease); }
     nav.scrolled { background: rgba(253,248,243,0.96); backdrop-filter: blur(14px);
       box-shadow: 0 1px 0 rgba(184,145,90,0.15); }
+    /* Nav palette follows the ground beneath it (hook: body[data-page]).
+       Case 1 default — ungescrollt ueber dunklem Hero (home, about): base white, rollover gold.
+       Case 2 — ungescrollt ueber hellem Booking-Hero: base lilac, rollover gold.
+       Case 3 — gescrollt, cremefarbener Balken: base lilac, rollover gold. */
     .nav-logo { grid-column: 2; justify-self: center; text-align: center;
       font-family: var(--serif); font-size: 2rem; font-weight: 400; white-space: nowrap;
-      letter-spacing: 0.08em; color: var(--gold); transition: color 0.4s; }
-    .nav-logo:hover { color: var(--white); }
-    nav.scrolled .nav-logo { color: var(--lilac); }
-    nav.scrolled .nav-logo:hover { color: var(--gold); }
+      letter-spacing: 0.08em; color: var(--white); transition: color 0.4s; }
+    .nav-logo:hover { color: var(--gold); }
     .nav-links { grid-column: 1; justify-self: start; display: flex; flex-wrap: wrap;
       gap: 0.6rem 2.2rem; list-style: none; }
     .nav-links a { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
-      white-space: nowrap; color: var(--gold); transition: color 0.3s; }
-    .nav-links a:hover { color: var(--white); }
-    nav.scrolled .nav-links a { color: var(--lilac); }
-    nav.scrolled .nav-links a:hover { color: var(--gold); }
+      white-space: nowrap; color: var(--white); transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold); }
     .nav-book { grid-column: 3; justify-self: end; font-size: 0.78rem;
       letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap;
-      color: var(--gold); border: 1px solid currentColor; border-radius: 4px;
+      color: var(--white); border: 1px solid currentColor; border-radius: 4px;
       padding: 0.6rem 1.4rem; transition: color 0.3s, border-color 0.3s; }
-    .nav-book:hover { color: var(--white); }
+    .nav-book:hover { color: var(--gold); }
+    /* Case 2 — booking hero is light, white would be unreadable (contrast 1.05:1) */
+    body[data-page="booking"] nav:not(.scrolled) .nav-logo,
+    body[data-page="booking"] nav:not(.scrolled) .nav-links a,
+    body[data-page="booking"] nav:not(.scrolled) .nav-book { color: var(--lilac); }
+    body[data-page="booking"] nav:not(.scrolled) .nav-logo:hover,
+    body[data-page="booking"] nav:not(.scrolled) .nav-links a:hover,
+    body[data-page="booking"] nav:not(.scrolled) .nav-book:hover { color: var(--gold); }
+    /* Case 3 — scrolled beats both of the above */
+    nav.scrolled .nav-logo { color: var(--lilac); }
+    nav.scrolled .nav-logo:hover { color: var(--gold); }
+    nav.scrolled .nav-links a { color: var(--lilac); }
+    nav.scrolled .nav-links a:hover { color: var(--gold); }
     nav.scrolled .nav-book { color: var(--lilac); }
     nav.scrolled .nav-book:hover { color: var(--gold); }
 
@@ -560,6 +572,7 @@
 
 <script>
   function showPage(page, anchor) {
+    document.body.dataset.page = page;
     ['home','about','booking'].forEach(p => {
       document.getElementById(p+'-page').style.display = (p===page) ? 'block' : 'none';
     });
@@ -595,6 +608,9 @@
     }
     return false;
   }
+
+  // Home is shown without showPage on first load, so set the ground hook here too
+  document.body.dataset.page = 'home';
 
   const nav = document.getElementById('main-nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
