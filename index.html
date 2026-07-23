@@ -243,9 +243,11 @@
     .offer-btn:hover { background: var(--gold); border-color: var(--gold); }
 
     /* ABOUT TEASER */
-    #about-teaser { display: grid; grid-template-columns: 50% 50%; min-height: 75vh; }
+    /* min-height von 75vh auf 62vh: kuerzere Spalte -> weniger Zoom, das Motiv wird weiter
+       aufgezogen (Zwischenstand). object-position center statt center top -> Motiv mittig. */
+    #about-teaser { display: grid; grid-template-columns: 50% 50%; min-height: 62vh; }
     .about-img-side { overflow: hidden; position: relative; }
-    .about-img-side img { height: 100%; object-fit: cover; object-position: center top; }
+    .about-img-side img { height: 100%; object-fit: cover; object-position: center; }
     .about-text-side { background: var(--white); display: flex; flex-direction: column;
       justify-content: center; padding: 6rem 5rem; }
     .about-text-side .eyebrow { text-align: left; }
@@ -483,7 +485,7 @@
   </section>
 
   <section id="about-teaser">
-    <div class="about-img-side"><img src="images/portrait.jpg" alt="Orama Seifert" /></div>
+    <div class="about-img-side"><img src="images/about-v2.jpg" alt="Orama Seifert" /></div>
     <div class="about-text-side reveal">
       <p class="eyebrow">What Is Spiritual Guidance?</p>
       <h2 class="section-title">Seeing Your Gifts Is My <em>Gift</em></h2>
