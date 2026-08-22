@@ -454,6 +454,77 @@
       border-radius: 4px; transition: all 0.3s; border: 1px solid var(--white); }
     .btn-light:hover { background: transparent; color: var(--white); }
 
+    /* KONTAKTFORMULAR (F2)
+       Der Block traegt keinen eigenen Grund: kein Rahmen, kein Schatten, keine
+       Flaeche. Er steht direkt auf dem Verlauf des Abschnitts.
+       Das war zuerst als riskant eingeschaetzt und dann nachgemessen. Gemessen
+       wird am Bildschirmfoto: Text auf transparent gestellt, hellster Grundbildpunkt
+       unter den Glyphen gegen die Textfarbe. Schlechtester Wert ueber alle
+       Beschriftungen des Formulars — 4.79:1 bei 390px, 4.77:1 bei 768px,
+       5.21:1 bei 1440px, jeweils der Formulartitel als oberste und damit hellste
+       Zeile. Das helle Ende des Verlaufs (--lilac, gegen Weiss nur 3.84:1) liegt
+       oben im Abschnitt; auf Hoehe des Formulars ist er schon weit Richtung --ink
+       gelaufen. Ein eigener heller Grund waere damit unnoetig und haette eine
+       Flaeche erfunden, die der Bestand nicht kennt.
+       Reserve ist duenn, aber vorhanden. Wer den Block nach oben schiebt, misst neu:
+       jede Zeile weiter oben steht auf hellerem Verlauf.
+       Basiseinheit 0.5rem (8px). Jeder Abstand hier ist ein Vielfaches davon.
+       Breite 29rem: derselbe Deckel, den die Buchungsseite fuer .booking-service-desc
+       ausgemessen hat (464px, gemessen 62-73 Zeichen, im Ebene-0-Band 60-75). */
+    .contact-form-block { max-width: 29rem; margin: 3rem auto 0; text-align: left; }
+    .contact-form-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500;
+      color: var(--white); line-height: 1.2; margin-bottom: 0.5rem; }
+    /* Legende zum Sternchen. Bildschirmleser bekommen die Pflicht ueber required,
+       das Sternchen ist rein optisch und daher aria-hidden. */
+    .contact-form-note { font-family: var(--sans); font-size: 0.85rem; line-height: 1.5;
+      color: var(--white); margin-bottom: 2rem; }
+    .contact-field { margin-bottom: 1.5rem; }
+    /* Beschriftung wie die Metazeile der Buchungsseite: Sans, 0.85rem, keine
+       Versalien. Deren Farbe (--gold) traegt auf diesem Grund nicht (2.47:1),
+       --white schon — Messwerte im Kopf dieses Blocks. */
+    .contact-field label { display: block; font-family: var(--sans); font-size: 0.85rem;
+      font-weight: 400; line-height: 1.5; color: var(--white); margin-bottom: 0.5rem; }
+    .contact-field input, .contact-field select, .contact-field textarea {
+      display: block; width: 100%; font-family: var(--sans); font-size: 1rem;
+      font-weight: 300; line-height: 1.5; color: var(--ink); background: var(--white);
+      border: 1px solid var(--sand); border-radius: 4px; padding: 1rem;
+      transition: border-color 0.3s; }
+    .contact-field textarea { line-height: 1.6; resize: vertical; }
+    /* Fokus in --lilac. outline statt Rahmenwechsel, damit das Feld beim
+       Fokussieren nicht um einen Pixel springt. offset 2px setzt den Ring auf den
+       dunklen Grund neben das Feld, dort steht er sichtbar. */
+    .contact-field input:focus, .contact-field select:focus, .contact-field textarea:focus,
+    .contact-consent input:focus {
+      outline: 2px solid var(--lilac); outline-offset: 2px; border-color: var(--lilac); }
+    /* Auswahlliste: native Darstellung abgeschaltet, sonst ignorieren WebKit und
+       Firefox Hintergrund und Rahmen der Vorgabe. Der Pfeil ist aus zwei Rahmen
+       gebaut statt aus einer Bilddatei — kein externer Aufruf, keine neue Farbe. */
+    .contact-select { position: relative; }
+    .contact-select select { appearance: none; -webkit-appearance: none; padding-right: 3rem; }
+    .contact-select::after { content: ""; position: absolute; pointer-events: none;
+      right: 1rem; top: 50%; margin-top: -0.25rem; width: 0.5rem; height: 0.5rem;
+      border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+      transform: rotate(45deg); }
+    .contact-consent { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 2rem; }
+    .contact-consent input { flex: none; width: 1rem; height: 1rem; margin-top: 0.25rem;
+      accent-color: var(--lilac); }
+    .contact-consent label { font-family: var(--sans); font-size: 0.95rem; line-height: 1.6;
+      color: var(--white); }
+    /* Der Verweis traegt hier NICHT das Lila der uebrigen Rechtstexte: --lilac misst
+       auf diesem Grund 1.72:1. --white plus Unterstreichung. */
+    .contact-consent a { color: var(--white); text-decoration: underline; }
+    .contact-form-block button.btn-filled { font-family: var(--sans); cursor: pointer; }
+    /* Spamschutz-Feld. Aus dem Fluss genommen statt display:none — ein per display
+       ausgeblendetes Feld fuellen manche Bots gerade deshalb aus. tabindex -1 und
+       aria-hidden halten Tastatur und Bildschirmleser heraus. */
+    .contact-trap { position: absolute; width: 1px; height: 1px; margin: -1px;
+      padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); }
+    /* Nebenrolle des bestehenden Mailknopfs: das Formular steht zuerst, diese Zeile
+       darunter, der Knopf zuletzt. */
+    .closing-cta-direct { font-size: 1rem; line-height: 1.6; color: var(--white);
+      margin: 3rem 0 1.5rem; }
+    .closing-cta-direct a { color: var(--white); text-decoration: underline; }
+
     /* FOOTER */
     footer { background: var(--ink); padding: 4rem 5rem;
       display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem; align-items: start; }
@@ -708,6 +779,9 @@
       .group-img img { object-position: center; }
       .group-text { padding: 3rem 2rem; }
       .closing-cta { padding: 5rem 2rem; }
+      /* Bei 390px traegt die Abschnittspolsterung (2rem) den seitlichen Rand, der
+         Block laeuft auf volle Breite, die Felder mit ihm (width: 100%). */
+      .contact-form-block { margin-top: 2.5rem; }
       footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 2rem; }
       .booking-page-hero { padding: 12rem 2rem 3rem; }
       /* Stapeln und Buttonbreite regelt der Haltepunkt 1100px weiter oben. */
@@ -765,6 +839,9 @@
       .nav-tagline { color: var(--ink); }
       .hero-headline, .hero-body, .offerings-head .offerings-title, .offer-title, .offer-desc,
       .closing-cta .section-title, .closing-cta-body, .about-page-quote,
+      .closing-cta-direct, .closing-cta-direct a,
+      .contact-form-title, .contact-form-note, .contact-field label,
+      .contact-consent label, .contact-consent a,
       .footer-tagline, .footer-col a, .footer-bottom { color: var(--ink); }
       /* Ein Kind mit eigener Farbdeklaration erbt nicht — die Regel eine Zeile hoeher
          faerbt nur das Elternelement, das <em> darin behaelt seine Bildschirmfarbe.
@@ -931,6 +1008,64 @@
     <p class="eyebrow">Wanting answers, truth, expansion?</p>
     <h2 class="section-title"><em>Find Your Next Step</em></h2>
     <p class="closing-cta-body">Whether a first consultation, an Akashic Reading, or a group training to learn more about healing and build yourself up — find the right space for you.</p>
+
+    <!-- OFFEN: Forminit-Konto noch nicht angelegt. Nur FORM_ID_HIER_EINSETZEN
+         im action-Attribut durch die Kennung ersetzen, sonst nichts.
+         Zielmailadresse: orama@orama-coaching.com -->
+    <form class="contact-form-block" action="https://forminit.com/f/FORM_ID_HIER_EINSETZEN" method="POST">
+      <h3 class="contact-form-title">Write to Orama</h3>
+      <p class="contact-form-note"><span aria-hidden="true">*</span> Required field</p>
+
+      <!-- Betreff der Benachrichtigungsmail an Orama -->
+      <input type="hidden" name="_subject" value="Anfrage ueber die Website">
+      <!-- Weiterleitung nach dem Absenden, relativ auf die Dankeseite -->
+      <input type="hidden" name="_redirect" value="index.html#thank-you">
+
+      <div class="contact-field">
+        <label for="contact-name">Name <span aria-hidden="true">*</span></label>
+        <input type="text" id="contact-name" name="name" autocomplete="name" required aria-required="true">
+      </div>
+
+      <div class="contact-field">
+        <label for="contact-email">Email <span aria-hidden="true">*</span></label>
+        <input type="email" id="contact-email" name="email" autocomplete="email" required aria-required="true">
+      </div>
+
+      <div class="contact-field">
+        <label for="contact-offering">Offering</label>
+        <div class="contact-select">
+          <select id="contact-offering" name="offering">
+            <option value="">No particular offering</option>
+            <option value="One on One Consultation">One on One Consultation</option>
+            <option value="Nervous System Healing">Nervous System Healing</option>
+            <option value="Akashic Readings">Akashic Readings</option>
+            <option value="Group Courses &amp; Trainings">Group Courses &amp; Trainings</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="contact-field">
+        <label for="contact-message">Message <span aria-hidden="true">*</span></label>
+        <textarea id="contact-message" name="message" rows="6" required aria-required="true"></textarea>
+      </div>
+
+      <div class="contact-consent">
+        <input type="checkbox" id="contact-consent" name="consent" value="yes" required aria-required="true">
+        <label for="contact-consent">I agree that my details may be stored and used to answer my enquiry. <a href="#" onclick="return showPage('privacy')">Privacy policy</a> <span aria-hidden="true">*</span></label>
+      </div>
+
+      <!-- Spamschutz: bleibt leer. Bots fuellen es, Menschen sehen es nicht.
+           Der von Forminit erwartete Feldname ist nicht gesichert, daher ein
+           neutraler Name. -->
+      <div class="contact-trap" aria-hidden="true">
+        <label for="contact-website">Leave this field empty</label>
+        <input type="text" id="contact-website" name="contact-website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit" class="btn-filled">Send message</button>
+    </form>
+
+    <p class="closing-cta-direct">Or write directly: <a href="mailto:orama@orama-coaching.com">orama@orama-coaching.com</a></p>
     <a class="btn-light" href="mailto:orama@orama-coaching.com">Send an email now</a>
   </section>
 
