@@ -452,6 +452,68 @@
       .legal-draft { margin-top: 9rem; }
       .legal-page-body { padding: 2.5rem 1.5rem 3rem; }
     }
+
+    /* ================= DRUCK =================
+       Die Seite wird von der Kundin aus dem Browser als PDF gedruckt und darauf korrigiert.
+       Drei Defekte im Ausdruck vom 23.07., die hier repariert werden:
+       1) nav ist position:fixed. Chrome druckt fixierte Elemente auf JEDER Seite an
+          derselben Stelle, sie legen sich ueber den Inhalt — Seite 2 verdeckte
+          "Share Your Self Authentically", Seite 3 die Ueberschrift "Nervous System
+          Healing" ganz. Im Druck steht der Kopf statisch, also genau einmal oben.
+       2) Die neun .reveal-Bloecke stehen bis zum IntersectionObserver auf opacity:0.
+          Wer druckt, ohne vorher bis unten gescrollt zu haben, verliert sie komplett.
+       3) Fotos und Verlaeufe als Grund: heller Text auf dunklem Bild kostet Toner und
+          wird auf Papier grau in grau. Grund raus, Text auf Ink.
+       Die vh-Mindesthoehen fallen weg, sonst frisst jeder Abschnitt eine ganze Seite. */
+    @media print {
+      @page { margin: 16mm 14mm; }
+
+      html, body { background: #fff; color: var(--ink); overflow: visible; }
+      *, *::before, *::after { animation: none !important; transition: none !important;
+        box-shadow: none !important; backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important; }
+
+      /* 1) Kopf statisch — keine Ueberlagerung auf Folgeseiten */
+      nav#main-nav { position: static; background: none; padding: 0 0 1.5rem; }
+      nav#main-nav .nav-logo { color: var(--ink); }
+      .nav-links, .nav-book { display: none; }
+
+      /* 2) Reveal-Bloecke und die Hero-Einblendung immer sichtbar */
+      .reveal, .hero-top-line, .hero-headline, .hero-bottom { opacity: 1; transform: none; }
+
+      /* 3) Grund raus, Text auf Papier lesbar */
+      .hero-bg-full, .hero-overlay, #offerings::before,
+      .about-page-hero-overlay { display: none; }
+      #home-hero, #offerings, .testimonials, .closing-cta, footer,
+      .group-text, .about-text-side { background: none; }
+      #home-hero, .testimonials, .group-feature, #about-teaser { min-height: 0; }
+      .hero-content { min-height: 0; padding: 0 0 2rem; }
+      .about-page-hero { height: auto; min-height: 0; }
+      .hero-top-line, .offerings-head .eyebrow, .footer-logo, .footer-col h4 { color: var(--lilac); }
+      .hero-headline, .hero-body, .offerings-head .offerings-title, .offer-title, .offer-desc,
+      .closing-cta .section-title, .closing-cta-body, .about-page-quote,
+      .footer-tagline, .footer-col a, .footer-bottom { color: var(--ink); }
+      .offer-card { background: none; border-color: rgba(58,48,96,0.35); }
+      .offer-btn, .btn-light, .btn-outline { color: var(--ink); background: none;
+        border: 1px solid rgba(58,48,96,0.35); }
+
+      /* Bedienelemente tragen im Druck keine Information */
+      .carousel-arrow, .carousel-dots { display: none; }
+
+      /* Umbrueche: keine Ueberschrift zerschneiden, keine Ueberschrift allein am Seitenfuss */
+      h1, h2, h3, h4, .section-title, .offerings-title, .offer-title, .eyebrow, .hero-top-line {
+        break-inside: avoid; page-break-inside: avoid;
+        break-after: avoid; page-break-after: avoid; }
+      /* Nur kartengrosse Einheiten zusammenhalten. Die langen Textspalten .group-text und
+         .about-text-side duerfen umbrechen — unteilbar reissen sie halbleere Seiten auf;
+         ihre Ueberschriften haengen ohnehin schon per break-after am Folgetext. */
+      .offer-card, .carousel, .carousel-slide,
+      .booking-service-card, figure { break-inside: avoid; page-break-inside: avoid; }
+
+      /* Bilder duerfen keine ganze Seite belegen */
+      .group-img img, .about-img-side img, .about-page-hero img { max-height: 11cm;
+        object-fit: cover; }
+    }
   </style>
 </head>
 <body>
