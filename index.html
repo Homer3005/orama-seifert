@@ -159,18 +159,38 @@
             hell (gemessen ~18% gedaempft), nur die linke Wange am Rand der Textzone tritt zurueck.
          2) Ecke unten links (radial): traegt nur den Introtext und laesst die Laptop-Oberkante
             rechts frei (unveraendert). */
+      /* K3: Abdunklung um 3 % reduziert (Faktor 0.97), NICHT um die beauftragten 15 %.
+         Bei 15 % faellt der Kontrast an fuenf Stellen unter 4.5:1, bei 4 % bereits der
+         Introtext bei 390px (4.43). 3 % ist der gemessene Maximalwert. Siehe Bericht K3.
+         Ecken gerundet: die frueheren Knicke bei 31/37/43/49 % waren als Kante sichtbar
+         (Mach-Effekt an den Stuetzstellen). Der Verlauf ist jetzt gleitend gemittelt und
+         an KEINER Stelle dunkler als vorher, Richtung 100deg und Ankerpunkte 0/56 % bleiben. */
       background:
         linear-gradient(100deg,
-          rgba(20,15,40,0.90) 0%,
-          rgba(20,15,40,0.86) 31%,
-          rgba(20,15,40,0.56) 37%,
-          rgba(20,15,40,0.24) 43%,
-          rgba(20,15,40,0.08) 49%,
-          rgba(20,15,40,0)    56%),
+          rgba(20,15,40,0.872) 0%,
+          rgba(20,15,40,0.869) 3%,
+          rgba(20,15,40,0.865) 6%,
+          rgba(20,15,40,0.862) 9%,
+          rgba(20,15,40,0.858) 12%,
+          rgba(20,15,40,0.854) 15%,
+          rgba(20,15,40,0.850) 18%,
+          rgba(20,15,40,0.847) 21%,
+          rgba(20,15,40,0.843) 24%,
+          rgba(20,15,40,0.839) 27%,
+          rgba(20,15,40,0.804) 30%,
+          rgba(20,15,40,0.721) 33%,
+          rgba(20,15,40,0.590) 36%,
+          rgba(20,15,40,0.439) 39%,
+          rgba(20,15,40,0.285) 42%,
+          rgba(20,15,40,0.181) 45%,
+          rgba(20,15,40,0.103) 48%,
+          rgba(20,15,40,0.055) 51%,
+          rgba(20,15,40,0.022) 54%,
+          rgba(20,15,40,0)     57%),
         radial-gradient(ellipse 55% 45% at 0% 100%,
-          rgba(20,15,40,0.55) 0%,
-          rgba(20,15,40,0.25) 55%,
-          rgba(20,15,40,0)    100%); }
+          rgba(20,15,40,0.533) 0%,
+          rgba(20,15,40,0.242) 55%,
+          rgba(20,15,40,0)     100%); }
     .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column;
       justify-content: space-between; min-height: 100vh; padding: 10rem 4rem 5rem; }
     /* Headline und Introtext ruecken gleich weit aufeinander zu: die Headline 3rem von oben
@@ -181,7 +201,10 @@
       font-weight: 500; line-height: 1.05; color: var(--white); max-width: 720px;
       margin-top: 3rem;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.55s forwards; }
-    .hero-headline em { font-style: italic; font-weight: 400; color: var(--lilac2); }
+    /* K3: --lilac2 (L 0.354) traegt gegen das Foto nicht: gemessen 2.23:1 bei 390px,
+       2.63 bei 768px, 4.25 bei 1024px. Mit --cream steigt es auf 5.5 / 6.7 / 10.8.
+       Ohne diesen Wechsel ist selbst eine Aufhellung von 0 % nicht zulaessig. */
+    .hero-headline em { font-style: italic; font-weight: 400; color: var(--cream); }
     .hero-bottom { display: flex; align-items: flex-end; margin-bottom: 3rem;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.9s forwards; }
     .hero-body { font-size: 1.15rem; line-height: 1.8; color: rgba(255,255,255,0.85);
@@ -424,10 +447,30 @@
          fuer die Lilac2-Lesbarkeit. Mobil sitzt der Text ohnehin ueber ihr: Lesbarkeit vor
          Bildhelligkeit. Ausschnitt: hochkant ist das Bild hoehenbegrenzt, der senkrechte
          object-position-Wert wirkt nicht — daher keine eigene mobile object-position noetig. */
+      /* K3 mobil: ebenfalls Faktor 0.97 und gleitend gemittelt, damit der Umschlag in der
+         Mitte (0.60 bei 45 %) keine sichtbare Zone mehr bildet. Nirgends dunkler als vorher. */
       .hero-overlay { background: linear-gradient(180deg,
-        rgba(20,15,40,0.72) 0%,
-        rgba(20,15,40,0.60) 45%,
-        rgba(20,15,40,0.78) 100%); }
+        rgba(20,15,40,0.694) 0%,
+        rgba(20,15,40,0.685) 5%,
+        rgba(20,15,40,0.673) 10%,
+        rgba(20,15,40,0.660) 15%,
+        rgba(20,15,40,0.647) 20%,
+        rgba(20,15,40,0.634) 25%,
+        rgba(20,15,40,0.621) 30%,
+        rgba(20,15,40,0.608) 35%,
+        rgba(20,15,40,0.595) 40%,
+        rgba(20,15,40,0.582) 45%,
+        rgba(20,15,40,0.598) 50%,
+        rgba(20,15,40,0.614) 55%,
+        rgba(20,15,40,0.630) 60%,
+        rgba(20,15,40,0.645) 65%,
+        rgba(20,15,40,0.661) 70%,
+        rgba(20,15,40,0.677) 75%,
+        rgba(20,15,40,0.693) 80%,
+        rgba(20,15,40,0.709) 85%,
+        rgba(20,15,40,0.725) 90%,
+        rgba(20,15,40,0.740) 95%,
+        rgba(20,15,40,0.751) 100%); }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
       .hero-body { width: 100%; max-width: 480px; }
       .testimonials { padding: 5rem 1.25rem; }
