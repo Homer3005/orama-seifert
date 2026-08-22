@@ -334,15 +334,20 @@
 
     /* GROUP FEATURE */
     .group-feature { display: grid; grid-template-columns: 55% 45%; min-height: 65vh; }
-    .group-img { overflow: hidden; }
-    .group-img img { height: 100%; object-fit: cover; }
-    /* Padding von 6rem 5rem auf 4rem herunter: weniger Cream-Rand um den Text.
-       Senkrecht wirkt der Wert am Desktop nicht auf die Blockhoehe — die gibt group.jpg
-       (1400x1866, 3:4) ueber .group-img vor; er ist dort die Untergrenze, ab der laengerer
-       Text den Block waechst. Waagerecht wirkt er sichtbar. Measure bleibt, weil
-       .about-body ohnehin bei max-width 480px deckelt. */
+    /* C4: Hoehendeckel, damit der Block schrumpfen kann — bis hierher gab das Foto ueber
+       seine 3:4-Proportion die Grid-Hoehe vor und weniger Innenabstand blieb wirkungslos.
+       aspect-ratio statt fester Hoehe, damit der Beschnitt bei jeder Breite gleich bleibt:
+       1400/1045 zeigt 56 % der 1866px Bildhoehe. object-position 17 % legt das Fenster auf
+       7.5 % bis 44 % Beschnitt oben/unten — oben faellt nur die Decke weg, die erhobene Hand
+       (ab 13 %), beide Koepfe und beide Gesichter (bis rund 62 %) bleiben vollstaendig. */
+    .group-img { overflow: hidden; aspect-ratio: 1400 / 1045; }
+    .group-img img { height: 100%; object-fit: cover; object-position: center 17%; }
+    /* Waagerecht 4rem (Measure bleibt ohnehin bei max-width 480px auf .about-body gedeckelt).
+       C4 senkrecht auf 3rem = 48px: Inhaltshoehe der Spalte 354px bei 1440, 349px bei 390,
+       15 % davon sind 53.1 bzw. 52.4px. 3rem ist der naechstkleinere Schritt der
+       Basiseinheit 0.5rem — 13.6 bzw. 13.8 % der Inhaltshoehe. */
     .group-text { background: var(--cream); display: flex; flex-direction: column;
-      justify-content: center; padding: 4rem; }
+      justify-content: center; padding: 3rem 4rem; }
 
     /* CLOSING CTA */
     .closing-cta { background: linear-gradient(135deg, var(--lilac) 0%, var(--ink) 100%);
@@ -510,7 +515,11 @@
       .about-img-side { height: 60vw; }
       .about-text-side { padding: 4rem 2rem; }
       .group-feature { grid-template-columns: 1fr; }
+      /* Mobil deckelt schon 60vw die Hoehe, der Desktop-Ausschnitt aus C4 wird hier nicht
+         gebraucht: bei 390px ist der Ausschnitt so flach, dass 17 % die Fingerspitzen der
+         erhobenen Hand oben abschneiden wuerden. Deshalb zurueck auf mittig. */
       .group-img { height: 60vw; }
+      .group-img img { object-position: center; }
       .group-text { padding: 3rem 2rem; }
       .closing-cta { padding: 5rem 2rem; }
       footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 2rem; }
