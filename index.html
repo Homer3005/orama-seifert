@@ -215,12 +215,22 @@
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     /* TESTIMONIALS CAROUSEL */
-    /* Aufhellung nur im Textband (vertikale Mitte 0.55), Rand bleibt klar; Himmelsband ueber center 38% hinter den Text. */
+    /* Aufhellung nur im Textband (vertikale Mitte 0.55), Rand bleibt klar; Himmelsband ueber 38% hinter den Text.
+       C2: window.jpg ist quadratisch (2000x2000). Ab 768px ist die Sektion breiter als hoch,
+       cover skaliert also auf die Breite — es gab waagerecht KEINEN Beschnitt, eine reine
+       Verschiebung waere wirkungslos geblieben. Deshalb Weg b: 5 % groesser als cover,
+       rechts verankert, das Bild waechst nach links. Die Fensteroeffnung sass 55 px rechts
+       der Zitatmitte, jetzt 2 px daneben.
+       Senkrecht bleibt 38 % statt "oben": bei top steht der Deckenbalken hinter den Zitaten
+       und Horizont und Huegel fallen aus dem Ausschnitt. Waagerecht ist beides gleichwertig
+       (top -5 px, 38 % +2 px), deshalb der Wert, der das Motiv haelt.
+       max(...) faengt schmale, sehr hohe Desktopfenster ab, wo 105 % der Breite nicht mehr
+       bis zur Unterkante reichen wuerde. */
     .testimonials { position: relative; min-height: 70vh;
       display: flex; flex-direction: column; justify-content: center;
       background:
         linear-gradient(180deg, rgba(253,248,243,0) 0%, rgba(253,248,243,0.55) 50%, rgba(253,248,243,0) 100%),
-        url("images/window.jpg") center 38% / cover no-repeat;
+        url("images/window.jpg") right 38% / max(105%, 80vh) no-repeat;
       padding: 7rem 5rem; text-align: center; }
     .carousel { position: relative; max-width: 900px; margin: 0 auto;
       display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
@@ -481,7 +491,15 @@
         rgba(20,15,40,0.751) 100%); }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
       .hero-body { width: 100%; max-width: 480px; }
-      .testimonials { padding: 5rem 1.25rem; }
+      /* C2 mobil: hier bleibt es beim Bestand (center 38% / cover), ausdruecklich gesetzt,
+         damit die Desktopregel nicht durchschlaegt. Gemessen sitzt die Fensteroeffnung bei
+         390px bereits mittig (-1 px); die rechts verankerte Vergroesserung wuerde sie auf
+         +50 px verschieben, weil hochkant 285 px waagerechter Spielraum entstehen.
+         Bei 768px bleibt ein vorbestehender Versatz von -36 px: dort gibt es keinen
+         waagerechten Beschnitt, den eine Verschiebung nutzen koennte, und die Desktopregel
+         wuerde 390px kaputtmachen. Das braeuchte einen eigenen Haltepunkt — nicht beauftragt. */
+      .testimonials { padding: 5rem 1.25rem;
+        background-position: 0% 0%, 50% 38%; background-size: auto, cover; }
       .carousel { gap: 0.4rem; }
       .carousel-arrow { padding: 0.35rem; }
       .carousel-arrow svg { width: 22px; height: 22px; }
