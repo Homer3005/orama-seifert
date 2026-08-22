@@ -294,32 +294,82 @@
        Der Verlauf ist ueber 21 Stuetzstellen gleitend gemittelt (Smoothstep), damit
        an den Ansatzpunkten keine Kante sichtbar wird — derselbe Mach-Effekt, der
        beim Hero-Verlauf schon einmal aufgetreten ist. Plateau 25-75 Prozent deckt
-       beide Zeilen voll, die Raender laufen auf voellig transparent aus. */
+       beide Zeilen voll, die Raender laufen auf voellig transparent aus.
+
+       G2: Die Flaeche zeichnete sich als Band ab. Gegenmittel ist Laenge, nicht
+       weniger Deckkraft — das Plateau bleibt deshalb unveraendert bei 0.550.
+       Hoehe bei 1440px: 255.2px vorher (Kopf 127.2 + 2x 4rem), 511.2px nachher,
+       also genau das Doppelte.
+       Die Verlaengerung ist bewusst NICHT symmetrisch. Nach oben ist bei 7rem
+       Schluss: #offerings hat 7rem padding-top, der Verlauf endet damit exakt auf
+       der Sektionskante. Jeder Millimeter darueber legt weissen Schleier auf das
+       dunkle Hero-Foto der Sektion davor — genau die Auffaelligkeit, die hier weg
+       soll. Die restliche Laenge geht deshalb nach unten (-17rem); dort liegen die
+       deckenden Karten davor, sichtbar bleibt der Auslauf nur in den Spalten
+       zwischen und neben ihnen, und dort traegt er als weiche Tiefe.
+       Unter 900px hat die Sektion nur 4rem padding-top — dort gilt ein eigener
+       Wert, siehe die Regel im Haltepunkt max-width:900px.
+       Stuetzstellen von 21 auf 41 erhoeht (alle 2,5 Prozent). Die Rampen laufen
+       jetzt auf Smootherstep (6t^5-15t^4+10t^3): erste UND zweite Ableitung sind
+       an beiden Ansatzpunkten null, damit steht dort auch bei langer Rampe keine
+       Mach-Kante.
+       Plateau 19-50 Prozent statt 25-75: der Kasten ist nach unten gewachsen, die
+       beiden Textzeilen liegen darin jetzt weiter oben. Gemessen ueber alle
+       Haltepunkte liegt das Textband zwischen 20,3 und 48,4 Prozent der
+       Kastenhoehe, 19-50 deckt es mit Rand.
+       Nachgemessen am Bildschirmfoto (Text ausgeblendet, Grund an der hellsten
+       Stelle unter den Glyphen gegen --ink, Parallax an je 9 Scrollpositionen),
+       vorher -> nachher:
+         390px  8.53 -> 8.53:1     768px  8.59 -> 8.59:1
+         1024px 6.70 -> 8.03:1    1440px 5.50 -> 7.51:1    1920px 5.54 -> 7.53:1
+       Der Wert steigt, obwohl die Deckkraft gleich blieb: das alte Plateau lag mit
+       25-75 Prozent genau auf der Kopfhoehe, die Eyebrow saß damit auf der oberen
+       Rampe statt auf dem Plateau. Jetzt liegen beide Zeilen mit Rand im Plateau. */
     .offerings-head { position: relative; }
     .offerings-head::before { content: ""; position: absolute; z-index: -1;
       pointer-events: none;
-      top: -4rem; bottom: -4rem; left: 50%; width: 100vw; margin-left: -50vw;
+      top: -7rem; bottom: -17rem; left: 50%; width: 100vw; margin-left: -50vw;
       background: linear-gradient(180deg,
           rgba(255,255,255,0.000) 0%,
-          rgba(255,255,255,0.057) 5%,
-          rgba(255,255,255,0.194) 10%,
-          rgba(255,255,255,0.356) 15%,
-          rgba(255,255,255,0.493) 20%,
+          rgba(255,255,255,0.010) 2.5%,
+          rgba(255,255,255,0.065) 5%,
+          rgba(255,255,255,0.170) 7.5%,
+          rgba(255,255,255,0.302) 10%,
+          rgba(255,255,255,0.427) 12.5%,
+          rgba(255,255,255,0.514) 15%,
+          rgba(255,255,255,0.548) 17.5%,
+          rgba(255,255,255,0.550) 20%,
+          rgba(255,255,255,0.550) 22.5%,
           rgba(255,255,255,0.550) 25%,
+          rgba(255,255,255,0.550) 27.5%,
           rgba(255,255,255,0.550) 30%,
+          rgba(255,255,255,0.550) 32.5%,
           rgba(255,255,255,0.550) 35%,
+          rgba(255,255,255,0.550) 37.5%,
           rgba(255,255,255,0.550) 40%,
+          rgba(255,255,255,0.550) 42.5%,
           rgba(255,255,255,0.550) 45%,
+          rgba(255,255,255,0.550) 47.5%,
           rgba(255,255,255,0.550) 50%,
-          rgba(255,255,255,0.550) 55%,
-          rgba(255,255,255,0.550) 60%,
-          rgba(255,255,255,0.550) 65%,
-          rgba(255,255,255,0.550) 70%,
-          rgba(255,255,255,0.550) 75%,
-          rgba(255,255,255,0.493) 80%,
-          rgba(255,255,255,0.356) 85%,
-          rgba(255,255,255,0.194) 90%,
-          rgba(255,255,255,0.057) 95%,
+          rgba(255,255,255,0.549) 52.5%,
+          rgba(255,255,255,0.545) 55%,
+          rgba(255,255,255,0.535) 57.5%,
+          rgba(255,255,255,0.518) 60%,
+          rgba(255,255,255,0.493) 62.5%,
+          rgba(255,255,255,0.460) 65%,
+          rgba(255,255,255,0.421) 67.5%,
+          rgba(255,255,255,0.375) 70%,
+          rgba(255,255,255,0.326) 72.5%,
+          rgba(255,255,255,0.275) 75%,
+          rgba(255,255,255,0.224) 77.5%,
+          rgba(255,255,255,0.175) 80%,
+          rgba(255,255,255,0.129) 82.5%,
+          rgba(255,255,255,0.090) 85%,
+          rgba(255,255,255,0.057) 87.5%,
+          rgba(255,255,255,0.032) 90%,
+          rgba(255,255,255,0.015) 92.5%,
+          rgba(255,255,255,0.005) 95%,
+          rgba(255,255,255,0.001) 97.5%,
           rgba(255,255,255,0.000) 100%); }
     /* Der Grund ist jetzt hell, Cream waere unlesbar -> Kopftext auf --ink. */
     .offerings-head .eyebrow { color: var(--ink); }
@@ -593,6 +643,58 @@
       .carousel-arrow { padding: 0.35rem; }
       .carousel-arrow svg { width: 22px; height: 22px; }
       #offerings { padding: 4rem 1.5rem; }
+      /* G2: Nach oben reicht der Verlauf hoechstens so weit wie das padding-top der
+         Sektion — hier 4rem statt 7rem. Mit dem Desktopwert (-7rem) stuende der
+         Schleier 48px weit auf dem dunklen Hero-Foto der Sektion davor, an der
+         Stelle mit 0.30 Deckkraft. Deshalb eigener Wert.
+         Das Plateau wandert mit: der Kasten ist unten gleich lang, oben 3rem
+         kuerzer, die beiden Zeilen liegen darin also weiter oben. Gemessen
+         14,95 % (390px) bis 31,95 % (768px) — 14-40 deckt das mit Rand.
+         Die obere Rampe bleibt hier bei 64px: mehr Platz gibt die Sektion nicht
+         her. Der Gewinn liegt unter dieser Breite allein im langen Auslauf. */
+      .offerings-head::before { top: -4rem;
+        background: linear-gradient(180deg,
+            rgba(255,255,255,0.000) 0%,
+            rgba(255,255,255,0.024) 2.5%,
+            rgba(255,255,255,0.135) 5%,
+            rgba(255,255,255,0.312) 7.5%,
+            rgba(255,255,255,0.470) 10%,
+            rgba(255,255,255,0.544) 12.5%,
+            rgba(255,255,255,0.550) 15%,
+            rgba(255,255,255,0.550) 17.5%,
+            rgba(255,255,255,0.550) 20%,
+            rgba(255,255,255,0.550) 22.5%,
+            rgba(255,255,255,0.550) 25%,
+            rgba(255,255,255,0.550) 27.5%,
+            rgba(255,255,255,0.550) 30%,
+            rgba(255,255,255,0.550) 32.5%,
+            rgba(255,255,255,0.550) 35%,
+            rgba(255,255,255,0.550) 37.5%,
+            rgba(255,255,255,0.550) 40%,
+            rgba(255,255,255,0.550) 42.5%,
+            rgba(255,255,255,0.547) 45%,
+            rgba(255,255,255,0.541) 47.5%,
+            rgba(255,255,255,0.530) 50%,
+            rgba(255,255,255,0.515) 52.5%,
+            rgba(255,255,255,0.493) 55%,
+            rgba(255,255,255,0.466) 57.5%,
+            rgba(255,255,255,0.435) 60%,
+            rgba(255,255,255,0.399) 62.5%,
+            rgba(255,255,255,0.359) 65%,
+            rgba(255,255,255,0.318) 67.5%,
+            rgba(255,255,255,0.275) 70%,
+            rgba(255,255,255,0.232) 72.5%,
+            rgba(255,255,255,0.191) 75%,
+            rgba(255,255,255,0.151) 77.5%,
+            rgba(255,255,255,0.115) 80%,
+            rgba(255,255,255,0.084) 82.5%,
+            rgba(255,255,255,0.057) 85%,
+            rgba(255,255,255,0.035) 87.5%,
+            rgba(255,255,255,0.020) 90%,
+            rgba(255,255,255,0.009) 92.5%,
+            rgba(255,255,255,0.003) 95%,
+            rgba(255,255,255,0.000) 97.5%,
+            rgba(255,255,255,0.000) 100%); }
       .offerings-grid { grid-template-columns: 1fr; gap: 1rem; }
       .offer-card { padding: 2.5rem 1.8rem; }
       #about-teaser { grid-template-columns: 1fr; }
