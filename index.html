@@ -287,8 +287,13 @@
     .group-feature { display: grid; grid-template-columns: 55% 45%; min-height: 65vh; }
     .group-img { overflow: hidden; }
     .group-img img { height: 100%; object-fit: cover; }
+    /* Padding von 6rem 5rem auf 4rem herunter: weniger Cream-Rand um den Text.
+       Senkrecht wirkt der Wert am Desktop nicht auf die Blockhoehe — die gibt group.jpg
+       (1400x1866, 3:4) ueber .group-img vor; er ist dort die Untergrenze, ab der laengerer
+       Text den Block waechst. Waagerecht wirkt er sichtbar. Measure bleibt, weil
+       .about-body ohnehin bei max-width 480px deckelt. */
     .group-text { background: var(--cream); display: flex; flex-direction: column;
-      justify-content: center; padding: 6rem 5rem; }
+      justify-content: center; padding: 4rem; }
 
     /* CLOSING CTA */
     .closing-cta { background: linear-gradient(135deg, var(--lilac) 0%, var(--ink) 100%);
@@ -428,7 +433,7 @@
       .about-text-side { padding: 4rem 2rem; }
       .group-feature { grid-template-columns: 1fr; }
       .group-img { height: 60vw; }
-      .group-text { padding: 4rem 2rem; }
+      .group-text { padding: 3rem 2rem; }
       .closing-cta { padding: 5rem 2rem; }
       footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 2rem; }
       .booking-page-hero { padding: 10rem 2rem 3rem; }
