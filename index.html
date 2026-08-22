@@ -173,17 +173,16 @@
           rgba(20,15,40,0)    100%); }
     .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column;
       justify-content: space-between; min-height: 100vh; padding: 10rem 4rem 5rem; }
-    /* margin-top haelt Headline und Introtext zusammen (Auftrag K2). Der Hebel sass frueher
-       auf .hero-top-line; die ist mit K1 entfallen, deshalb sitzt er jetzt hier.
-       4rem = 8 x Basiseinheit 0.5rem. Der frueher begrenzende Defekt betraf die Kopfzeile im
-       hellen Haar bei 1024px — die gibt es nicht mehr. Die Headline selbst bleibt auch bei
-       4rem tief im abgedunkelten Bereich (Deckung 0.74 bei 1024px, 0.84 bei 1440px). */
+    /* Headline und Introtext ruecken gleich weit aufeinander zu: die Headline 3rem von oben
+       nach unten, der Introtext 3rem von unten nach oben (margin-bottom auf .hero-bottom).
+       .hero-content ist space-between, also schrumpft die Luecke um beide Wege zusammen.
+       3rem = 6 x Basiseinheit 0.5rem. Bei 4rem je Seite bliebe bei 1024px nur noch 40px. */
     .hero-headline { font-family: var(--serif); font-size: clamp(3rem, 5vw, 5rem);
       font-weight: 500; line-height: 1.05; color: var(--white); max-width: 720px;
-      margin-top: 4rem;
+      margin-top: 3rem;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.55s forwards; }
     .hero-headline em { font-style: italic; font-weight: 400; color: var(--lilac2); }
-    .hero-bottom { display: flex; align-items: flex-end;
+    .hero-bottom { display: flex; align-items: flex-end; margin-bottom: 3rem;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.9s forwards; }
     .hero-body { font-size: 1.15rem; line-height: 1.8; color: rgba(255,255,255,0.85);
       /* Schmaler (24-32rem statt 35-36rem), damit die letzten Zeilen im abgedunkelten Bereich
