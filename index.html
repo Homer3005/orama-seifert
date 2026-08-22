@@ -582,6 +582,16 @@
       .hero-headline, .hero-body, .offerings-head .offerings-title, .offer-title, .offer-desc,
       .closing-cta .section-title, .closing-cta-body, .about-page-quote,
       .footer-tagline, .footer-col a, .footer-bottom { color: var(--ink); }
+      /* Ein Kind mit eigener Farbdeklaration erbt nicht — die Regel eine Zeile hoeher
+         faerbt nur das Elternelement, das <em> darin behaelt seine Bildschirmfarbe.
+         .hero-headline em stand auf --cream, im Ausdruck also weiss auf weiss;
+         .closing-cta .section-title em auf --gold, 2,90:1. inherit nimmt beiden die
+         eigene Farbe, sie folgen damit der Ink-Regel darueber. Nur im Druck. */
+      .hero-headline em, .closing-cta .section-title em { color: inherit; }
+      /* Derselbe Fehler ohne <em>: der Verlaufsgrund der Closing-CTA faellt im Druck weg
+         ("Grund raus" oben), Titel und Fliesstext des Abschnitts sind mit umgefaerbt —
+         das Eyebrow blieb als einziges auf --gold2 stehen, 2,23:1 auf Weiss. */
+      .closing-cta .eyebrow { color: var(--ink); }
       .offer-card { background: none; border-color: rgba(58,48,96,0.35); }
       .offer-btn, .btn-light, .btn-outline { color: var(--ink); background: none;
         border: 1px solid rgba(58,48,96,0.35); }
