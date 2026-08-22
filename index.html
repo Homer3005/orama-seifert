@@ -121,9 +121,13 @@
     body[data-page="privacy"] nav:not(.scrolled) .nav-logo,
     body[data-page="privacy"] nav:not(.scrolled) .nav-links a,
     body[data-page="privacy"] nav:not(.scrolled) .nav-book,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-logo,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-links a,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-book,
     body[data-page="booking"] nav:not(.scrolled) .nav-tagline,
     body[data-page="imprint"] nav:not(.scrolled) .nav-tagline,
-    body[data-page="privacy"] nav:not(.scrolled) .nav-tagline { color: var(--ink); }
+    body[data-page="privacy"] nav:not(.scrolled) .nav-tagline,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-tagline { color: var(--ink); }
     body[data-page="booking"] nav:not(.scrolled) .nav-logo:hover,
     body[data-page="booking"] nav:not(.scrolled) .nav-links a:hover,
     body[data-page="booking"] nav:not(.scrolled) .nav-book:hover,
@@ -132,7 +136,10 @@
     body[data-page="imprint"] nav:not(.scrolled) .nav-book:hover,
     body[data-page="privacy"] nav:not(.scrolled) .nav-logo:hover,
     body[data-page="privacy"] nav:not(.scrolled) .nav-links a:hover,
-    body[data-page="privacy"] nav:not(.scrolled) .nav-book:hover { color: var(--gold); }
+    body[data-page="privacy"] nav:not(.scrolled) .nav-book:hover,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-logo:hover,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-links a:hover,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-book:hover { color: var(--gold); }
     /* Case 3 — scrolled beats both of the above */
     nav.scrolled .nav-logo { color: var(--ink); }
     nav.scrolled .nav-tagline { color: var(--ink); }
@@ -642,6 +649,19 @@
       border: 1px solid var(--gold); background: rgba(184,145,90,0.1); color: var(--bark);
       font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
       text-align: center; font-weight: 500; }
+    /* DANKESEITE (F3)
+       Eigener Block statt .legal-page-body: dort traegt der Entwurfsbanner den
+       Abstand zum fixierten Kopf, den es hier nicht gibt. Werte deshalb aus
+       .legal-draft uebernommen (10.5rem, mobil 11.5rem — der Kopf ist dort hoeher).
+       Fliesstext in --ink statt im #5a4a6a der uebrigen Unterseiten: Farben
+       ausschliesslich aus :root, keine neuen Hexwerte. */
+    .thanks-page-body { max-width: 36rem; margin: 0 auto;
+      padding: 10.5rem 3rem 7rem; text-align: center; }
+    .thanks-page-body .section-title { margin-bottom: 2rem; text-wrap: balance; }
+    .thanks-page-body p { font-size: 1.05rem; line-height: 1.8; color: var(--ink);
+      margin-bottom: 1.5rem; }
+    .thanks-page-body .btn-outline { margin-top: 1.5rem; }
+
     .legal-page-body { max-width: 36rem; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
     .legal-page-body .section-title { text-align: left; margin-bottom: 2.5rem; }
     .legal-page-body h3 { font-family: var(--serif); font-size: 1.45rem; font-weight: 500;
@@ -796,6 +816,7 @@
       .substack-inner { padding: 2.5rem 1.8rem; }
       .legal-draft { margin-top: 11.5rem; }
       .legal-page-body { padding: 2.5rem 1.5rem 3rem; }
+      .thanks-page-body { padding: 11.5rem 1.5rem 4rem; }
     }
 
     /* ================= DRUCK =================
@@ -1296,6 +1317,19 @@
   </div>
 </div>
 
+<!-- DANKESEITE (F3)
+     Kein Menuepunkt und kein Verweis im Fussbereich — die Seite wird nur nach dem
+     Absenden des Formulars angesprungen, ueber den Anker #thank-you. -->
+<div id="thank-you-page" style="display:none">
+  <div class="thanks-page-body reveal">
+    <p class="eyebrow">Your message is on its way</p>
+    <h1 class="section-title">Thank You for Reaching Out</h1>
+    <p>Your words have arrived. Orama reads every message herself, and she will answer you personally.</p>
+    <p>Until then, be gentle with yourself — what moved you to write is already part of your path.</p>
+    <a class="btn-outline" href="#" onclick="return showPage('home')">Back to the start</a>
+  </div>
+</div>
+
 <footer>
   <div>
     <div class="footer-logo">Orama Seifert</div>
@@ -1322,10 +1356,17 @@
 <script>
   function showPage(page, anchor) {
     document.body.dataset.page = page;
-    ['home','about','booking','imprint','privacy'].forEach(p => {
+    ['home','about','booking','imprint','privacy','thank-you'].forEach(p => {
       const el = document.getElementById(p+'-page');
       if (el) el.style.display = (p===page) ? 'block' : 'none';
     });
+    /* Der Anker der Dankeseite bliebe sonst in der Adresse stehen: wer von dort
+       weiterklickt und spaeter neu laedt, landete wieder auf der Bestaetigung.
+       replaceState schreibt keinen Verlaufseintrag und loest kein hashchange aus.
+       try, weil manche Browser das ueber file:// verweigern. */
+    if (page !== 'thank-you' && location.hash === '#thank-you') {
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    }
     window.scrollTo({top:0, behavior:'smooth'});
     if (anchor && page === 'booking') {
       setTimeout(() => {
@@ -1471,6 +1512,16 @@
     render();
     startAuto();
   })();
+
+  /* Die Dankeseite ist die einzige Unterseite, die von aussen angesprungen werden
+     koennen muss: Forminit leitet nach dem Absenden auf index.html#thank-you.
+     Die uebrigen Seiten behalten ihren Weg ueber showPage. Deren Verweise stehen
+     alle auf href="#", der Vergleich unten trifft sie deshalb nicht. */
+  function routeFromHash() {
+    if (location.hash === '#thank-you') showPage('thank-you');
+  }
+  window.addEventListener('hashchange', routeFromHash);
+  routeFromHash();
 </script>
 </body>
 </html>
