@@ -283,10 +283,16 @@
        Kontrast an der Flaeche und nicht mehr am Foto: Titel 11.23:1, Fliesstext 8.60:1,
        unabhaengig davon, was hinter der Karte liegt. backdrop-filter und der @supports-
        Fallback in Gruen sind damit gegenstandslos und entfallen. */
-    .offer-card { background: var(--ink);
+    /* 90 % Deckkraft: das Graeserfoto scheint leicht durch. Der Wert steht auf der
+       Hintergrundfarbe, NICHT als opacity auf der Karte — sonst wuerde der Text mit
+       ausbleichen. rgba(58,48,96,...) ist var(--ink) mit Alpha, kein neuer Farbwert.
+       Gemessen gegen die hellste und die dunkelste Stelle des Fotos unter den Karten:
+       Titel 8.40-9.64:1, Fliesstext 6.60:1. Die 4.5:1-Grenze fuer den Fliesstext faellt
+       erst bei rund 75 % Deckkraft. */
+    .offer-card { background: rgba(58,48,96,0.9);
       padding: 3rem 2.6rem; display: flex; flex-direction: column;
       transition: box-shadow 0.3s, transform 0.3s;
-      border: 1px solid var(--ink); border-radius: 12px; }
+      border: 1px solid rgba(58,48,96,0.9); border-radius: 12px; }
     .offer-card:hover { box-shadow: 0 12px 40px rgba(20,15,40,0.25); transform: translateY(-3px); }
     .offer-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500;
       color: var(--cream); margin-bottom: 1.2rem; line-height: 1.2; }
