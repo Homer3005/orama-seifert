@@ -161,8 +161,14 @@
           rgba(20,15,40,0)    100%); }
     .hero-content { position: relative; z-index: 2; display: flex; flex-direction: column;
       justify-content: space-between; min-height: 100vh; padding: 8rem 4rem 5rem; }
+    /* margin-top rueckt den oberen Block (Subhead + Headline) nach unten; da .hero-content
+       space-between ist, schrumpft dadurch genau der Abstand zur .hero-body, die stehen bleibt.
+       2rem = 4 x Basiseinheit 0.5rem. Groesser geht nicht: ab 2.5rem faellt das Ende der
+       Subhead bei 1024px in das helle Haar (gemessen Backdrop-Luminanz 0.19 -> 0.27,
+       Kontrast gegen --lilac2 1.68 -> 1.25), der bekannte Defekt wuerde schlechter. */
     .hero-top-line { font-family: var(--sans); font-size: 0.95rem; letter-spacing: 0.32em;
-      text-transform: uppercase; color: var(--lilac2); font-weight: 400; margin-bottom: 1.5rem;
+      text-transform: uppercase; color: var(--lilac2); font-weight: 400;
+      margin-top: 2rem; margin-bottom: 1.5rem;
       opacity: 0; animation: fadeUp 1s var(--ease) 0.3s forwards; }
     .hero-headline { font-family: var(--serif); font-size: clamp(3rem, 5vw, 5rem);
       font-weight: 500; line-height: 1.05; color: var(--white); max-width: 720px;
