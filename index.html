@@ -245,16 +245,20 @@
     .carousel-dot.is-active { opacity: 1; }
     @media (prefers-reduced-motion: reduce) { .carousel-slide { transition: none; } }
 
-    /* OFFERINGS — Graeser im Gegenlicht, Inhalt ueber abgedunkeltem ::before.
-       Foto tritt bewusst stark zurueck (Stimmung, nicht Detail): das Milchglas der Karten hat
-       einen hellen Cream-Tint und hellt seinen eigenen Grund auf, daher muss das ::before die
-       hellen Gegenlicht-Bluetenstaende kraeftig abdunkeln, damit der Cream-Kartentext ueberall
-       >=4.5:1 gegen den HELLSTEN Punkt haelt (0.55 -> Fliesstext ~3.3, 0.80 -> ~4.8).
-       Position center 65% legt die ruhigere, dunklere untere Graeserzone hinter die Karten. */
+    /* OFFERINGS — K4: kein Gruen mehr in diesem Bereich.
+       Der Schleier war rgba(30,36,24,0.80), ein dunkles Gruen. Jetzt --cream (#fdf8f3), der
+       Hintergrundton des Kopfbereichs; nav.scrolled setzt denselben Wert als rgba, deshalb
+       hier dieselbe Schreibweise statt eines neuen Tokens.
+       0.65 ist der gemessene Grenzwert: der duennste Schleier, bei dem der Kopftext in --ink
+       noch 4.5:1 haelt (4.76 Eyebrow / 4.64 Ueberschrift). Duenner heisst mehr Foto, aber bei
+       0.62 faellt der Kopftext auf 4.25. Gruenanteil der Flaeche faellt damit von 60.7 % auf
+       1.5 %; der Rest sind einzelne gesaettigte Halme, die der Schleier nicht traegt.
+       Der Kontrast kommt jetzt aus der Kartenflaeche (--ink, deckend), nicht mehr aus der
+       Abdunklung des Fotos — deshalb faellt das Milchglas samt backdrop-filter weg. */
     #offerings { position: relative; padding: 7rem 4rem;
       background: url("images/grasses.jpg") center 65% / cover no-repeat scroll; }
     #offerings::before { content: ""; position: absolute; inset: 0;
-      background: rgba(30,36,24,0.80); z-index: 0; }
+      background: rgba(253,248,243,0.65); z-index: 0; }
     #offerings > * { position: relative; z-index: 1; }
     /* Parallax nur ab 900px auf Zeigergeraeten; Touch/iOS Safari und reduced-motion bleiben scroll */
     @media (min-width: 900px) and (pointer: fine) {
@@ -264,8 +268,9 @@
       #offerings { background-attachment: scroll; }
     }
     .offerings-head { text-align: center; margin-bottom: 4rem; }
-    .offerings-head .eyebrow { color: var(--cream); }
-    .offerings-head .offerings-title { color: var(--cream); font-size: clamp(1.55rem, 2.9vw, 2.5rem);
+    /* Der Grund ist jetzt hell, Cream waere unlesbar -> Kopftext auf --ink. */
+    .offerings-head .eyebrow { color: var(--ink); }
+    .offerings-head .offerings-title { color: var(--ink); font-size: clamp(1.55rem, 2.9vw, 2.5rem);
       max-width: 640px; margin: 0 auto; text-wrap: balance; hyphens: none; }
     .eyebrow { font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
       color: var(--gold); margin-bottom: 1.2rem; }
@@ -274,17 +279,14 @@
     .section-title em { font-style: italic; color: var(--gold); font-weight: 400; }
     .offerings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
       max-width: 1200px; margin: 0 auto; }
-    /* Karten als Milchglas ueber dem Graeserfoto. Textfarben ziehen auf Cream mit,
-       sonst unlesbar. Fallback siehe @supports. */
-    .offer-card { background: rgba(253,248,243,0.16);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    /* Karten deckend im Ton des Fussbereichs (footer nutzt var(--ink)). Damit haengt der
+       Kontrast an der Flaeche und nicht mehr am Foto: Titel 11.23:1, Fliesstext 8.60:1,
+       unabhaengig davon, was hinter der Karte liegt. backdrop-filter und der @supports-
+       Fallback in Gruen sind damit gegenstandslos und entfallen. */
+    .offer-card { background: var(--ink);
       padding: 3rem 2.6rem; display: flex; flex-direction: column;
       transition: box-shadow 0.3s, transform 0.3s;
-      border: 1px solid rgba(253,248,243,0.40); border-radius: 12px; }
-    /* Wo backdrop-filter fehlt, ist 0.16 fast durchsichtig -> Karte als dunkler Vollton */
-    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-      .offer-card { background: rgba(30,36,24,0.72); }
-    }
+      border: 1px solid var(--ink); border-radius: 12px; }
     .offer-card:hover { box-shadow: 0 12px 40px rgba(20,15,40,0.25); transform: translateY(-3px); }
     .offer-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500;
       color: var(--cream); margin-bottom: 1.2rem; line-height: 1.2; }
