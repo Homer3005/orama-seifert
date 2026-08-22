@@ -87,8 +87,8 @@
       box-shadow: 0 1px 0 rgba(184,145,90,0.15); }
     /* Nav palette follows the ground beneath it (hook: body[data-page]).
        Case 1 default — ungescrollt ueber dunklem Hero (home, about): base white, rollover gold.
-       Case 2 — ungescrollt ueber hellem Booking-Hero: base lilac, rollover gold.
-       Case 3 — gescrollt, cremefarbener Balken: base lilac, rollover gold. */
+       Case 2 — ungescrollt ueber hellem Booking-Hero: base ink, rollover gold.
+       Case 3 — gescrollt, cremefarbener Balken: base ink, rollover gold. */
     /* Wortmarke und Dreiklang sitzen zusammen in Spalte 2. Der Traeger haelt das Gitter
        einreihig, damit align-items:center Menue und Button weiter mittig zum Block haelt. */
     .nav-brand { grid-column: 2; justify-self: center; text-align: center; }
@@ -123,7 +123,7 @@
     body[data-page="privacy"] nav:not(.scrolled) .nav-book,
     body[data-page="booking"] nav:not(.scrolled) .nav-tagline,
     body[data-page="imprint"] nav:not(.scrolled) .nav-tagline,
-    body[data-page="privacy"] nav:not(.scrolled) .nav-tagline { color: var(--lilac); }
+    body[data-page="privacy"] nav:not(.scrolled) .nav-tagline { color: var(--ink); }
     body[data-page="booking"] nav:not(.scrolled) .nav-logo:hover,
     body[data-page="booking"] nav:not(.scrolled) .nav-links a:hover,
     body[data-page="booking"] nav:not(.scrolled) .nav-book:hover,
@@ -134,12 +134,12 @@
     body[data-page="privacy"] nav:not(.scrolled) .nav-links a:hover,
     body[data-page="privacy"] nav:not(.scrolled) .nav-book:hover { color: var(--gold); }
     /* Case 3 — scrolled beats both of the above */
-    nav.scrolled .nav-logo { color: var(--lilac); }
-    nav.scrolled .nav-tagline { color: var(--lilac); }
+    nav.scrolled .nav-logo { color: var(--ink); }
+    nav.scrolled .nav-tagline { color: var(--ink); }
     nav.scrolled .nav-logo:hover { color: var(--gold); }
-    nav.scrolled .nav-links a { color: var(--lilac); }
+    nav.scrolled .nav-links a { color: var(--ink); }
     nav.scrolled .nav-links a:hover { color: var(--gold); }
-    nav.scrolled .nav-book { color: var(--lilac); }
+    nav.scrolled .nav-book { color: var(--ink); }
     nav.scrolled .nav-book:hover { color: var(--gold); }
 
     /* HERO — name top left */
@@ -576,7 +576,9 @@
       #home-hero, .testimonials, .group-feature, #about-teaser { min-height: 0; }
       .hero-content { min-height: 0; padding: 0 0 2rem; }
       .about-page-hero { height: auto; min-height: 0; }
-      .nav-tagline, .offerings-head .eyebrow, .footer-logo, .footer-col h4 { color: var(--lilac); }
+      .offerings-head .eyebrow, .footer-logo, .footer-col h4 { color: var(--lilac); }
+      /* Kopfbereich einheitlich --ink, die Wortmarke steht weiter oben schon so. */
+      .nav-tagline { color: var(--ink); }
       .hero-headline, .hero-body, .offerings-head .offerings-title, .offer-title, .offer-desc,
       .closing-cta .section-title, .closing-cta-body, .about-page-quote,
       .footer-tagline, .footer-col a, .footer-bottom { color: var(--ink); }
