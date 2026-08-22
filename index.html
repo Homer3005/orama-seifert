@@ -407,25 +407,66 @@
     .booking-page-hero .section-title { margin: 0.5rem auto 1.4rem; }
     .booking-page-hero p { font-size: 1.05rem; line-height: 1.8; color: #6a5a7a;
       max-width: 580px; margin: 0 auto; }
-    .booking-services { padding: 4rem 5rem; background: var(--cream);
+    /* Buchungsliste (Ebene 2, dokumentlokal). Loest die zweispaltige Karte ab:
+       je Angebot eine Zeile ueber die volle Breite, links das quadratische Bild,
+       in der Mitte Titel / Metazeile / Text, rechts der Button oben ausgerichtet.
+       Kein Kartenrahmen, kein Schatten, kein eigener Kartengrund — die Eintraege
+       stehen auf dem Cremegrund des Abschnitts und werden nur durch eine duenne
+       Sandlinie getrennt. Alle Abstaende sind Vielfache der Basiseinheit 0.5rem.
+       Waagerechte Polsterung von 5rem auf 3rem: die Karte trug ihre Polsterung
+       frueher innen (2.5rem 3rem), in der Liste gibt es die nicht mehr — bei 5rem
+       bliebe der Textspalte zu wenig fuer 60 Zeichen. */
+    .booking-services { padding: 4rem 3rem 6rem; background: var(--cream);
       max-width: 1200px; margin: 0 auto; }
-    .booking-service-card { background: var(--white); border: 1px solid rgba(123,125,184,0.15);
-      padding: 0; margin-bottom: 1.2rem; transition: box-shadow 0.3s;
-      display: grid; grid-template-columns: 1fr 320px; gap: 0; }
-    .booking-service-card:hover { box-shadow: 0 4px 20px rgba(123,125,184,0.1); }
-    .booking-service-content { padding: 2.5rem 3rem; }
-    .booking-service-title { font-family: var(--serif); font-size: 1.6rem; font-weight: 500;
-      color: var(--lilac); margin-bottom: 0.8rem; }
-    .booking-service-desc { font-size: 1rem; line-height: 1.75; color: #6a5a7a; margin-bottom: 1.4rem; }
-    .booking-service-meta { display: flex; gap: 2rem; font-size: 0.85rem; color: var(--gold); }
+    .booking-service-card { display: grid; grid-template-columns: 12rem 1fr auto;
+      column-gap: 2rem; align-items: start;
+      padding: 2.5rem 0; border-top: 1px solid var(--sand); }
+    .booking-service-card:first-of-type { border-top: none; padding-top: 0.5rem; }
+    /* Quadrat mit fester Breite. Der Rahmen traegt die Form, das Bild fuellt ihn
+       per cover — die vier Motive haben drei verschiedene Seitenverhaeltnisse. */
+    .booking-service-img { width: 12rem; aspect-ratio: 1 / 1;
+      overflow: hidden; border-radius: 4px; }
+    .booking-service-img img { width: 100%; height: 100%; object-fit: cover; }
+    /* Bildausschnitte: waagerecht mittig, senkrecht je Motiv gesetzt.
+       consultation 35 % haelt Haende, Tastatur und Tasse im Quadrat, ohne das
+       angeschnittene Gesicht am linken Rand hereinzuholen. nervous 35 % behaelt
+       den Horizont — ohne ihn wird der Ausschnitt zur abstrakten Flaeche.
+       courses 30 % haelt die Koepfe der Gruppe frei. akashic bleibt mittig. */
+    #card-consultation .booking-service-img img { object-position: center 35%; }
+    #card-nervous .booking-service-img img { object-position: center 35%; }
+    #card-workshops .booking-service-img img { object-position: center 30%; }
+    .booking-service-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500;
+      color: var(--ink); line-height: 1.2; margin-bottom: 0.5rem; }
+    /* Metazeile: Reihe gleichartiger Felder. Ein Preis kommt spaeter als weiteres
+       <div> dazu und reiht sich ohne Umbau ein; flex-wrap faengt ihn schmal ab. */
+    .booking-service-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem;
+      font-size: 0.85rem; color: var(--gold); margin-bottom: 1rem; }
     .booking-service-meta span { color: rgba(184,145,90,0.6); margin-right: 0.4rem; }
-    .booking-service-cta { display: flex; align-items: center; padding: 0 2rem;
-      background: var(--sand); min-width: 220px; justify-content: center; }
+    /* Deckel fuer die Zeilenlaenge. Jost laeuft schmal: in 576px standen gemessen
+       83-92 Zeichen, weit ueber dem Ebene-0-Band. 30rem = 480px ergibt gemessen
+       69-76 Zeichen. Achtung, rem = 16px (html traegt keine Schriftgroesse, die
+       17px stehen auf body). Der Deckel greift in beiden Layouts: gestapelt gegen
+       die volle Breite, in der Zeile gegen die 1fr-Spalte.
+       29rem statt 30rem: bei 480px stand Akashic mit 76 Zeichen einen ueber dem
+       Band, bei 464px sind es gemessen 62-73 ueber alle vier Eintraege. */
+    .booking-service-desc { font-size: 1rem; line-height: 1.75; color: #6a5a7a;
+      max-width: 29rem; }
+    .booking-service-cta { display: flex; justify-content: flex-end; }
     .booking-service-btn { display: inline-block; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--white); background: var(--lilac); padding: 1rem 2.2rem;
       border-radius: 4px; transition: all 0.3s; border: 1px solid var(--lilac);
       white-space: nowrap; text-align: center; min-width: 15rem; }
     .booking-service-btn:hover { background: var(--ink); border-color: var(--ink); }
+    /* Gestapelt bereits ab 1100px, nicht erst am allgemeinen Haltepunkt 900px:
+       darunter bleiben der Textspalte neben Bild (12rem) und Button (15rem) keine
+       60 Zeichen mehr — bei 1024px waeren es gemessen 48. Statt den Button zu
+       verkleinern (er wird unveraendert aus dem Bestand uebernommen) bricht der
+       Eintrag hier um. Reihenfolge gestapelt: Bild, Titel, Metazeile, Text, Button. */
+    @media (max-width: 1100px) {
+      .booking-service-card { grid-template-columns: 1fr; row-gap: 1.5rem; }
+      .booking-service-cta { justify-content: stretch; }
+      .booking-service-btn { min-width: 0; width: 100%; }
+    }
     .calendly-host { max-width: 1000px; margin: 3rem auto 6rem; padding: 0 5rem; }
     .calendly-inline { background: var(--white); border: 1px solid rgba(123,125,184,0.18);
       padding: 4rem 3rem; text-align: center; min-height: 200px; }
@@ -524,11 +565,9 @@
       .closing-cta { padding: 5rem 2rem; }
       footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 2rem; }
       .booking-page-hero { padding: 12rem 2rem 3rem; }
-      .booking-services { padding: 2rem 1.5rem; }
-      .booking-service-card { grid-template-columns: 1fr; }
-      .booking-service-content { padding: 2rem 1.8rem; }
-      .booking-service-cta { padding: 1.5rem; background: var(--white); border-top: 1px solid rgba(123,125,184,0.1); }
-      .booking-service-btn { min-width: 0; width: 100%; }
+      /* Stapeln und Buttonbreite regelt der Haltepunkt 1100px weiter oben. */
+      .booking-services { padding: 2rem 1.5rem 4rem; }
+      .booking-service-card { padding: 2rem 0; }
       .offer-btn, .btn-outline { min-width: 0; }
       .calendly-host { padding: 0 1.5rem; }
       .calendly-inline { padding: 3rem 1.5rem; }
@@ -805,13 +844,14 @@
 
   <div class="booking-services">
     <div class="booking-service-card" id="card-consultation">
+      <div class="booking-service-img"><img src="images/book-consultation.jpg" alt="A woman's hands on a laptop keyboard at a sunlit wooden desk, a cup of tea beside her" /></div>
       <div class="booking-service-content">
         <h3 class="booking-service-title">One on One Consultation</h3>
-        <p class="booking-service-desc">Receive in-person or remote consultation tailored to your current situation and life path. Clear energetic blockages and engage in vision work to support your personal growth across all areas of life. Orama is trained in aura and chakra work, perception and spiritual consultation — her guidance is open to beginners and advanced practitioners alike.</p>
         <div class="booking-service-meta">
           <div><span>Format</span>Online / In person</div>
           <div><span>Duration</span>60–90 min</div>
         </div>
+        <p class="booking-service-desc">Receive in-person or remote consultation tailored to your current situation and life path. Clear energetic blockages and engage in vision work to support your personal growth across all areas of life. Orama is trained in aura and chakra work, perception and spiritual consultation — her guidance is open to beginners and advanced practitioners alike.</p>
       </div>
       <div class="booking-service-cta">
         <a class="booking-service-btn" href="#" onclick="return openCalendly('consultation')">Book now</a>
@@ -819,13 +859,14 @@
     </div>
 
     <div class="booking-service-card" id="card-nervous">
+      <div class="booking-service-img"><img src="images/book-nervous.jpg" alt="Sunlight on shallow water over a rocky shore, with the open sea and horizon beyond" /></div>
       <div class="booking-service-content">
         <h3 class="booking-service-title">Nervous System Healing</h3>
-        <p class="booking-service-desc">Learn how your nervous system shapes your health, emotions, and behavioural patterns. Expand your capacity for regulation and heal imprints from past experiences. A deeply transformational and integrative form of therapy — gentle, profound and lastingly effective.</p>
         <div class="booking-service-meta">
           <div><span>Format</span>Group or One on One</div>
           <div><span>Duration</span>60–90 min</div>
         </div>
+        <p class="booking-service-desc">Learn how your nervous system shapes your health, emotions, and behavioural patterns. Expand your capacity for regulation and heal imprints from past experiences. A deeply transformational and integrative form of therapy — gentle, profound and lastingly effective.</p>
       </div>
       <div class="booking-service-cta">
         <a class="booking-service-btn" href="#" onclick="return openCalendly('nervous')">Book / Request</a>
@@ -833,12 +874,13 @@
     </div>
 
     <div class="booking-service-card" id="card-akashic">
+      <div class="booking-service-img"><img src="images/book-akashic.jpg" alt="Orama sitting at her laptop during an online reading, eyes closed and hands open, flowers beside her" /></div>
       <div class="booking-service-content">
         <h3 class="booking-service-title">Akashic Readings</h3>
-        <p class="booking-service-desc">With hundreds of Akashic readings to her name, Orama helps people reconnect with the magic of their divine spark. She specialises in readings on soul origin, soul qualities, family lineage, incarnation paths, and timelines. She also supports facilitators by reading seminar concepts from their own multi-lifetime stream of knowledge.</p>
         <div class="booking-service-meta">
           <div><span>Format</span>Recording</div>
         </div>
+        <p class="booking-service-desc">With hundreds of Akashic readings to her name, Orama helps people reconnect with the magic of their divine spark. She specialises in readings on soul origin, soul qualities, family lineage, incarnation paths, and timelines. She also supports facilitators by reading seminar concepts from their own multi-lifetime stream of knowledge.</p>
       </div>
       <div class="booking-service-cta">
         <a class="booking-service-btn" href="#" onclick="return openCalendly('akashic')">Book now</a>
@@ -846,13 +888,14 @@
     </div>
 
     <div class="booking-service-card" id="card-workshops">
+      <div class="booking-service-img"><img src="images/book-courses.jpg" alt="A group sitting together in the grass under a tree, Orama in the middle with a frame drum" /></div>
       <div class="booking-service-content">
         <h3 class="booking-service-title">Group Courses &amp; Trainings</h3>
-        <p class="booking-service-desc">Orama offers live online group work, like her nervous system course Dancing Cloud for practitioners and those on the path of healing alike. Transformative teaching and community in a compassionate and inspiring space.</p>
         <div class="booking-service-meta">
           <div><span>Format</span>Online / In person</div>
           <div><span>Group size</span>5–20 people</div>
         </div>
+        <p class="booking-service-desc">Orama offers live online group work, like her nervous system course Dancing Cloud for practitioners and those on the path of healing alike. Transformative teaching and community in a compassionate and inspiring space.</p>
       </div>
       <div class="booking-service-cta">
         <a class="booking-service-btn" href="#" onclick="return openCalendly('workshops')">Enquire</a>
