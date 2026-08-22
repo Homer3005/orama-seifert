@@ -278,6 +278,49 @@
       #offerings { background-attachment: scroll; }
     }
     .offerings-head { text-align: center; margin-bottom: 4rem; }
+    /* E2: Lesbarkeitsflaeche hinter Eyebrow und Ueberschrift.
+       Gemessen an den Bildpunkten, die tatsaechlich hinter den beiden Zeilen liegen
+       (Foto unter dem bestehenden Cream-Schleier 0.65, 4px-Bloecke in Stegbreite der
+       Serifenschrift): unguenstigster Fall 4.65:1 bei 1920px im Parallaxbetrieb,
+       guenstigster 10.84:1 bei 390px. Der Wert lag also knapp ueber 4.5:1 — die
+       Unruhe des kleinteiligen Graesermotivs frisst die Lesbarkeit trotzdem, denn
+       ein Kontrastwert misst Helligkeit, nicht Musterrauschen.
+       Weiss, in der Mitte 55 Prozent deckend: dort gemessen 8.09:1 an der
+       unguenstigsten Stelle, also mit Reserve statt auf der Kante.
+       Volle Abschnittsbreite ueber 100vw, damit seitlich keine Kante steht
+       (body traegt overflow-x: hidden, 100vw laeuft daher nicht auf).
+       z-index -1 im Stapelkontext von .offerings-head: hinter dem Text, aber ueber
+       dem Cream-Schleier des Abschnitts. pointer-events: none, faengt keine Klicks.
+       Der Verlauf ist ueber 21 Stuetzstellen gleitend gemittelt (Smoothstep), damit
+       an den Ansatzpunkten keine Kante sichtbar wird — derselbe Mach-Effekt, der
+       beim Hero-Verlauf schon einmal aufgetreten ist. Plateau 25-75 Prozent deckt
+       beide Zeilen voll, die Raender laufen auf voellig transparent aus. */
+    .offerings-head { position: relative; }
+    .offerings-head::before { content: ""; position: absolute; z-index: -1;
+      pointer-events: none;
+      top: -4rem; bottom: -4rem; left: 50%; width: 100vw; margin-left: -50vw;
+      background: linear-gradient(180deg,
+          rgba(255,255,255,0.000) 0%,
+          rgba(255,255,255,0.057) 5%,
+          rgba(255,255,255,0.194) 10%,
+          rgba(255,255,255,0.356) 15%,
+          rgba(255,255,255,0.493) 20%,
+          rgba(255,255,255,0.550) 25%,
+          rgba(255,255,255,0.550) 30%,
+          rgba(255,255,255,0.550) 35%,
+          rgba(255,255,255,0.550) 40%,
+          rgba(255,255,255,0.550) 45%,
+          rgba(255,255,255,0.550) 50%,
+          rgba(255,255,255,0.550) 55%,
+          rgba(255,255,255,0.550) 60%,
+          rgba(255,255,255,0.550) 65%,
+          rgba(255,255,255,0.550) 70%,
+          rgba(255,255,255,0.550) 75%,
+          rgba(255,255,255,0.493) 80%,
+          rgba(255,255,255,0.356) 85%,
+          rgba(255,255,255,0.194) 90%,
+          rgba(255,255,255,0.057) 95%,
+          rgba(255,255,255,0.000) 100%); }
     /* Der Grund ist jetzt hell, Cream waere unlesbar -> Kopftext auf --ink. */
     .offerings-head .eyebrow { color: var(--ink); }
     .offerings-head .offerings-title { color: var(--ink); font-size: clamp(1.55rem, 2.9vw, 2.5rem);
