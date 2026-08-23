@@ -526,12 +526,6 @@
        aria-hidden halten Tastatur und Bildschirmleser heraus. */
     .contact-trap { position: absolute; width: 1px; height: 1px; margin: -1px;
       padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); }
-    /* Nebenrolle des bestehenden Mailknopfs: das Formular steht zuerst, diese Zeile
-       darunter, der Knopf zuletzt. */
-    .closing-cta-direct { font-size: 1rem; line-height: 1.6; color: var(--white);
-      margin: 3rem 0 1.5rem; }
-    .closing-cta-direct a { color: var(--white); text-decoration: underline; }
-
     /* FOOTER */
     footer { background: var(--ink); padding: 4rem 5rem;
       display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem; align-items: start; }
@@ -860,7 +854,6 @@
       .nav-tagline { color: var(--ink); }
       .hero-headline, .hero-body, .offerings-head .offerings-title, .offer-title, .offer-desc,
       .closing-cta .section-title, .closing-cta-body, .about-page-quote,
-      .closing-cta-direct, .closing-cta-direct a,
       .contact-form-title, .contact-form-note, .contact-field label,
       .contact-consent label, .contact-consent a,
       .footer-tagline, .footer-col a, .footer-bottom { color: var(--ink); }
@@ -1033,6 +1026,9 @@
     <!-- OFFEN: Forminit-Konto noch nicht angelegt. Nur FORM_ID_HIER_EINSETZEN
          im action-Attribut durch die Kennung ersetzen, sonst nichts.
          Zielmailadresse: orama@orama-coaching.com -->
+    <!-- OFFEN: Bis das Forminit-Konto angelegt ist, hat die Seite keinen
+         funktionierenden Kontaktweg. Der mailto-Ausweg wurde am 23.08.2026
+         bewusst entfernt, um die Adresse vor Adresssammlern zu schuetzen. -->
     <form class="contact-form-block" action="https://forminit.com/f/FORM_ID_HIER_EINSETZEN" method="POST">
       <h3 class="contact-form-title">Write to Orama</h3>
       <p class="contact-form-note"><span aria-hidden="true">*</span> Required field</p>
@@ -1085,9 +1081,6 @@
 
       <button type="submit" class="btn-filled">Send message</button>
     </form>
-
-    <p class="closing-cta-direct">Or write directly: <a href="mailto:orama@orama-coaching.com">orama@orama-coaching.com</a></p>
-    <a class="btn-light" href="mailto:orama@orama-coaching.com">Send an email now</a>
   </section>
 
 </div>
@@ -1234,7 +1227,10 @@
       <!-- OFFEN: Buzon ist ein Postfach und in aller Regel keine ladungsfaehige
            Anschrift. Klaerung ueber die Gestoria der Kundin steht aus. -->
       <div class="legal-field"><b>Summonable address</b>Buzon Seret 83, KM 5,4 Carretera San Miguel, 07815 Santa Gertrudis, Islas Balears, Ibiza</div>
-      <div class="legal-field"><b>Email</b><a href="mailto:orama@orama-coaching.com">orama@orama-coaching.com</a></div>
+      <!-- Kein mailto-Verweis: die Adresse steht als reiner Text, damit sie nach
+           LSSI-CE Art. 10 leicht zugaenglich, lesbar und kopierbar bleibt, ohne
+           Adresssammlern einen fertigen Link zu liefern. Nicht verschleiern. -->
+      <div class="legal-field"><b>Email</b>orama@orama-coaching.com</div>
       <!-- OFFEN: Telefonnummer. Die Kundin hat gefragt, ob die Nummer oeffentlich
            lesbar waere, und noch nicht zugestimmt. Es ist ihre private Nummer.
            Erst einkommentieren, wenn sie ausdruecklich zustimmt.
@@ -1361,7 +1357,6 @@
     <h4>Connect</h4>
     <a href="https://www.facebook.com/contact.orama/" target="_blank">Facebook</a>
     <a href="https://www.instagram.com/orama.seifert/" target="_blank" rel="noopener">Instagram</a>
-    <a href="mailto:orama@orama-coaching.com" target="_blank" rel="noopener">Email</a>
     <a href="#" onclick="return showPage('imprint')">Imprint</a>
     <a href="#" onclick="return showPage('privacy')">Privacy</a>
   </div>
