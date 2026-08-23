@@ -638,11 +638,11 @@
       .booking-service-cta { justify-content: stretch; }
       .booking-service-btn { min-width: 0; width: 100%; }
     }
-    .calendly-host { max-width: 1000px; margin: 3rem auto 6rem; padding: 0 5rem; }
-    .calendly-inline { background: var(--white); border: 1px solid rgba(123,125,184,0.18);
+    .booking-host { max-width: 1000px; margin: 3rem auto 6rem; padding: 0 5rem; }
+    .booking-inline { background: var(--white); border: 1px solid rgba(123,125,184,0.18);
       padding: 4rem 3rem; text-align: center; min-height: 200px; }
-    .calendly-inline .ph-icon { font-size: 2.2rem; opacity: 0.25; margin-bottom: 1rem; color: var(--lilac); }
-    .calendly-inline p { font-size: 0.95rem; line-height: 1.7; color: var(--lilac); max-width: 480px; margin: 0 auto; }
+    .booking-inline .ph-icon { font-size: 2.2rem; opacity: 0.25; margin-bottom: 1rem; color: var(--lilac); }
+    .booking-inline p { font-size: 0.95rem; line-height: 1.7; color: var(--lilac); max-width: 480px; margin: 0 auto; }
 
     /* LEGAL PAGES — Legal Notice / Privacy, linksbuendig, Measure ~65 Zeichen */
     .legal-draft { max-width: 40rem; margin: 10.5rem auto 0; padding: 0.9rem 1.25rem;
@@ -808,8 +808,8 @@
       .booking-services { padding: 2rem 1.5rem 4rem; }
       .booking-service-card { padding: 2rem 0; }
       .offer-btn, .btn-outline { min-width: 0; }
-      .calendly-host { padding: 0 1.5rem; }
-      .calendly-inline { padding: 3rem 1.5rem; }
+      .booking-host { padding: 0 1.5rem; }
+      .booking-inline { padding: 3rem 1.5rem; }
       .about-page-body { padding: 5rem 1.5rem 3rem; }
       .about-page-hero-overlay { padding: 2rem; }
       .substack-feature { padding: 4rem 1.5rem; }
@@ -1156,7 +1156,7 @@
         <p class="booking-service-desc">Receive in-person or remote consultation tailored to your current situation and life path. Clear energetic blockages and engage in vision work to support your personal growth across all areas of life. Orama is trained in aura and chakra work, perception and spiritual consultation — her guidance is open to beginners and advanced practitioners alike.</p>
       </div>
       <div class="booking-service-cta">
-        <a class="booking-service-btn" href="#" onclick="return openCalendly('consultation')">Book now</a>
+        <a class="booking-service-btn" href="#" onclick="return openBooking('consultation')">Book now</a>
       </div>
     </div>
 
@@ -1171,7 +1171,7 @@
         <p class="booking-service-desc">Learn how your nervous system shapes your health, emotions, and behavioural patterns. Expand your capacity for regulation and heal imprints from past experiences. A deeply transformational and integrative form of therapy — gentle, profound and lastingly effective.</p>
       </div>
       <div class="booking-service-cta">
-        <a class="booking-service-btn" href="#" onclick="return openCalendly('nervous')">Book / Request</a>
+        <a class="booking-service-btn" href="#" onclick="return openBooking('nervous')">Book / Request</a>
       </div>
     </div>
 
@@ -1185,7 +1185,7 @@
         <p class="booking-service-desc">With hundreds of Akashic readings to her name, Orama helps people reconnect with the magic of their divine spark. She specialises in readings on soul origin, soul qualities, family lineage, incarnation paths, and timelines. She also supports facilitators by reading seminar concepts from their own multi-lifetime stream of knowledge.</p>
       </div>
       <div class="booking-service-cta">
-        <a class="booking-service-btn" href="#" onclick="return openCalendly('akashic')">Book now</a>
+        <a class="booking-service-btn" href="#" onclick="return openBooking('akashic')">Book now</a>
       </div>
     </div>
 
@@ -1200,17 +1200,17 @@
         <p class="booking-service-desc">Orama offers live online group work, like her nervous system course Dancing Cloud for practitioners and those on the path of healing alike. Transformative teaching and community in a compassionate and inspiring space.</p>
       </div>
       <div class="booking-service-cta">
-        <a class="booking-service-btn" href="#" onclick="return openCalendly('workshops')">Enquire</a>
+        <a class="booking-service-btn" href="#" onclick="return openBooking('workshops')">Enquire</a>
       </div>
     </div>
   </div>
 
-  <div class="calendly-host" id="calendly-embed">
-    <div class="calendly-inline">
+  <div class="booking-host" id="booking-embed">
+    <div class="booking-inline">
       <div class="ph-icon">📅</div>
       <p class="eyebrow">Schedule your appointment</p>
       <br>
-      <p>Click any “Book” button above. Once Orama’s Calendly links are connected, the booking calendar will open in a popup right here — no page reload, no friction.</p>
+      <p>Click any “Book” button above. Once Orama’s Acuity Scheduling links are connected, the booking calendar will open in a popup right here — no page reload, no friction.</p>
     </div>
   </div>
 
@@ -1287,8 +1287,8 @@
     <h3>4. Fonts</h3>
     <p>The fonts used on this website (Cormorant Garamond and Jost) are hosted locally on the same server as the website. They are not requested from Google Fonts or any other third party, so no data is transmitted to a third party when fonts are loaded.</p>
 
-    <h3>5. Booking calendar — Calendly</h3>
-    <p>Appointment booking is provided by Calendly Inc., USA. The calendar is not loaded when the site opens. It is loaded only after you explicitly click to open it; at that point your IP address and browser data are transmitted to Calendly, and any details you enter to book are processed by Calendly. Legal basis: Art. 6(1)(a) GDPR (consent), which you may withdraw at any time with future effect. The consent applies to the current browser session only; no cookie or local storage is set to remember it. [[PLATZHALTER: Vollstaendige Anschrift von Calendly Inc., Link zu Calendlys Datenschutzerklaerung und Grundlage der Auftragsverarbeitung durch Rechtsberatung ergaenzen]]</p>
+    <h3>5. Booking calendar — Acuity Scheduling</h3>
+    <p>Appointment booking is provided by Acuity Scheduling, a service of Squarespace, Inc., USA. The calendar is not loaded when the site opens. It is loaded only after you explicitly click to open it; at that point your IP address and browser data are transmitted to Squarespace, and any details you enter to book are processed by Squarespace. Legal basis: Art. 6(1)(a) GDPR (consent), which you may withdraw at any time with future effect. The consent applies to the current browser session only; no cookie or local storage is set to remember it. [[PLATZHALTER: Vollstaendige Anschrift von Squarespace, Inc., Link zur Datenschutzerklaerung von Acuity Scheduling / Squarespace und Grundlage der Auftragsverarbeitung durch Rechtsberatung ergaenzen]]</p>
 
     <h3>6. Contact by email</h3>
     <p>If you contact the controller by email, your address and the content of your message are processed to handle your enquiry. [[PLATZHALTER: Speicherdauer und weitere Angaben zur E-Mail-Kontaktaufnahme durch Rechtsberatung ergaenzen]]</p>
@@ -1307,7 +1307,7 @@
     <p>[[PLATZHALTER: Speicherdauer je Verarbeitung (Server-Logs, E-Mail-Kontakt, Formularanfragen, Buchung) durch Rechtsberatung festlegen]]</p>
 
     <h3>10. Recipients and third-country transfer</h3>
-    <p>Processing on this website involves service providers in the United States (GitHub, Inc. for hosting; Calendly Inc. for booking, only after consent; Substack Inc. for the newsletter, only if you subscribe there). Transfers to the USA are transfers to a third country. Enquiries sent through the contact form are processed by Forminit on servers in Ireland; that is not a third-country transfer. [[PLATZHALTER: Grundlage des Drittlandtransfers je Anbieter (z. B. EU-Standardvertragsklauseln, EU-US Data Privacy Framework) durch Rechtsberatung angeben]]</p>
+    <p>Processing on this website involves service providers in the United States (GitHub, Inc. for hosting; Squarespace, Inc. for the Acuity Scheduling booking calendar, only after consent; Substack Inc. for the newsletter, only if you subscribe there). Transfers to the USA are transfers to a third country. Enquiries sent through the contact form are processed by Forminit on servers in Ireland; that is not a third-country transfer. [[PLATZHALTER: Grundlage des Drittlandtransfers je Anbieter (z. B. EU-Standardvertragsklauseln, EU-US Data Privacy Framework) durch Rechtsberatung angeben]]</p>
 
     <h3>11. Your rights</h3>
     <p>Under the GDPR you have the right of access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20) and to object to processing (Art. 21). Where processing is based on consent, you may withdraw that consent at any time with future effect.</p>
@@ -1388,75 +1388,74 @@
     return false;
   }
 
-  // Replace these placeholder URLs with Orama's real Calendly links when ready
-  const calendlyLinks = {
-    consultation: '',  // e.g. 'https://calendly.com/orama/consultation'
+  // Replace these placeholder URLs with Orama's real Acuity Scheduling links when ready
+  const bookingLinks = {
+    consultation: '',  // e.g. 'https://app.acuityscheduling.com/schedule.php?owner=00000000&appointmentType=consultation'
     nervous:      '',
     akashic:      '',
     workshops:    ''
   };
 
-  // Calendly laedt NICHTS beim Seitenaufruf. Erst nach ausdruecklicher
-  // Einwilligung werden widget.css/js dynamisch nachgeladen. Die Zustimmung
-  // gilt nur fuer die laufende Sitzung — kein localStorage, kein Cookie.
-  let calendlyConsented = false;
-  let calendlyAssets = null;
+  // Acuity laedt NICHTS beim Seitenaufruf. Erst nach ausdruecklicher
+  // Einwilligung wird embed.js dynamisch nachgeladen. Die Zustimmung
+  // gilt nur fuer die laufende Sitzung - kein localStorage, kein Cookie.
+  let bookingConsented = false;
+  let acuityAssets = null;
 
-  function loadCalendlyAssets() {
-    if (calendlyAssets) return calendlyAssets;
-    calendlyAssets = new Promise(function (resolve, reject) {
-      const css = document.createElement('link');
-      css.rel = 'stylesheet';
-      css.href = 'https://assets.calendly.com/assets/external/widget.css';
-      document.head.appendChild(css);
+  function loadAcuityAssets() {
+    if (acuityAssets) return acuityAssets;
+    acuityAssets = new Promise(function (resolve, reject) {
       const js = document.createElement('script');
-      js.src = 'https://assets.calendly.com/assets/external/widget.js';
+      js.src = 'https://embed.acuityscheduling.com/js/embed.js';
       js.async = true;
       js.onload = resolve;
       js.onerror = reject;
       document.body.appendChild(js);
     });
-    return calendlyAssets;
+    return acuityAssets;
   }
 
-  function launchCalendly(url) {
-    loadCalendlyAssets().then(function () {
-      if (window.Calendly && Calendly.initPopupWidget) {
-        Calendly.initPopupWidget({url: url});
-      } else {
-        window.open(url, '_blank');
-      }
-    });
+  function launchAcuity(url) {
+    // Acuity's embed.js macht aus einem Link zum Terminplan ein Overlay.
+    // Laedt das Skript nicht, geht der Termin in einem neuen Tab auf.
+    const link = document.createElement('a');
+    link.href = url;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    loadAcuityAssets().then(
+      function () { link.click(); },
+      function () { window.open(url, '_blank'); }
+    );
   }
 
-  function openCalendly(type) {
-    const url = calendlyLinks[type];
-    const host = document.getElementById('calendly-embed');
+  function openBooking(type) {
+    const url = bookingLinks[type];
+    const host = document.getElementById('booking-embed');
     if (!url) {
       // Keine URL hinterlegt -> heutiges Verhalten: zum Kasten scrollen, nichts laden
       host.scrollIntoView({behavior: 'smooth', block: 'center'});
       return false;
     }
-    if (calendlyConsented) {
+    if (bookingConsented) {
       // Einwilligung liegt fuer diese Sitzung vor -> direkt oeffnen
-      launchCalendly(url);
+      launchAcuity(url);
       return false;
     }
-    // Erste Buchung: Hinweis zeigen, noch NICHTS von Calendly laden
+    // Erste Buchung: Hinweis zeigen, noch NICHTS von Acuity laden
     host.innerHTML =
-      '<div class="calendly-inline">' +
+      '<div class="booking-inline">' +
         '<p class="eyebrow">Before you continue</p>' +
         '<br>' +
-        '<p>The booking calendar is provided by Calendly Inc. (USA). Opening it transmits ' +
-        'your IP address and browser data to Calendly. See our ' +
+        '<p>The booking calendar is provided by Acuity Scheduling (Squarespace, Inc., USA). ' +
+        'Opening it transmits your IP address and browser data to Squarespace. See our ' +
         '<a href="#" onclick="return showPage(\'privacy\')" style="text-decoration:underline">privacy policy</a>.</p>' +
         '<br>' +
-        '<button type="button" class="btn-filled" id="calendly-consent-btn">Open booking calendar</button>' +
+        '<button type="button" class="btn-filled" id="booking-consent-btn">Open booking calendar</button>' +
       '</div>';
     host.scrollIntoView({behavior: 'smooth', block: 'center'});
-    document.getElementById('calendly-consent-btn').addEventListener('click', function () {
-      calendlyConsented = true;   // gilt nur fuer die laufende Sitzung
-      launchCalendly(url);
+    document.getElementById('booking-consent-btn').addEventListener('click', function () {
+      bookingConsented = true;   // gilt nur fuer die laufende Sitzung
+      launchAcuity(url);
     });
     return false;
   }
