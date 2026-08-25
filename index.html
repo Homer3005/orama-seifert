@@ -123,17 +123,20 @@
       color: var(--white); border: 1px solid currentColor; border-radius: 4px;
       padding: 0.6rem 1.4rem; transition: color 0.3s, border-color 0.3s; }
     .nav-book:hover { color: var(--gold); }
-    /* Case 2 — light backgrounds (booking hero, legal pages); white would be unreadable */
+    /* Case 2 — light backgrounds (booking hero, legal pages); white would be unreadable.
+       Wortmarke und Kleintext laufen ab hier getrennt: die Wortmarke traegt --lilac
+       (32 px, Grosstext, Grenze 3:1), der Kleintext den dunkleren Wert derselben
+       Familie (12,5 px, Grenze 4,5:1). Siehe Kommentar an :root. */
     body[data-page="booking"] nav:not(.scrolled) .nav-logo,
+    body[data-page="imprint"] nav:not(.scrolled) .nav-logo,
+    body[data-page="privacy"] nav:not(.scrolled) .nav-logo,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-logo { color: var(--lilac); }
     body[data-page="booking"] nav:not(.scrolled) .nav-links a,
     body[data-page="booking"] nav:not(.scrolled) .nav-book,
-    body[data-page="imprint"] nav:not(.scrolled) .nav-logo,
     body[data-page="imprint"] nav:not(.scrolled) .nav-links a,
     body[data-page="imprint"] nav:not(.scrolled) .nav-book,
-    body[data-page="privacy"] nav:not(.scrolled) .nav-logo,
     body[data-page="privacy"] nav:not(.scrolled) .nav-links a,
     body[data-page="privacy"] nav:not(.scrolled) .nav-book,
-    body[data-page="thank-you"] nav:not(.scrolled) .nav-logo,
     body[data-page="thank-you"] nav:not(.scrolled) .nav-links a,
     body[data-page="thank-you"] nav:not(.scrolled) .nav-book,
     body[data-page="booking"] nav:not(.scrolled) .nav-tagline,
@@ -153,7 +156,7 @@
     body[data-page="thank-you"] nav:not(.scrolled) .nav-links a:hover,
     body[data-page="thank-you"] nav:not(.scrolled) .nav-book:hover { color: var(--gold); }
     /* Case 3 — scrolled beats both of the above */
-    nav.scrolled .nav-logo { color: var(--ink); }
+    nav.scrolled .nav-logo { color: var(--lilac); }
     nav.scrolled .nav-tagline { color: var(--ink); }
     nav.scrolled .nav-logo:hover { color: var(--gold); }
     nav.scrolled .nav-links a { color: var(--ink); }
