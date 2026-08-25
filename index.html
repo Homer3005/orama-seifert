@@ -67,8 +67,20 @@
     @font-face { font-family: 'Jost'; font-style: normal; font-weight: 500; font-display: swap;
       src: url(fonts/jost-latin-ext-500-normal.woff2) format('woff2');
       unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+    /* --lilac-dark ist der einzige neue Farbwert. Dieselbe Familie wie --lilac,
+       nur dunkler: Farbton und Saettigung unveraendert (hsl 238 / 30 %), allein die
+       Helligkeit faellt von 60,2 % auf 52,9 %. Grund: --lilac haelt auf dem
+       cremefarbenen Kopfbalken 3,64:1 — genug fuer die Wortmarke auf 32 px
+       (Grosstext, Grenze 3:1), zu wenig fuer den Kleintext auf 12,5 px (Grenze 4,5:1).
+       Der Wert ist NICHT gegen reines Creme bemessen, sondern gegen den
+       zusammengesetzten Balken: nav.scrolled deckt nur zu 96 %, der dunkelste
+       Abschnitt darunter ist der abgedunkelte Startseiten-Hero (Quer-Verlauf 0.872
+       und Ecken-Radial 0.533 stapeln links unten auf 0.940). Der Balken sinkt dort
+       auf #f4efeb. Dagegen misst --lilac-dark 4,61:1, --lilac 3,35:1.
+       --lilac selbst bleibt unangetastet, der Wert steht an vielen Stellen. */
     :root {
       --cream: #fdf8f3; --sand: #f0e9df; --lilac: #7b7db8; --lilac2: #9b9dcc;
+      --lilac-dark: #6365ab;
       --gold: #b8915a; --gold2: #c9a882; --bark: #7a5c3a; --ink: #3a3060; --white: #ffffff;
       --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Jost', sans-serif;
       --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
