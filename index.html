@@ -867,8 +867,15 @@
       .hero-content { min-height: 0; padding: 0 0 2rem; }
       .about-page-hero { height: auto; min-height: 0; }
       .offerings-head .eyebrow, .footer-logo, .footer-col h4 { color: var(--lilac); }
-      /* Kopfbereich einheitlich --ink, die Wortmarke steht weiter oben schon so. */
-      .nav-tagline { color: var(--ink); }
+      /* Kopfbereich einheitlich --ink. Auf Papier gibt es keinen cremefarbenen Balken,
+         also auch keinen Grund fuer die Lila-Zuordnung des Bildschirms — Ink kostet
+         weniger Toner und bleibt auf Weiss am lesbarsten.
+         Der Traeger muss mitgenannt werden: .nav-tagline allein waere (0,1,0) und
+         verloere gegen nav.scrolled .nav-tagline (0,2,1). Die Klasse scrolled bleibt
+         beim Drucken am Element stehen, wer aus dem gescrollten Zustand druckt,
+         bekaeme sonst --lilac-dark aufs Blatt. Gleiche Bauart wie die Wortmarke
+         eine Zeile darueber. */
+      nav#main-nav .nav-tagline { color: var(--ink); }
       .hero-headline, .hero-body, .offerings-head .offerings-title, .offer-title, .offer-desc,
       .closing-cta .section-title, .closing-cta-body, .about-page-quote,
       .contact-form-title, .contact-form-note, .contact-field label,
