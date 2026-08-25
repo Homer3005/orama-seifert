@@ -142,7 +142,7 @@
     body[data-page="booking"] nav:not(.scrolled) .nav-tagline,
     body[data-page="imprint"] nav:not(.scrolled) .nav-tagline,
     body[data-page="privacy"] nav:not(.scrolled) .nav-tagline,
-    body[data-page="thank-you"] nav:not(.scrolled) .nav-tagline { color: var(--ink); }
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-tagline { color: var(--lilac-dark); }
     body[data-page="booking"] nav:not(.scrolled) .nav-logo:hover,
     body[data-page="booking"] nav:not(.scrolled) .nav-links a:hover,
     body[data-page="booking"] nav:not(.scrolled) .nav-book:hover,
@@ -157,11 +157,13 @@
     body[data-page="thank-you"] nav:not(.scrolled) .nav-book:hover { color: var(--gold); }
     /* Case 3 — scrolled beats both of the above */
     nav.scrolled .nav-logo { color: var(--lilac); }
-    nav.scrolled .nav-tagline { color: var(--ink); }
+    nav.scrolled .nav-tagline { color: var(--lilac-dark); }
     nav.scrolled .nav-logo:hover { color: var(--gold); }
-    nav.scrolled .nav-links a { color: var(--ink); }
+    nav.scrolled .nav-links a { color: var(--lilac-dark); }
     nav.scrolled .nav-links a:hover { color: var(--gold); }
-    nav.scrolled .nav-book { color: var(--ink); }
+    /* Der Rahmen von .nav-book steht auf currentColor und folgt der Schriftfarbe
+       von selbst — nicht getrennt setzen. */
+    nav.scrolled .nav-book { color: var(--lilac-dark); }
     nav.scrolled .nav-book:hover { color: var(--gold); }
 
     /* HERO — name top left */
