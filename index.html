@@ -696,6 +696,59 @@
     .legal-field b { display: block; font-family: var(--sans); font-size: 0.82rem;
       letter-spacing: 0.04em; color: var(--ink); font-weight: 500; margin-bottom: 0.15rem; }
 
+    /* HINWEISFENSTER "Upcoming Group Courses"
+       Grundzustand display:none. Sichtbar wird es ausschliesslich, wenn das Skript
+       die Klasse is-open setzt — ohne JavaScript erscheint es also nie und kann die
+       Seite nicht blockieren. Kein Gedaechtnis: es erscheint bei jedem Laden neu,
+       nichts wird im Geraet des Besuchers abgelegt.
+       Farben, Schriften und Abstaende vollstaendig aus dem Bestand; Basiseinheit
+       0.5rem wie beim Kontaktformular, jeder Wert ein Vielfaches davon. */
+    .notice-overlay { position: fixed; inset: 0; z-index: 400;
+      display: none; align-items: center; justify-content: center; padding: 1.5rem;
+      /* --ink (58,48,96) bei 45 %. Dieselbe Bauart wie .booking-inline und der
+         Druckrahmen: Tokenfarbe mit Deckkraft, kein neuer Hexwert. 45 % trennt das
+         Fenster deutlich vom Grund und laesst Orama auf dem Titelbild erkennbar —
+         der Hero ist auf ihrem Kerngesicht ohnehin nur um rund 18 % gedaempft. */
+      background: rgba(58,48,96,0.45);
+      opacity: 0; transition: opacity 0.6s var(--ease); }
+    .notice-overlay.is-open { display: flex; }
+    .notice-overlay.is-visible { opacity: 1; }
+    /* Grund, Rahmen und Radius wie .booking-inline — rgba(123,125,184,0.18) ist
+       --lilac mit Deckkraft und steht so bereits im Dokument. */
+    .notice-dialog { position: relative; width: 100%; max-width: 29rem;
+      background: var(--white); border: 1px solid rgba(123,125,184,0.18);
+      border-radius: 4px; padding: 3rem 2.5rem 2.5rem; text-align: center;
+      max-height: calc(100vh - 3rem); overflow-y: auto; }
+    .notice-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500;
+      color: var(--lilac); line-height: 1.2; margin-bottom: 1rem; }
+    /* Fliesstext auf --ink statt auf dem --lilac von .booking-inline: Lila misst auf
+       Weiss 3.94:1 und traegt bei 1rem nicht, --ink misst 11.85:1. */
+    .notice-body { font-family: var(--sans); font-size: 1rem; line-height: 1.8;
+      color: var(--ink); margin-bottom: 2rem; }
+    /* Knopf. .btn-filled bleibt unberuehrt — Weiss auf --gold misst 2.90:1 und haelt
+       die Grenze nicht. Hier --white auf --ink: 11.85:1. Beim Ueberfahren --lilac-dark,
+       5.28:1, ebenfalls ueber 4.5:1. Beide Zustaende aus vorhandenen Tokens. */
+    .notice-btn { display: inline-block; font-family: var(--sans); font-size: 0.72rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--white);
+      background: var(--ink); border: 1px solid var(--ink); border-radius: 4px;
+      padding: 0.9rem 2.2rem; transition: all 0.3s; }
+    .notice-btn:hover { background: var(--lilac-dark); border-color: var(--lilac-dark); }
+    /* Kreuz. Aus zwei Rahmenlinien gebaut wie der Pfeil der Auswahlliste, keine
+       Bilddatei, kein externer Aufruf. 2.75rem Trefferflaeche = 44px. */
+    .notice-close { position: absolute; top: 0.5rem; right: 0.5rem;
+      width: 2.75rem; height: 2.75rem; background: none; border: 0; padding: 0;
+      cursor: pointer; color: var(--ink); opacity: 0.55; transition: opacity 0.3s; }
+    .notice-close:hover { opacity: 1; }
+    .notice-close::before, .notice-close::after { content: ""; position: absolute;
+      left: 50%; top: 50%; width: 1rem; height: 1px; margin: 0 0 0 -0.5rem;
+      background: currentColor; }
+    .notice-close::before { transform: rotate(45deg); }
+    .notice-close::after  { transform: rotate(-45deg); }
+    .notice-close:focus-visible, .notice-btn:focus-visible {
+      outline: 2px solid var(--lilac); outline-offset: 2px; }
+    /* Wer Bewegung abbestellt hat, bekommt das Fenster ohne Einblendung. */
+    @media (prefers-reduced-motion: reduce) { .notice-overlay { transition: none; } }
+
     .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -835,6 +888,15 @@
       .legal-draft { margin-top: 11.5rem; }
       .legal-page-body { padding: 2.5rem 1.5rem 3rem; }
       .thanks-page-body { padding: 11.5rem 1.5rem 4rem; }
+      /* 390px: der Rand traegt 1rem, das Fenster nimmt den Rest. Ueberschrift, zwei
+         Zeilen Text und Knopf bleiben zusammen unter 340px hoch und sind damit ohne
+         Scrollen im Fenster bedienbar; max-height ist nur Rueckfall fuer sehr grosse
+         Schriftgraden-Einstellungen. */
+      .notice-overlay { padding: 1rem; }
+      /* Polsterung oben von 3rem auf 4rem (8 x Basiseinheit): bei 390px laeuft die
+         Ueberschrift ueber die volle Breite und stiess sonst an das Kreuz. */
+      .notice-dialog { padding: 4rem 1.5rem 2rem; max-height: calc(100vh - 2rem); }
+      .notice-title { font-size: 1.5rem; }
     }
 
     /* ================= DRUCK =================
@@ -904,6 +966,9 @@
 
       /* Bedienelemente tragen im Druck keine Information */
       .carousel-arrow, .carousel-dots { display: none; }
+      /* Das Hinweisfenster gehoert nicht aufs Blatt und wuerde als fixiertes Element
+         sonst auf jeder Seite mitgedruckt — derselbe Fehler wie beim Kopfbereich. */
+      .notice-overlay { display: none !important; }
 
       /* Umbrueche: keine Ueberschrift zerschneiden, keine Ueberschrift allein am Seitenfuss */
       h1, h2, h3, h4, .section-title, .offerings-title, .offer-title, .eyebrow {
@@ -1395,6 +1460,32 @@
   <div class="footer-bottom">© 2026 Orama Seifert · All rights reserved</div>
 </footer>
 
+<!-- HINWEISFENSTER — kommende Kurse.
+     Steht als direktes Kind von <body> hinter dem Fussbereich, damit die uebrige
+     Seite (nav, alle Seiten-Container, footer) waehrend der Anzeige geschlossen
+     aria-hidden und inert gesetzt werden kann, ohne dass das Fenster selbst darin
+     liegt. Bewusst OHNE Kursdaten: die Termine stehen im Buchungswerkzeug und sind
+     dort immer aktuell. -->
+<div class="notice-overlay" id="course-notice" role="dialog" aria-modal="true"
+     aria-labelledby="course-notice-title">
+  <div class="notice-dialog">
+    <button type="button" class="notice-close" id="course-notice-close"
+            aria-label="Close this notice"></button>
+    <h2 class="notice-title" id="course-notice-title">Upcoming Group Courses</h2>
+    <p class="notice-body">Orama teaches live online courses and trainings in small groups throughout the year. The current dates are always listed in her booking calendar.</p>
+    <!-- ACHTUNG beim Einsetzen: derselbe Platzhalter steht ein zweites Mal im Skript
+         am Seitenende, als Vergleichswert. Dort bleibt er stehen — er ist die
+         Bedingung, die das Fenster verborgen haelt. Ersetzt wird ausschliesslich das
+         href in der Zeile unter diesem Kommentar. Ein Suchen-und-Ersetzen ueber die
+         ganze Datei traefe beide und schaltete das Fenster wieder ab. -->
+    <!-- OFFEN: Acuity-Konto noch nicht angelegt. Nur
+         ACUITY_KURSLINK_HIER_EINSETZEN durch die Adresse der Kurskategorie
+         ersetzen, sonst nichts. -->
+    <a class="notice-btn" id="course-notice-link" href="ACUITY_KURSLINK_HIER_EINSETZEN"
+       target="_blank" rel="noopener">See the dates</a>
+  </div>
+</div>
+
 <script>
   function showPage(page, anchor) {
     document.body.dataset.page = page;
@@ -1626,6 +1717,78 @@
   }
   window.addEventListener('hashchange', routeFromHash);
   routeFromHash();
+
+  /* ---- Hinweisfenster fuer kommende Kurse ----
+     Kein Gedaechtnis: kein Cookie, kein localStorage, kein sessionStorage. Das
+     Fenster erscheint bei jedem Laden der Startseite neu und ist nach dem
+     Schliessen nur fuer die laufende Sitzung weg.
+     Steht hinter routeFromHash, damit ein Aufruf mit #thank-you die Seite bereits
+     umgeschaltet hat, bevor die Anzeigebedingung geprueft wird. */
+  (function () {
+    const overlay = document.getElementById('course-notice');
+    if (!overlay) return;
+    const link  = document.getElementById('course-notice-link');
+    const close = document.getElementById('course-notice-close');
+
+    /* Anzeigebedingung 1: solange die Adresse der Kurskategorie fehlt, bleibt das
+       Fenster unsichtbar. Geprueft wird der Platzhalter im href selbst — wird er
+       durch die echte Adresse ersetzt, zeigt sich das Fenster von allein, es ist
+       nichts weiter umzustellen. */
+    if (!link || link.getAttribute('href') === 'ACUITY_KURSLINK_HIER_EINSETZEN') return;
+
+    const DELAY = 800;   // weiche Einblendung nach rund 800 ms
+
+    /* Alles ausserhalb des Fensters. Waehrend der Anzeige fuer Bildschirmleser
+       ausgeblendet und per inert aus der Tabreihenfolge genommen. Das Fenster
+       selbst liegt bewusst nicht darin, sonst waere es mit ausgeblendet. */
+    const rest = Array.prototype.slice.call(
+      document.querySelectorAll('body > nav, body > div[id$="-page"], body > footer'));
+
+    function focusables() {
+      return Array.prototype.slice.call(
+        overlay.querySelectorAll('a[href], button:not([disabled])'));
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') { hide(); return; }
+      if (e.key !== 'Tab') return;
+      // Fokusfalle: am Rand des Fensters umbrechen statt hinauslaufen
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+
+    function show() {
+      // Anzeigebedingung 2: nur auf der Startseite
+      if (document.body.dataset.page !== 'home') return;
+      overlay.classList.add('is-open');
+      rest.forEach(function (el) { el.setAttribute('aria-hidden', 'true'); el.inert = true; });
+      void overlay.offsetWidth;   // Umbruch erzwingen, sonst faellt die Einblendung aus
+      overlay.classList.add('is-visible');
+      close.focus();              // Fokus wandert ins Fenster
+      document.addEventListener('keydown', onKey);
+    }
+
+    function hide() {
+      document.removeEventListener('keydown', onKey);
+      overlay.classList.remove('is-open', 'is-visible');
+      rest.forEach(function (el) { el.removeAttribute('aria-hidden'); el.inert = false; });
+      /* Der Fokus wandert auf "Book A Session" im Kopfbereich: derselbe Weg, den
+         auch das Fenster anbietet, und er steht oben, wo der Blick nach dem
+         Schliessen ohnehin liegt. Erst aria-hidden abnehmen, dann fokussieren. */
+      const back = document.querySelector('.nav-book');
+      if (back) back.focus();
+    }
+
+    close.addEventListener('click', hide);
+    link.addEventListener('click', hide);
+    // Klick auf den abgedunkelten Grund, nicht auf das Fenster darin
+    overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) hide(); });
+
+    setTimeout(show, DELAY);
+  })();
 </script>
 </body>
 </html>
