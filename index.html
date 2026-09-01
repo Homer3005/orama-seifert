@@ -537,6 +537,13 @@
     /* Der Verweis traegt hier NICHT das Lila der uebrigen Rechtstexte: --lilac misst
        auf diesem Grund 1.72:1. --white plus Unterstreichung. */
     .contact-consent a { color: var(--white); text-decoration: underline; }
+    /* Hinweiszeile des Spamschutzes. Steht leer und ausgeblendet im Dokument und
+       wird nur gefuellt, wenn eine der Massnahmen greift. role=alert laesst
+       Bildschirmleser sie sofort vorlesen. Farbe --white wie die uebrigen
+       Beschriftungen dieses Formulars, gemessen auf demselben dunklen Grund.
+       Abstand 1rem = 2 x Basiseinheit 0.5rem. */
+    .contact-form-hint { font-family: var(--sans); font-size: 0.9rem; line-height: 1.6;
+      color: var(--white); margin-bottom: 1rem; }
     .contact-form-block button.btn-filled { font-family: var(--sans); cursor: pointer; }
     /* Spamschutz-Feld. Aus dem Fluss genommen statt display:none — ein per display
        ausgeblendetes Feld fuellen manche Bots gerade deshalb aus. tabindex -1 und
@@ -1103,6 +1110,16 @@
         <input type="text" id="contact-website" name="contact-website" tabindex="-1" autocomplete="off">
       </div>
 
+      <!-- Zweites Fallenfeld fuer Bots, die das erste an seinem Namen erkennen.
+           Harmlos benannt, gleiche Bauart wie oben: aus dem Fluss genommen,
+           aria-hidden, tabindex -1. Bleibt leer. -->
+      <div class="contact-trap" aria-hidden="true">
+        <label for="contact-company">Do not fill in this field</label>
+        <input type="text" id="contact-company" name="company" tabindex="-1" autocomplete="off">
+      </div>
+
+      <p class="contact-form-hint" id="contact-form-hint" role="alert" hidden></p>
+
       <button type="submit" class="btn-filled">Send message</button>
     </form>
   </section>
@@ -1544,6 +1561,69 @@
 
     render();
     startAuto();
+  })();
+
+  /* ---- Spamschutz des Kontaktformulars ----
+     Vier Massnahmen, alle ausschliesslich im Arbeitsspeicher. Kein Cookie, kein
+     localStorage, kein sessionStorage — nach dem Neuladen ist jede Sperre weg.
+     Ohne JavaScript bleibt das Formular absendbar: dann wirken allein die beiden
+     Fallenfelder ueber den Filter des Empfaengers, die drei anderen Massnahmen
+     nicht. Das ist so gewollt. Die Zieladresse steht im action-Attribut und wird
+     hier bewusst NICHT gesetzt — sonst waere das Formular ohne JavaScript tot,
+     und seit dem Entfernen der Mailadresse gibt es keinen Ersatzweg. */
+  (function () {
+    const form = document.querySelector('.contact-form-block');
+    if (!form) return;
+    const hint     = document.getElementById('contact-form-hint');
+    const message  = document.getElementById('contact-message');
+    const traps    = form.querySelectorAll('.contact-trap input');
+
+    const MIN_DWELL = 3000;    // Zeitfalle: fruehestens nach 3 Sekunden
+    const COOLDOWN  = 60000;   // Wiederholungssperre: 60 Sekunden
+    const MAX_LINKS = 2;       // Linkgrenze: zwei sind erlaubt, drei nicht
+
+    const openedAt = Date.now();   // Zeitstempel des Seitenaufrufs, nur im Speicher
+    let lastSentAt = 0;            // 0 = in dieser Sitzung noch nichts abgeschickt
+
+    /* Webadressen: mit Schema, mit www. oder blanker Hostname. Der erste Zweig ist
+       gierig, "https://www.beispiel.de/x" zaehlt daher als EINE Adresse, nicht als
+       drei. Abkuerzungen wie "z. B." oder "i.e." treffen nicht, weil die Endung
+       mindestens zwei Buchstaben haben muss. */
+    const LINK = /(?:https?:\/\/|www\.)\S+|\b[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9-]+)*\.[a-z]{2,}\b/gi;
+
+    function say(text) { hint.textContent = text; hint.hidden = false; }
+    function clearHint() { hint.textContent = ''; hint.hidden = true; }
+
+    form.addEventListener('submit', function (e) {
+      clearHint();
+      const now = Date.now();
+
+      // Fallenfelder: gefuellt heisst Bot. Kommentarlos abbrechen, kein Hinweis —
+      // ein Hinweis waere nur eine Anleitung, es beim naechsten Mal besser zu machen.
+      for (let i = 0; i < traps.length; i++) {
+        if (traps[i].value !== '') { e.preventDefault(); return; }
+      }
+
+      if (now - openedAt < MIN_DWELL) {
+        e.preventDefault();
+        say('That was quick. Take a breath and send it again in a moment.');
+        return;
+      }
+
+      if (message && (message.value.match(LINK) || []).length > MAX_LINKS) {
+        e.preventDefault();
+        say('Please keep it to two web addresses at most — you can send the rest once we are in touch.');
+        return;
+      }
+
+      if (lastSentAt && now - lastSentAt < COOLDOWN) {
+        e.preventDefault();
+        say('Your message is on its way. Please wait a minute before sending another one.');
+        return;
+      }
+
+      lastSentAt = now;
+    });
   })();
 
   /* Die Dankeseite ist die einzige Unterseite, die von aussen angesprungen werden
