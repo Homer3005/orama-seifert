@@ -2121,8 +2121,14 @@
     /* Alles ausserhalb des Fensters. Waehrend der Anzeige fuer Bildschirmleser
        ausgeblendet und per inert aus der Tabreihenfolge genommen. Das Fenster
        selbst liegt bewusst nicht darin, sonst waere es mit ausgeblendet. */
+    /* L4: #nav-menu, die Klappe des Burger-Menues, steht mit in der Liste.
+       Sie ist zwar geschlossen und damit display:none, solange das
+       Hinweisfenster aufgeht - die Aufnahme haelt die Absicherung aber auch
+       dann, wenn sie es einmal nicht sein sollte. Der Kopf selbst ist ueber
+       body > nav ohnehin dabei; damit ist auch das Burger-Symbol gesperrt,
+       solange dieses Fenster offen ist. */
     const rest = Array.prototype.slice.call(
-      document.querySelectorAll('body > nav, body > div[id$="-page"], body > footer'));
+      document.querySelectorAll('body > nav, body > div[id$="-page"], body > footer, body > #nav-menu'));
 
     function focusables() {
       return Array.prototype.slice.call(
@@ -2169,8 +2175,17 @@
 
     close.addEventListener('click', hide);
     link.addEventListener('click', hide);
-    // Klick auf den abgedunkelten Grund, nicht auf das Fenster darin
-    overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) hide(); });
+    /* Klick auf den abgedunkelten Grund, nicht auf das Fenster darin.
+       L4: preventDefault ist noetig, sonst setzt der Browser den Fokus im
+       Anschluss an mousedown auf das angeklickte Element und ueberschreibt den
+       Ruecksprung aus hide(). Gemessen landete der Fokus auf diesem Weg auf
+       <body> statt auf dem Buchungsknopf - auf den beiden anderen Wegen (Kreuz,
+       Esc) lag er richtig. Derselbe Grund wie beim Burger-Menue weiter oben. */
+    overlay.addEventListener('mousedown', function (e) {
+      if (e.target !== overlay) return;
+      e.preventDefault();
+      hide();
+    });
 
     setTimeout(show, DELAY);
   })();
