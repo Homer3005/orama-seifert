@@ -107,8 +107,22 @@
     .nav-logo { font-family: var(--serif); font-size: 2rem; font-weight: 400; white-space: nowrap;
       letter-spacing: 0.08em; color: var(--white); transition: color 0.4s; }
     .nav-logo:hover { color: var(--gold); }
+    /* K17: Spaltenabstand 2.2rem -> 1.2rem. Die Kundin meldete, dass der letzte
+       Menuepunkt auf kleineren Bildschirmen in eine zweite Zeile rutscht.
+       1.2rem = 4 x 0.3rem, der senkrechte Takt des Kopfes (siehe unten) - kein
+       freier Wert. Der Zeilenabstand 0.6rem bleibt: unterhalb von 1257px bricht
+       die Liste weiterhin um, siehe Messung.
+       Gemessen (Umbruch = die vier Punkte stehen nicht mehr auf einer Zeile):
+         vorher  2.2rem: einzeilig ab 1353px
+         nachher 1.2rem: einzeilig ab 1257px
+       Damit sind die verbreiteten 1280px-Laptops abgedeckt (23px Reserve).
+       Weiter traegt der Abstand nicht: selbst bei Spaltenabstand 0 liegt die
+       Grenze bei 1142px. Ursache ist nicht der Abstand, sondern das Gitter
+       1fr auto 1fr - Spalte 1 wird auf die Breite von Spalte 3 gezwungen,
+       obwohl dort nur der 171px breite Buchungsknopf steht. Schrift und
+       Laufweite bleiben unangetastet. */
     .nav-links { grid-column: 1; justify-self: start; display: flex; flex-wrap: wrap;
-      gap: 0.6rem 2.2rem; list-style: none; }
+      gap: 0.6rem 1.2rem; list-style: none; }
     .nav-links a, .nav-tagline { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
       white-space: nowrap; color: var(--white); transition: color 0.3s; }
     /* 0.6rem = 2 x 0.3rem, der senkrechte Takt des Kopfes (Polsterung 1.8rem = 6 x 0.3rem,
