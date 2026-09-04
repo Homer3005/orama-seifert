@@ -947,8 +947,19 @@
        darin.
        Der Buchungsknopf bleibt ausdruecklich im Balken und wandert NICHT ins
        Overlay - der Handlungsaufruf soll auf jeder Seite und in jedem Zustand
-       erreichbar bleiben. */
-    @media (max-width: 900px) {
+       erreichbar bleiben.
+
+       L3, Lage des Haltepunkts. Gemessen in Schritten von 10px und danach auf
+       1px genau: die waagerechte Menueliste steht bis 1256px zweizeilig und ist
+       ab 1257px einzeilig. Aufgerundet auf den naechsten glatten Wert liegt der
+       Umschaltpunkt bei 1260px, der Haltepunkt greift also ab 1259px abwaerts.
+       Damit gibt es keine Fensterbreite mehr, bei der der Kopf zweizeilig steht:
+       ab 1260px das waagerechte Menue einzeilig, darunter der Burger-Balken
+       einzeilig bis hinunter zu 320px.
+       Der bisherige Haltepunkt lag bei 900px. Zwischen 901 und 1256px stand der
+       Kopf deshalb zweizeilig - genau der Bereich, den die Kundin beanstandet
+       hat und in dem ein 13-Zoll-MacBook landet. */
+    @media (max-width: 1259px) {
       nav { grid-template-columns: 1fr auto auto; column-gap: 1rem; row-gap: 0;
         padding: 1.1rem 1.5rem; }
       .nav-links { display: none; }
