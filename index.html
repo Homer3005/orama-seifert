@@ -1142,6 +1142,16 @@
       .about-img-side { height: 60vw; }
       .about-text-side { padding: 4rem 2rem; }
       .group-feature { grid-template-columns: 1fr; }
+      /* N2: Gestapelt stiess das Bild des Gruppenblocks unmittelbar an das Fensterfoto
+         des Abschnitts darueber (.testimonials) — zwei Fotos ohne jede Trennung, der
+         Text kam erst darunter. Die beiden Rasterkinder tauschen deshalb ihre
+         Darstellungsreihenfolge: erst der Text, dann das Bild.
+         order wirkt nur auf die Darstellung. Die Reihenfolge im Quelltext bleibt
+         Bild vor Text, damit Vorlesereihenfolge und Tabulatorreihenfolge unangetastet
+         bleiben. Gilt ausschliesslich in diesem Haltepunkt; nebeneinander (ueber
+         900px) bleibt der Block unveraendert. */
+      .group-text { order: 1; }
+      .group-img  { order: 2; }
       /* Mobil deckelt schon 60vw die Hoehe, der Desktop-Ausschnitt aus C4 wird hier nicht
          gebraucht: bei 390px ist der Ausschnitt so flach, dass 17 % die Fingerspitzen der
          erhobenen Hand oben abschneiden wuerden. Deshalb zurueck auf mittig. */
