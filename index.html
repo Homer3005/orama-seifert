@@ -990,11 +990,17 @@
 
 <nav id="main-nav">
   <ul class="nav-links">
-    <li><a href="#" onclick="return showPage('home')">Home</a></li>
+    <li><a href="#" onclick="return showPage('about')">About</a></li>
     <li><a href="#" onclick="return showPage('booking', 'akashic')">Akashic Readings</a></li>
     <li><a href="#" onclick="return showPage('booking', 'consultation')">One on One</a></li>
     <li><a href="#" onclick="return showPage('booking', 'workshops')">Courses</a></li>
   </ul>
+  <!-- Die Wortmarke traegt seit K16 den Rueckweg zur Startseite: der Menuepunkt
+       "Home" ist entfallen, an seiner Stelle steht "About" (Auffindbarkeit).
+       Der Verweis war schon vorher da und bleibt unveraendert im Aussehen -
+       a {} setzt text-decoration:none und cursor:pointer, die Farbe steht in den
+       drei Kopfzustaenden weiter oben. Nicht entfernen: es ist der einzige
+       Rueckweg im Kopfbereich. -->
   <div class="nav-brand">
     <a class="nav-logo" href="#" onclick="return showPage('home')">Orama Seifert</a>
     <p class="nav-tagline">Luminary · Consultant · Teacher</p>
