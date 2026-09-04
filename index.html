@@ -438,6 +438,25 @@
       max-width: 640px; margin: 0 auto; text-wrap: balance; hyphens: none; }
     .eyebrow { font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
       color: var(--gold); margin-bottom: 1.2rem; }
+    /* K20, Sperre gegen Uebergriff. Kein Entwurfswert, reine Absicherung.
+       .eyebrow und .legal-variant-label sind Ueberschriftzeilen und fallen NICHT
+       unter Fliesstext. Sie sind aber als <p> ausgezeichnet und werden von den
+       Absatzregeln ihres Traegers geschlagen: .about-page-body p ist (0,1,1),
+       .eyebrow nur (0,1,0). Diese Zeilen rendern deshalb SCHON HEUTE nicht in
+       ihren gesetzten 0.7rem, sondern in der Groesse des Traegerabsatzes.
+       Das ist ein Fehler im Bestand, aelter als K20.
+       K20 behebt ihn NICHT - das waere eine nicht beauftragte Aenderung am
+       Erscheinungsbild. Die Regeln hier frieren nur den Wert ein, den die
+       Zeilen vor K20 hatten, damit die Vergroesserung des Fliesstextes sie
+       nicht mitnimmt. Die Zeilenhoehe kommt weiter aus der Traegerregel und ist
+       einheitenlos, das Verhaeltnis bleibt damit erhalten.
+       Behebung waere je Zeile ein Einzeiler auf 0.7rem bzw. 0.75rem.
+       Nicht eigenmaechtig gesetzt, gemeldet. */
+    .about-page-body .eyebrow   { font-size: 1.05rem; }  /* Bestand 16.8px */
+    .booking-page-hero .eyebrow { font-size: 1.05rem; }  /* Bestand 16.8px */
+    .thanks-page-body .eyebrow  { font-size: 1.05rem; }  /* Bestand 16.8px */
+    .booking-inline .eyebrow    { font-size: 0.95rem; }  /* Bestand 15.2px */
+    .legal-page-body .legal-variant-label { font-size: 1.02rem; }  /* Bestand 16.32px */
     .section-title { font-family: var(--serif); font-size: clamp(2.2rem, 3.5vw, 3.4rem);
       font-weight: 400; line-height: 1.15; color: var(--lilac); }
     .section-title em { font-style: italic; color: var(--gold); font-weight: 400; }
@@ -460,7 +479,7 @@
     .offer-card:hover { box-shadow: 0 12px 40px rgba(20,15,40,0.25); transform: translateY(-3px); }
     .offer-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500;
       color: var(--cream); margin-bottom: 1.2rem; line-height: 1.2; }
-    .offer-desc { font-size: 1rem; line-height: 1.8; color: rgba(253,248,243,0.85);
+    .offer-desc { font-size: 1.15rem; line-height: 1.8; color: rgba(253,248,243,0.85);
       margin-bottom: 2rem; flex: 1; }
     /* K18: Stil vollstaendig vom Send-Message-Knopf des Kontaktformulars
        uebernommen (.contact-form-block button.btn-filled). Der dient nur als
@@ -500,7 +519,7 @@
       justify-content: center; padding: 6rem 5rem; }
     .about-text-side .eyebrow { text-align: left; }
     .about-text-side .section-title { margin-bottom: 1.8rem; }
-    .about-body { font-size: 1.02rem; line-height: 1.85; color: #6a5a7a;
+    .about-body { font-size: 1.15rem; line-height: 1.85; color: #6a5a7a;
       max-width: 480px; margin-bottom: 2.2rem; }
     .btn-outline { display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--lilac); border: 1px solid var(--lilac); padding: 0.9rem 2rem;
@@ -530,7 +549,7 @@
       padding: 8rem 5rem; text-align: center; }
     .closing-cta .eyebrow { color: var(--gold2); }
     .closing-cta .section-title { color: var(--white); margin: 0.5rem auto 1.4rem; max-width: 720px; }
-    .closing-cta-body { font-size: 1.05rem; line-height: 1.8; color: rgba(255,255,255,0.78);
+    .closing-cta-body { font-size: 1.15rem; line-height: 1.8; color: rgba(255,255,255,0.78);
       max-width: 600px; margin: 0 auto 2.8rem; }
     .btn-light { display: inline-block; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--ink); background: var(--white); padding: 1.1rem 2.8rem;
@@ -634,7 +653,7 @@
     .about-page-body { max-width: 36rem; margin: 0 auto; padding: 7rem 3rem 5rem; }
     .about-page-body .eyebrow { text-align: center; }
     .about-page-body .section-title { text-align: center; margin-bottom: 3rem; text-wrap: balance; }
-    .about-page-body p { font-size: 1.05rem; line-height: 1.95; color: #5a4a6a; margin-bottom: 1.6rem; }
+    .about-page-body p { font-size: 1.15rem; line-height: 1.95; color: #5a4a6a; margin-bottom: 1.6rem; }
 
     /* SUBSTACK */
     .substack-feature { background: var(--sand); padding: 6rem 5rem; text-align: center; }
@@ -643,7 +662,7 @@
       border: 1px solid rgba(184,145,90,0.2); }
     .substack-title { font-family: var(--serif); font-size: 2rem; font-weight: 500;
       color: var(--lilac); margin-bottom: 1rem; }
-    .substack-desc { font-size: 1rem; line-height: 1.8; color: #6a5a7a; margin-bottom: 2rem; }
+    .substack-desc { font-size: 1.15rem; line-height: 1.8; color: #6a5a7a; margin-bottom: 2rem; }
     .btn-filled { display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--white); background: var(--gold); padding: 0.9rem 2.2rem;
       border-radius: 4px; transition: all 0.3s; border: 1px solid var(--gold); }
@@ -653,7 +672,7 @@
     .booking-page-hero { background: linear-gradient(180deg, var(--sand) 0%, var(--cream) 100%);
       padding: 15rem 5rem 5rem; text-align: center; }
     .booking-page-hero .section-title { margin: 0.5rem auto 1.4rem; }
-    .booking-page-hero p { font-size: 1.05rem; line-height: 1.8; color: #6a5a7a;
+    .booking-page-hero p { font-size: 1.15rem; line-height: 1.8; color: #6a5a7a;
       max-width: 580px; margin: 0 auto; }
     /* Buchungsliste (Ebene 2, dokumentlokal). Loest die zweispaltige Karte ab:
        je Angebot eine Zeile ueber die volle Breite, links das quadratische Bild,
@@ -697,7 +716,7 @@
        die volle Breite, in der Zeile gegen die 1fr-Spalte.
        29rem statt 30rem: bei 480px stand Akashic mit 76 Zeichen einen ueber dem
        Band, bei 464px sind es gemessen 62-73 ueber alle vier Eintraege. */
-    .booking-service-desc { font-size: 1rem; line-height: 1.75; color: #6a5a7a;
+    .booking-service-desc { font-size: 1.15rem; line-height: 1.75; color: #6a5a7a;
       max-width: 29rem; }
     .booking-service-cta { display: flex; justify-content: flex-end; }
     .booking-service-btn { display: inline-block; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
@@ -719,7 +738,7 @@
     .booking-inline { background: var(--white); border: 1px solid rgba(123,125,184,0.18);
       padding: 4rem 3rem; text-align: center; min-height: 200px; }
     .booking-inline .ph-icon { font-size: 2.2rem; opacity: 0.25; margin-bottom: 1rem; color: var(--lilac); }
-    .booking-inline p { font-size: 0.95rem; line-height: 1.7; color: var(--lilac); max-width: 480px; margin: 0 auto; }
+    .booking-inline p { font-size: 1.15rem; line-height: 1.7; color: var(--lilac); max-width: 480px; margin: 0 auto; }
 
     /* LEGAL PAGES — Legal Notice / Privacy, linksbuendig, Measure ~65 Zeichen */
     .legal-draft { max-width: 40rem; margin: 10.5rem auto 0; padding: 0.9rem 1.25rem;
@@ -735,7 +754,7 @@
     .thanks-page-body { max-width: 36rem; margin: 0 auto;
       padding: 10.5rem 3rem 7rem; text-align: center; }
     .thanks-page-body .section-title { margin-bottom: 2rem; text-wrap: balance; }
-    .thanks-page-body p { font-size: 1.05rem; line-height: 1.8; color: var(--ink);
+    .thanks-page-body p { font-size: 1.15rem; line-height: 1.8; color: var(--ink);
       margin-bottom: 1.5rem; }
     .thanks-page-body .btn-outline { margin-top: 1.5rem; }
 
@@ -745,7 +764,7 @@
       color: var(--lilac); margin: 2.6rem 0 1rem; }
     .legal-page-body h4 { font-family: var(--sans); font-size: 0.9rem; letter-spacing: 0.06em;
       color: var(--ink); font-weight: 500; margin: 1.6rem 0 0.5rem; }
-    .legal-page-body p { font-size: 1.02rem; line-height: 1.85; color: #5a4a6a; margin-bottom: 1.1rem; }
+    .legal-page-body p { font-size: 1.15rem; line-height: 1.85; color: #5a4a6a; margin-bottom: 1.1rem; }
     .legal-page-body a { color: var(--lilac); text-decoration: underline; }
     .legal-variant { border-left: 2px solid rgba(123,125,184,0.35);
       padding: 0.2rem 0 0.2rem 1.5rem; margin: 1.8rem 0 2.6rem; }
@@ -782,7 +801,7 @@
       color: var(--lilac); line-height: 1.2; margin-bottom: 1rem; }
     /* Fliesstext auf --ink statt auf dem --lilac von .booking-inline: Lila misst auf
        Weiss 3.94:1 und traegt bei 1rem nicht, --ink misst 11.85:1. */
-    .notice-body { font-family: var(--sans); font-size: 1rem; line-height: 1.8;
+    .notice-body { font-family: var(--sans); font-size: 1.15rem; line-height: 1.8;
       color: var(--ink); margin-bottom: 2rem; }
     /* Knopf. .btn-filled bleibt unberuehrt — Weiss auf --gold misst 2.90:1 und haelt
        die Grenze nicht. Hier --white auf --ink: 11.85:1. Beim Ueberfahren --lilac-dark,
