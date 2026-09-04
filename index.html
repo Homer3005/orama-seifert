@@ -542,7 +542,19 @@
        Beide Zeilen liegen damit unter 4.5:1, beide auch unter 3:1. Das ist
        gemessen, gemeldet und ausdruecklich in Kauf genommen. Nicht korrigieren. */
     .offerings-head .eyebrow { color: var(--lilac); }
-    .offerings-head .offerings-title { color: var(--gold); font-size: clamp(1.55rem, 2.9vw, 2.5rem);
+    /* P2: Der eigene Schriftgrad clamp(1.55rem, 2.9vw, 2.5rem) ist ersatzlos
+       entfallen. Er war der einzige Wert, mit dem diese Ueberschrift von allen
+       uebrigen ihrer Ebene abwich, und zwar auf JEDER Breite:
+         320 / 390 / 768px   24,8px gegen 35,2px der uebrigen
+         1440px              40,0px gegen 50,4px
+       Ohne eigenen Wert greift die Grundregel .section-title (0,1,0) mit
+       clamp(2.2rem, 3.5vw, 3.4rem) — dieselbe Quelle, aus der auch die
+       Bezugsgroesse "Seeing Your Gifts Is My Gift" im About-Block kommt. Damit
+       koennen die beiden nicht mehr auseinanderlaufen.
+       Die Zeilenhoehe braucht keinen eigenen Schritt: .section-title setzt sie
+       einheitenlos auf 1.15, sie waechst also im selben Verhaeltnis mit.
+       Farbe --gold und Preline --lilac bleiben unangetastet (Block M). */
+    .offerings-head .offerings-title { color: var(--gold);
       max-width: 640px; margin: 0 auto; text-wrap: balance; hyphens: none; }
     /* N1: Die Grundregel der Preline ist in zwei Regeln geteilt.
        Grund ist der Spezifitaetsfehler, den K20 nur eingefroren hat: .eyebrow ist
