@@ -653,12 +653,22 @@
        Basiseinheit 0.5rem — 13.6 bzw. 13.8 % der Inhaltshoehe. */
     .group-text { background: var(--cream); display: flex; flex-direction: column;
       justify-content: center; padding: 3rem 4rem; }
+    /* M1: Der Block stand bis hier ohne Abstand zwischen Headline und Fliesstext —
+       nicht als eigene Regel, sondern weil der Grundreset (* { margin: 0 }) griff und
+       keine Regel ihn wieder setzte. Die C4-Verdichtung oben betrifft ausdruecklich
+       nur die senkrechte Polsterung der Spalte (3rem) und bleibt bestehen. Die
+       Verdichtung der INNEREN Abstaende ist mit M1 aufgehoben: der Block traegt jetzt
+       die Werte der Vorlage .about-text-side und wird dadurch hoeher. */
+    .group-text .section-title { margin-bottom: 1.8rem; }
 
     /* CLOSING CTA */
     .closing-cta { background: linear-gradient(135deg, var(--lilac) 0%, var(--ink) 100%);
       padding: 8rem 5rem; text-align: center; }
     .closing-cta .eyebrow { color: var(--gold2); }
-    .closing-cta .section-title { color: var(--white); margin: 0.5rem auto 1.4rem; max-width: 720px; }
+    /* M1: auf die Vorlage .about-text-side gezogen — oben 0 (die Vorlage setzt
+       keinen Kopfabstand an der Headline, den Abstand traegt allein die Preline),
+       unten 1.8rem. auto bleibt: die Zentrierung des Blocks ist unveraendert. */
+    .closing-cta .section-title { color: var(--white); margin: 0 auto 1.8rem; max-width: 720px; }
     .closing-cta-body { font-size: 1.15rem; line-height: 1.8; color: rgba(255,255,255,0.78);
       max-width: 600px; margin: 0 auto 2.8rem; }
     .btn-light { display: inline-block; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
@@ -761,8 +771,11 @@
     .about-page-quote { font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.4rem);
       font-weight: 400; line-height: 1.3; color: var(--white); max-width: 720px; }
     .about-page-body { max-width: 36rem; margin: 0 auto; padding: 7rem 3rem 5rem; }
-    .about-page-body .eyebrow { text-align: center; }
-    .about-page-body .section-title { text-align: center; margin-bottom: 3rem; text-wrap: balance; }
+    /* M1: margin-bottom der Preline ausdruecklich gesetzt. Ohne die Zeile schlaegt
+       .about-page-body p (0,1,1) die Grundregel .eyebrow (0,1,0) und die Preline
+       traegt die 1.6rem des Traegerabsatzes statt der 1.2rem der Vorlage. */
+    .about-page-body .eyebrow { text-align: center; margin-bottom: 1.2rem; }
+    .about-page-body .section-title { text-align: center; margin-bottom: 1.8rem; text-wrap: balance; }
     .about-page-body p { font-size: 1.15rem; line-height: 1.95; color: #5a4a6a; margin-bottom: 1.6rem; }
 
     /* SUBSTACK */
@@ -770,8 +783,10 @@
     .substack-inner { max-width: 680px; margin: 0 auto;
       background: var(--white); padding: 4rem 3rem;
       border: 1px solid rgba(184,145,90,0.2); }
+    /* M1: Der Block hat den Aufbau Preline / Headline / Fliesstext, seine Headline
+       traegt nur eine andere Klasse. margin-bottom auf den Vorlagenwert 1.8rem. */
     .substack-title { font-family: var(--serif); font-size: 2rem; font-weight: 500;
-      color: var(--lilac); margin-bottom: 1rem; }
+      color: var(--lilac); margin-bottom: 1.8rem; }
     .substack-desc { font-size: 1.15rem; line-height: 1.8; color: #6a5a7a; margin-bottom: 2rem; }
     .btn-filled { display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--white); background: var(--gold); padding: 0.9rem 2.2rem;
@@ -781,7 +796,11 @@
     /* BOOKING PAGE — Saent-style */
     .booking-page-hero { background: linear-gradient(180deg, var(--sand) 0%, var(--cream) 100%);
       padding: 15rem 5rem 5rem; text-align: center; }
-    .booking-page-hero .section-title { margin: 0.5rem auto 1.4rem; }
+    /* M1: Preline ausdruecklich auf 1.2rem — .booking-page-hero p setzt margin: 0 auto
+       und nahm der Preline sonst jeden Abstand. Headline oben 0, unten 1.8rem,
+       auto bleibt fuer die Zentrierung. */
+    .booking-page-hero .eyebrow { margin-bottom: 1.2rem; }
+    .booking-page-hero .section-title { margin: 0 auto 1.8rem; }
     .booking-page-hero p { font-size: 1.15rem; line-height: 1.8; color: #6a5a7a;
       max-width: 580px; margin: 0 auto; }
     /* Buchungsliste (Ebene 2, dokumentlokal). Loest die zweispaltige Karte ab:
@@ -863,7 +882,10 @@
        ausschliesslich aus :root, keine neuen Hexwerte. */
     .thanks-page-body { max-width: 36rem; margin: 0 auto;
       padding: 10.5rem 3rem 7rem; text-align: center; }
-    .thanks-page-body .section-title { margin-bottom: 2rem; text-wrap: balance; }
+    /* M1: Preline ausdruecklich auf 1.2rem — .thanks-page-body p (0,1,1) schlug sonst
+       die Grundregel und gab ihr 1.5rem. */
+    .thanks-page-body .eyebrow { margin-bottom: 1.2rem; }
+    .thanks-page-body .section-title { margin-bottom: 1.8rem; text-wrap: balance; }
     .thanks-page-body p { font-size: 1.15rem; line-height: 1.8; color: var(--ink);
       margin-bottom: 1.5rem; }
     .thanks-page-body .btn-outline { margin-top: 1.5rem; }
