@@ -153,6 +153,10 @@
     body[data-page="privacy"] nav:not(.scrolled) .nav-book,
     body[data-page="thank-you"] nav:not(.scrolled) .nav-links a,
     body[data-page="thank-you"] nav:not(.scrolled) .nav-book,
+    body[data-page="booking"] nav:not(.scrolled) .nav-burger,
+    body[data-page="imprint"] nav:not(.scrolled) .nav-burger,
+    body[data-page="privacy"] nav:not(.scrolled) .nav-burger,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-burger,
     body[data-page="booking"] nav:not(.scrolled) .nav-tagline,
     body[data-page="imprint"] nav:not(.scrolled) .nav-tagline,
     body[data-page="privacy"] nav:not(.scrolled) .nav-tagline,
@@ -168,7 +172,11 @@
     body[data-page="privacy"] nav:not(.scrolled) .nav-book:hover,
     body[data-page="thank-you"] nav:not(.scrolled) .nav-logo:hover,
     body[data-page="thank-you"] nav:not(.scrolled) .nav-links a:hover,
-    body[data-page="thank-you"] nav:not(.scrolled) .nav-book:hover { color: var(--gold); }
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-book:hover,
+    body[data-page="booking"] nav:not(.scrolled) .nav-burger:hover,
+    body[data-page="imprint"] nav:not(.scrolled) .nav-burger:hover,
+    body[data-page="privacy"] nav:not(.scrolled) .nav-burger:hover,
+    body[data-page="thank-you"] nav:not(.scrolled) .nav-burger:hover { color: var(--gold); }
     /* Case 3 — scrolled beats both of the above */
     nav.scrolled .nav-logo { color: var(--lilac); }
     nav.scrolled .nav-tagline { color: var(--lilac-dark); }
@@ -177,8 +185,110 @@
     nav.scrolled .nav-links a:hover { color: var(--gold); }
     /* Der Rahmen von .nav-book steht auf currentColor und folgt der Schriftfarbe
        von selbst — nicht getrennt setzen. */
-    nav.scrolled .nav-book { color: var(--lilac-dark); }
-    nav.scrolled .nav-book:hover { color: var(--gold); }
+    nav.scrolled .nav-book,
+    nav.scrolled .nav-burger { color: var(--lilac-dark); }
+    nav.scrolled .nav-book:hover,
+    nav.scrolled .nav-burger:hover { color: var(--gold); }
+
+    /* ---- BURGER-MENUE (L2) ----
+       Ersetzt unterhalb des Umschaltpunkts das waagerechte Menue. Oberhalb davon
+       sind Symbol und Overlay nicht vorhanden (display:none) - im Desktopkopf
+       steht also nichts Zusaetzliches.
+       Alles aus dem Bestand: die Striche sind 1px currentColor wie das Kreuz des
+       Hinweisfensters und der Pfeil der Auswahlliste, die Trefferflaeche misst
+       2.75rem = 44px wie dort, der Fokusring ist derselbe. Keine Bilddatei, kein
+       externer Aufruf, keine neue Farbe, keine neue Schrift.
+       Das Symbol steht farblich neben .nav-book und folgt darum genau dessen
+       drei Kopfzustaenden: --white ueber dunklem Hero, --lilac-dark auf hellem
+       Grund und im gescrollten Balken, --gold beim Ueberfahren. Die Regeln dafuer
+       stehen weiter oben in denselben Gruppen wie .nav-book. */
+    .nav-burger { display: none; position: relative;
+      width: 2.75rem; height: 2.75rem; background: none; border: 0; padding: 0;
+      cursor: pointer; color: var(--white); transition: color 0.3s; }
+    /* Drei Striche: der mittlere ist der Traeger selbst, die aeusseren sind seine
+       beiden Pseudoelemente. Ist das Menue offen, blendet der mittlere aus und die
+       aeusseren drehen zum Kreuz - dasselbe Zeichen, das auch das Hinweisfenster
+       zum Schliessen zeigt. 0.4375rem = 7px Abstand zur Mitte. */
+    .nav-burger-bars, .nav-burger-bars::before, .nav-burger-bars::after {
+      position: absolute; width: 1.25rem; height: 1px; background: currentColor;
+      transition: transform 0.4s var(--ease), background-color 0.25s var(--ease); }
+    .nav-burger-bars { left: 50%; top: 50%; margin: 0 0 0 -0.625rem; }
+    .nav-burger-bars::before { content: ""; left: 0; top: -0.4375rem; }
+    .nav-burger-bars::after  { content: ""; left: 0; top:  0.4375rem; }
+    /* Der mittlere Strich verschwindet ueber die Farbe, NICHT ueber opacity:
+       opacity auf dem Traeger nimmt seine beiden Pseudoelemente mit, und daraus
+       koennen sie sich nicht wieder freistellen - das Kreuz waere unsichtbar. */
+    .nav-burger[aria-expanded="true"] .nav-burger-bars { background: transparent; }
+    .nav-burger[aria-expanded="true"] .nav-burger-bars::before {
+      transform: translateY(0.4375rem) rotate(45deg); }
+    .nav-burger[aria-expanded="true"] .nav-burger-bars::after {
+      transform: translateY(-0.4375rem) rotate(-45deg); }
+    .nav-burger:hover { color: var(--gold); }
+    .nav-burger:focus-visible { outline: 2px solid var(--lilac); outline-offset: 2px; }
+    /* Wer Bewegung abbestellt hat, bekommt Symbol und Overlay ohne Uebergang. */
+    @media (prefers-reduced-motion: reduce) {
+      .nav-burger-bars, .nav-burger-bars::before, .nav-burger-bars::after,
+      .nav-overlay, .nav-overlay-panel { transition: none; }
+    }
+
+    /* Overlay. Grundzustand display:none; sichtbar wird es ausschliesslich, wenn
+       das Skript is-open setzt - ohne JavaScript erscheint es also nie und kann
+       nichts verdecken. Gleiche Bauart wie das Hinweisfenster aus J5.
+       z-index 190 liegt UNTER dem Kopfbalken (200): Wortmarke, Buchungsknopf und
+       Symbol bleiben waehrend der Anzeige an ihrer Stelle sichtbar und bedienbar.
+       Und unter dem Hinweisfenster (400), das im Konfliktfall oben bleibt.
+       Der abgedunkelte Grund ist rgba(58,48,96,0.45), derselbe Wert wie beim
+       Hinweisfenster: --ink mit Deckkraft, kein neuer Hexwert. */
+    .nav-overlay { display: none; position: fixed; inset: 0; z-index: 190;
+      background: rgba(58,48,96,0.45);
+      opacity: 0; transition: opacity 0.45s var(--ease); }
+    .nav-overlay.is-open { display: block; }
+    .nav-overlay.is-visible { opacity: 1; }
+    /* Die Klappe setzt genau unter dem Balken an: 2.2rem Polsterung (2 x 1.1rem)
+       plus 2.75rem Symbolhoehe. Das Symbol ist mit 44px das hoechste Element im
+       Balken - Wortmarke misst 29px, Buchungsknopf 36px -, die Balkenhoehe steht
+       damit fest und der Wert braucht keine Messung zur Laufzeit.
+       Flaeche, Weichzeichner und Trennlinie sind die von nav.scrolled. */
+    .nav-overlay-panel { position: absolute; left: 0; right: 0;
+      top: calc(2.2rem + 2.75rem);
+      max-height: calc(100vh - 2.2rem - 2.75rem); overflow-y: auto;
+      background: rgba(253,248,243,0.96); backdrop-filter: blur(14px);
+      box-shadow: 0 1px 0 rgba(184,145,90,0.15);
+      padding: 1.5rem 1.5rem 2rem;
+      transform: translateY(-0.75rem);
+      transition: transform 0.45s var(--ease); }
+    .nav-overlay.is-visible .nav-overlay-panel { transform: translateY(0); }
+    /* Der Dreiklang steht hier statt im Balken - er passt dort unterhalb von
+       rund 495px nicht mehr neben Wortmarke, Buchungsknopf und Symbol.
+       Laufweite 0.14em wie im Balken, Farbe --lilac-dark wie dort auf hellem
+       Grund. Die Trennlinie ist der Wert der Balkenkante. */
+    .nav-overlay-tagline { font-family: var(--sans); font-size: 0.78rem;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--lilac-dark);
+      padding-bottom: 1rem; border-bottom: 1px solid rgba(184,145,90,0.15); }
+    .nav-overlay-links { list-style: none; }
+    /* 0.9rem oben und unten ergeben mit der Zeile rund 48px Trefferhoehe, damit
+       ueber den 44px der Vorgabe. Schrift, Groesse und Laufweite wie .nav-links a. */
+    .nav-overlay-links a { display: block; font-family: var(--sans);
+      font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--lilac-dark); padding: 0.9rem 0; transition: color 0.3s;
+      border-bottom: 1px solid rgba(184,145,90,0.15); }
+    .nav-overlay-links li:last-child a { border-bottom: 0; }
+    .nav-overlay-links a:hover { color: var(--gold); }
+    .nav-overlay-links a:focus-visible { outline: 2px solid var(--lilac); outline-offset: 2px; }
+
+    /* Solange das Overlay offen ist, traegt der Balken Flaeche und Palette des
+       gescrollten Zustands. Balken und Klappe lesen sich dadurch als eine
+       Flaeche, auch wenn die Seite noch ganz oben auf dem dunklen Hero steht.
+       Saemtliche Werte sind die von nav.scrolled, kein eigener. */
+    nav.is-menu-open { background: rgba(253,248,243,0.96); backdrop-filter: blur(14px);
+      box-shadow: 0 1px 0 rgba(184,145,90,0.15); }
+    nav.is-menu-open .nav-logo { color: var(--lilac); }
+    nav.is-menu-open .nav-logo:hover { color: var(--gold); }
+    nav.is-menu-open .nav-tagline { color: var(--lilac-dark); }
+    nav.is-menu-open .nav-book,
+    nav.is-menu-open .nav-burger { color: var(--lilac-dark); }
+    nav.is-menu-open .nav-book:hover,
+    nav.is-menu-open .nav-burger:hover { color: var(--gold); }
 
     /* HERO — name top left */
     #home-hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; }
@@ -830,14 +940,46 @@
     .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    @media(max-width:900px) {
-      nav { grid-template-columns: 1fr auto; column-gap: 1rem; row-gap: 0.9rem;
-        grid-template-areas: "logo logo" "links book"; padding: 1.1rem 1.5rem; }
-      .nav-brand { grid-area: logo; }
+    /* ---- UMSCHALTPUNKT AUF DAS BURGER-MENUE (L2/L3) ----
+       Unterhalb dieser Breite traegt der Kopf EINE Zeile: Wortmarke links,
+       Buchungsknopf, Symbol rechts aussen. Die waagerechte Menueliste und der
+       Dreiklang treten ab; die Punkte stehen im Overlay, der Dreiklang oben
+       darin.
+       Der Buchungsknopf bleibt ausdruecklich im Balken und wandert NICHT ins
+       Overlay - der Handlungsaufruf soll auf jeder Seite und in jedem Zustand
+       erreichbar bleiben. */
+    @media (max-width: 900px) {
+      nav { grid-template-columns: 1fr auto auto; column-gap: 1rem; row-gap: 0;
+        padding: 1.1rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-brand { grid-column: 1; justify-self: start; text-align: left; }
       .nav-logo { font-size: 1.5rem; }
-      .nav-links { grid-area: links; flex-wrap: wrap; gap: 0.7rem 1.1rem; }
-      .nav-links a, .nav-tagline { font-size: 0.66rem; letter-spacing: 0.12em; }
-      .nav-book { grid-area: book; align-self: center; padding: 0.5rem 1.1rem; }
+      /* Der Dreiklang passt hier nicht mehr daneben - gemessen braucht er 216px
+         Breite, unter rund 495px reicht der Balken dafuer nicht. Damit der Kopf
+         ueber den ganzen Bereich gleich aussieht statt bei einer Zwischenbreite
+         zu springen, tritt er im GANZEN Burger-Bereich ab und steht oben im
+         Overlay. */
+      .nav-tagline { display: none; }
+      .nav-book { grid-column: 2; align-self: center; padding: 0.5rem 1.1rem; }
+      .nav-burger { display: block; grid-column: 3; justify-self: end; }
+    }
+
+    /* Schmale Geraete. Gemessen passen Wortmarke (158px), Buchungsknopf mit
+       vollem Text (172px), Symbol (44px) und Luecken bei 320px nicht in eine
+       Zeile - es fehlen 117px. Deshalb faellt hier " A Session" weg und die
+       Polsterung geht von 1.5rem auf 1rem.
+       Rechnung bei 320px: Inhalt 288px gegen 158 + 61 + 44 + 16 = 279px.
+       0.66rem ist kein neuer Wert, er stand bis L3 im mobilen Kopf. */
+    @media (max-width: 439px) {
+      nav { padding: 1.1rem 1rem; column-gap: 0.5rem; }
+      .nav-book-rest { display: none; }
+      .nav-book { font-size: 0.66rem; padding: 0.5rem 0.7rem; }
+    }
+
+    @media(max-width:900px) {
+      /* Der mehrzeilige mobile Kopf ist mit L3 ersatzlos entfallen. Seine Regeln
+         standen hier; den Kopf uebernimmt jetzt das Burger-Menue. Sein
+         Haltepunkt steht als eigener Block direkt ueber diesem. */
       .hero-content { padding: 12rem 1.5rem 3rem; }
       /* Mobil laeuft die Schrift ueber die volle Breite — ein Quer-Verlauf hilft nicht.
          Stattdessen ein senkrechter Verlauf ueber das ganze Bild, angehoben auf 0.72/0.60/0.78
@@ -1000,7 +1142,7 @@
       /* 1) Kopf statisch — keine Ueberlagerung auf Folgeseiten */
       nav#main-nav { position: static; background: none; padding: 0 0 1.5rem; }
       nav#main-nav .nav-logo { color: var(--ink); }
-      .nav-links, .nav-book { display: none; }
+      .nav-links, .nav-book, .nav-burger, .nav-overlay { display: none !important; }
 
       /* 2) Reveal-Bloecke und die Hero-Einblendung immer sichtbar */
       .reveal, .hero-headline, .hero-bottom { opacity: 1; transform: none; }
@@ -1083,8 +1225,40 @@
     <a class="nav-logo" href="#" onclick="return showPage('home')">Orama Seifert</a>
     <p class="nav-tagline">Luminary · Consultant · Teacher</p>
   </div>
-  <a class="nav-book" href="#" onclick="return showPage('booking')">Book A Session</a>
+  <!-- L2: Der sichtbare Text ist zweigeteilt. Unterhalb von 440px faellt
+       " A Session" weg, sonst passt der Knopf bei 320px nicht mehr neben
+       Wortmarke und Symbol in EINE Zeile. Der Name fuer Bildschirmleser bleibt
+       ueber aria-label in beiden Faellen vollstaendig, und er enthaelt den
+       sichtbaren Text - Bedienung per Sprache bleibt damit moeglich. -->
+  <a class="nav-book" href="#" aria-label="Book a session"
+     onclick="return showPage('booking')">Book<span class="nav-book-rest"> A Session</span></a>
+  <!-- Burger-Symbol. Steht IM Kopf, nicht im Overlay: das Hinweisfenster aus J5
+       setzt den ganzen Kopf auf inert, solange es offen ist, und sperrt damit das
+       Symbol von selbst mit (siehe L4). aria-controls verweist auf die Klappe,
+       aria-expanded und aria-label fuehrt das Skript nach. -->
+  <button type="button" class="nav-burger" id="nav-burger"
+          aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+    <span class="nav-burger-bars" aria-hidden="true"></span>
+  </button>
 </nav>
+
+<!-- Klappe des Burger-Menues. Direktes Kind von <body>, NICHT im Kopf: nav
+     traegt im gescrollten Zustand backdrop-filter, und ein Element mit
+     backdrop-filter wird zum Bezugsrahmen fuer position:fixed darin - die
+     Klappe wuerde dann am Kopf kleben statt am Fenster.
+     Kein Gedaechtnis: der Zustand lebt nur in der Klassenliste, nichts wird im
+     Geraet des Besuchers abgelegt. -->
+<div class="nav-overlay" id="nav-menu">
+  <div class="nav-overlay-panel">
+    <p class="nav-overlay-tagline">Luminary · Consultant · Teacher</p>
+    <ul class="nav-overlay-links">
+      <li><a href="#" onclick="return showPage('about')">About</a></li>
+      <li><a href="#" onclick="return showPage('booking', 'akashic')">Akashic Readings</a></li>
+      <li><a href="#" onclick="return showPage('booking', 'consultation')">One on One</a></li>
+      <li><a href="#" onclick="return showPage('booking', 'workshops')">Courses</a></li>
+    </ul>
+  </div>
+</div>
 
 <!-- HOME -->
 <div id="home-page">
@@ -1802,6 +1976,117 @@
   window.addEventListener('hashchange', routeFromHash);
   routeFromHash();
 
+  /* ---- Burger-Menue (L2) ----
+     Kein Gedaechtnis: der Zustand lebt allein in der Klassenliste und in
+     aria-expanded. Kein Cookie, kein localStorage, kein sessionStorage.
+     closeNavMenu wird hier gesetzt und vom Hinweisfenster weiter unten gerufen,
+     falls beide gleichzeitig aufgehen wollen (L4). */
+  let closeNavMenu = null;
+
+  (function () {
+    const nav     = document.getElementById('main-nav');
+    const burger  = document.getElementById('nav-burger');
+    const overlay = document.getElementById('nav-menu');
+    if (!nav || !burger || !overlay) return;
+    const notice  = document.getElementById('course-notice');
+
+    /* L4, Sperre 1: solange das Hinweisfenster offen ist, geht das Burger-Menue
+       nicht auf. Zwei Fokusfallen gleichzeitig wuerden einander ueberschreiben.
+       Sperre 2 ist baulich: das Hinweisfenster setzt body > nav auf inert, das
+       Symbol ist damit ohnehin weder klickbar noch anspringbar. Die Abfrage hier
+       faengt zusaetzlich jeden Weg ab, der nicht ueber den Klick laeuft. */
+    function noticeOpen() {
+      return !!notice && notice.classList.contains('is-open');
+    }
+
+    /* Alles, was waehrend der Anzeige fuer Bildschirmleser verschwindet und aus
+       der Tabreihenfolge faellt. Der Kopf ist bewusst NICHT als Ganzes dabei:
+       das Symbol muss bedienbar bleiben, sonst liesse sich das Menue nicht mehr
+       schliessen. Die uebrigen Teile des Kopfes stehen einzeln in der Liste. */
+    function restParts() {
+      return Array.prototype.slice.call(
+        document.querySelectorAll('body > div[id$="-page"], body > footer')
+      ).concat(Array.prototype.slice.call(
+        nav.querySelectorAll('.nav-brand, .nav-links, .nav-book')));
+    }
+
+    /* Die Falle umfasst das Symbol und die Punkte der Klappe. Das Symbol gehoert
+       dazu, damit sich das Menue auch mit der Tastatur wieder schliessen laesst. */
+    function focusables() {
+      return [burger].concat(Array.prototype.slice.call(
+        overlay.querySelectorAll('a[href], button:not([disabled])')));
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key !== 'Tab') return;
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+
+    let hidden = [];
+
+    function isOpen() { return burger.getAttribute('aria-expanded') === 'true'; }
+
+    function open() {
+      if (isOpen() || noticeOpen()) return;
+      overlay.classList.add('is-open');
+      nav.classList.add('is-menu-open');
+      hidden = restParts();
+      hidden.forEach(function (el) { el.setAttribute('aria-hidden', 'true'); el.inert = true; });
+      void overlay.offsetWidth;   // Umbruch erzwingen, sonst faellt die Einblendung aus
+      overlay.classList.add('is-visible');
+      burger.setAttribute('aria-expanded', 'true');
+      burger.setAttribute('aria-label', 'Close menu');
+      const erster = overlay.querySelector('a[href]');
+      if (erster) erster.focus();          // Fokus wandert in die Klappe
+      document.addEventListener('keydown', onKey);
+    }
+
+    /* zurueck === false: schliessen, ohne den Fokus zu setzen. Gebraucht, wenn das
+       Symbol im selben Augenblick verschwindet (Fenster wird breiter) oder wenn
+       das Hinweisfenster den Fokus gleich selbst uebernimmt. */
+    function close(zurueck) {
+      if (!isOpen()) return;
+      document.removeEventListener('keydown', onKey);
+      overlay.classList.remove('is-open', 'is-visible');
+      nav.classList.remove('is-menu-open');
+      hidden.forEach(function (el) { el.removeAttribute('aria-hidden'); el.inert = false; });
+      hidden = [];
+      burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Open menu');
+      if (zurueck !== false) burger.focus();   // Fokus zurueck auf das Symbol
+    }
+
+    closeNavMenu = function () { close(false); };
+
+    // Weg 1 zum Schliessen: erneutes Antippen des Symbols
+    burger.addEventListener('click', function () { isOpen() ? close() : open(); });
+    /* Weg 2: Klick auf den abgedunkelten Grund, nicht auf die Klappe darin.
+       preventDefault ist noetig: ohne ihn setzt der Browser den Fokus im Anschluss
+       an mousedown auf das angeklickte Element und ueberschreibt damit den
+       Ruecksprung auf das Symbol. Gemessen landete der Fokus sonst auf <body>. */
+    overlay.addEventListener('mousedown', function (e) {
+      if (e.target !== overlay) return;
+      e.preventDefault();
+      close();
+    });
+    // Weg 3: Esc - steht in onKey
+    // Ein gewaehlter Punkt schliesst mit. showPage laeuft ueber das onclick im
+    // Markup und ist zu diesem Zeitpunkt schon durch.
+    overlay.querySelectorAll('a[href]').forEach(function (a) {
+      a.addEventListener('click', function () { close(); });
+    });
+    /* Wird das Fenster ueber den Umschaltpunkt hinaus breiter, verschwindet das
+       Symbol. Ein offenes Menue bliebe sonst als Klappe stehen. */
+    window.addEventListener('resize', function () {
+      if (isOpen() && getComputedStyle(burger).display === 'none') close(false);
+    });
+  })();
+
   /* ---- Hinweisfenster fuer kommende Kurse ----
      Kein Gedaechtnis: kein Cookie, kein localStorage, kein sessionStorage. Das
      Fenster erscheint bei jedem Laden der Startseite neu und ist nach dem
@@ -1847,6 +2132,11 @@
     function show() {
       // Anzeigebedingung 2: nur auf der Startseite
       if (document.body.dataset.page !== 'home') return;
+      /* L4: Sollte das Burger-Menue in den 800 ms bis hierher geoeffnet worden
+         sein, wird es zuerst geschlossen - ohne Fokusruecksprung, denn das
+         Hinweisfenster setzt den Fokus gleich darauf selbst. Danach kann nur
+         noch eine Fokusfalle aktiv sein. */
+      if (closeNavMenu) closeNavMenu();
       overlay.classList.add('is-open');
       rest.forEach(function (el) { el.setAttribute('aria-hidden', 'true'); el.inert = true; });
       void overlay.offsetWidth;   // Umbruch erzwingen, sonst faellt die Einblendung aus
