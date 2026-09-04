@@ -1084,8 +1084,34 @@
          Bei 768px bleibt ein vorbestehender Versatz von -36 px: dort gibt es keinen
          waagerechten Beschnitt, den eine Verschiebung nutzen koennte, und die Desktopregel
          wuerde 390px kaputtmachen. Das braeuchte einen eigenen Haltepunkt — nicht beauftragt. */
-      .testimonials { padding: 5rem 1.25rem;
+      /* O2: Die Hoehe des Abschnitts haengt nicht mehr an der Fensterhoehe.
+         Die Grundregel setzt min-height: 70vh — damit richtete sich der Abschnitt
+         nach dem Geraet statt nach seinem Inhalt: 397,6px bei 320x568 (der Inhalt
+         sprengte ihn auf 727,2px), 716,8px bei 768x1024 (fast die Haelfte leer).
+         Hier zaehlt stattdessen die Breite des Abschnitts. Das haelt zweierlei
+         zusammen:
+         a) den Fensterrahmen. window.jpg ist quadratisch und liegt als cover
+            darunter; der Rahmen (waagerecht 22-83 %, senkrecht 14-88 % des Motivs)
+            bleibt nur vollstaendig sichtbar, solange das Seitenverhaeltnis des
+            Abschnitts zwischen 0,81 und 1,52 (Hoehe/Breite) liegt. Bei 320px war
+            es 2,27 — beide Rahmenpfosten fielen heraus, uebrig blieben zwei dunkle
+            Balken. 90vw legt das Verhaeltnis auf 0,90, wo der Inhalt nicht mehr
+            verlangt.
+         b) die Hoehe je Zitat. min-height, nicht height: wo das laengste Zitat mehr
+            braucht (320 und 390px), gibt es die Hoehe vor. Alle sechs Zitate liegen
+            als Raster uebereinander in derselben Zelle (.carousel-track), die Zelle
+            ist daher immer so hoch wie das laengste — die Hoehe springt beim
+            Weiterklicken nicht. */
+      .testimonials { padding: 5rem 1.25rem; min-height: 90vw;
         background-position: 0% 0%, 50% 38%; background-size: auto, cover; }
+      /* O2: Unter 480px wird die Zitatschrift kleiner. Noetig, weil das laengste
+         Zitat (264 Zeichen) bei 320px sonst 13 Zeilen zu 24px braucht: der Abschnitt
+         waere 727,2px hoch und der Fensterrahmen damit weg (siehe oben). Mit 5vw
+         sind es 16px und 451,2px Hoehe, Verhaeltnis 1,41 — der Rahmen bleibt ganz.
+         Nebenher ruecken die Zeilen naeher an die Regel 60-75 Zeichen: bei 320px von
+         20,3 auf 33 Zeichen je Zeile. Ab 480px bleiben die 1.5rem des Bestands
+         unveraendert, min() greift dort nicht mehr. */
+      .carousel-quote { font-size: min(1.5rem, 5vw); }
       .carousel { gap: 0.4rem; }
       .carousel-arrow { padding: 0.35rem; }
       .carousel-arrow svg { width: 22px; height: 22px; }
