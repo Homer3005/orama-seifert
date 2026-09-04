@@ -1184,10 +1184,18 @@
          900px) bleibt der Block unveraendert. */
       .group-text { order: 1; }
       .group-img  { order: 2; }
-      /* Mobil deckelt schon 60vw die Hoehe, der Desktop-Ausschnitt aus C4 wird hier nicht
-         gebraucht: bei 390px ist der Ausschnitt so flach, dass 17 % die Fingerspitzen der
-         erhobenen Hand oben abschneiden wuerden. Deshalb zurueck auf mittig. */
-      .group-img { height: 60vw; }
+      /* O3: Das Bild nimmt gestapelt die volle Breite ein. Bis hierher stand
+         height: 60vw neben dem aspect-ratio: 1400/1045 der Grundregel. Beides zusammen
+         ergibt eine feste Hoehe UND ein festes Verhaeltnis — das Rasterkind konnte sich
+         dann nicht mehr auf die Spaltenbreite strecken und blieb bei 80,38 % stehen
+         (313,48 von 390px), rechts blieben 76,52px Cremegrund frei.
+         Jetzt gibt allein das Seitenverhaeltnis die Hoehe vor: die Breite streckt sich
+         auf die volle Spalte, die Hoehe folgt mit Breite / (1400/1045).
+         Der Block wird dadurch um rund ein Viertel der Bildhoehe hoeher.
+         Der Ausschnitt bleibt unveraendert mittig (Regel darunter): bei 390px ist der
+         Ausschnitt so flach, dass die 17 % aus C4 die Fingerspitzen der erhobenen Hand
+         oben abschneiden wuerden. */
+      .group-img { height: auto; }
       .group-img img { object-position: center; }
       .group-text { padding: 3rem 2rem; }
       .closing-cta { padding: 5rem 2rem; }
