@@ -439,11 +439,33 @@
       color: var(--cream); margin-bottom: 1.2rem; line-height: 1.2; }
     .offer-desc { font-size: 1rem; line-height: 1.8; color: rgba(253,248,243,0.85);
       margin-bottom: 2rem; flex: 1; }
+    /* K18: Stil vollstaendig vom Send-Message-Knopf des Kontaktformulars
+       uebernommen (.contact-form-block button.btn-filled). Der dient nur als
+       Vorlage und bleibt selbst unangetastet.
+       Uebernommen: Fuellung --gold, Schrift --white, Rahmen 1px --gold,
+       Rundung 4px, Innenabstand 0.9rem/2.2rem, Groesse 0.72rem/0.2em Versalien,
+       Ueberfahren --ink fuer Flaeche und Rahmen.
+       Schriftschnitt 400 statt bisher 300: der Send-Message-Knopf ist ein
+       <button> und erbt font-weight nicht von body, sondern nimmt die 400 des
+       Browsers. Das ist kein gesetzter Entwurfswert, sondern ein Nebeneffekt -
+       hier bewusst mituebernommen, weil der Auftrag den Schriftschnitt der
+       Vorlage nennt. Wer die Vorlage spaeter auf 300 stellt, stellt hier mit.
+       NICHT uebernommen: min-width 11rem bleibt. Der Wert gehoert nicht zum
+       Knopfstil, sondern haelt die vier Karten des Rasters auf gleicher
+       Knopfbreite ("Book" / "See offers" / "Know more"). Die Vorlage steht
+       allein im Formular und braucht ihn nicht.
+       Kontrast der Vorlage, gemessen und uebernommen: Ruhe --white auf --gold
+       2.90:1, unter der Grenze 4.5:1. Ueberfahren --white auf --ink 11.85:1.
+       Der niedrige Ruhewert ist gemeldet und bewusst so entschieden.
+       Zweiter Messwert, siehe Bericht: beim Ueberfahren faellt die Fuellung mit
+       dem Kartengrund zusammen (Karte rgba(58,48,96,0.9), Knopf --ink deckend).
+       Der Knopf verliert dort seine Kontur und steht als reine Schrift. */
     .offer-btn { display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--cream); background: transparent; padding: 0.9rem 2rem;
-      border: 1px solid rgba(253,248,243,0.6); border-radius: 4px; transition: all 0.3s; align-self: flex-start;
+      font-weight: 400;
+      color: var(--white); background: var(--gold); padding: 0.9rem 2.2rem;
+      border: 1px solid var(--gold); border-radius: 4px; transition: all 0.3s; align-self: flex-start;
       white-space: nowrap; text-align: center; min-width: 11rem; }
-    .offer-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+    .offer-btn:hover { background: var(--ink); border-color: var(--ink); }
 
     /* ABOUT TEASER */
     /* min-height von 75vh auf 62vh: kuerzere Spalte -> weniger Zoom, das Motiv wird weiter
