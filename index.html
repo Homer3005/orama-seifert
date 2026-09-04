@@ -541,14 +541,24 @@
     .offerings-head .eyebrow { color: var(--lilac); }
     .offerings-head .offerings-title { color: var(--gold); font-size: clamp(1.55rem, 2.9vw, 2.5rem);
       max-width: 640px; margin: 0 auto; text-wrap: balance; hyphens: none; }
-    /* M2: Grundgroesse der Preline um 15 % angehoben, 0.7rem -> 0.805rem
-       (11,2 px -> 12,88 px). Laufweite bleibt bei 0.28em und Schnitt bei 300 —
-       beide Deklarationen sind unveraendert. Die Laufweite steht in em und
-       waechst deshalb im selben Verhaeltnis mit (3,136 px -> 3,606 px).
-       Die Zeilenhoehe ist hier nicht gesetzt (normal) und folgt der Groesse
-       ohne eigene Regel. */
-    .eyebrow { font-size: 0.805rem; letter-spacing: 0.28em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1.2rem; }
+    /* N1: Die Grundregel der Preline ist in zwei Regeln geteilt.
+       Grund ist der Spezifitaetsfehler, den K20 nur eingefroren hat: .eyebrow ist
+       (0,1,0) und verliert damit gegen jede Absatzregel eines Traegers, etwa
+       .about-page-body p mit (0,1,1). Die Preline rendert dann in den Werten des
+       Traegerabsatzes statt in ihren eigenen.
+       Der Klassenname steht deshalb im Selektor doppelt: .eyebrow.eyebrow trifft
+       genau dieselben Elemente wie .eyebrow, zaehlt aber als (0,2,0) und schlaegt
+       die Absatzregeln. Kein !important, keine Aenderung am HTML.
+       Die FARBE bleibt bewusst in der Regel mit (0,1,0). Sie wird in vier Traegern
+       heute von der Absatzregel bestimmt; ein Hochziehen wuerde dort die Farbe
+       aendern, und dieser Block aendert keine Farbe. Der Fehler besteht fuer die
+       Farbe damit fort und ist im Bericht zu N1 aufgefuehrt.
+       Die Zeilenhoehe steht hier weiterhin NICHT: sie ist normal und haengt an den
+       Schriftmetriken; ein Zahlenwert wuerde die Zeilenhoehe um Bruchteile eines
+       Pixels verschieben. In den vier Traegern ist sie einzeln festgehalten. */
+    .eyebrow { color: var(--gold); }
+    .eyebrow.eyebrow { font-size: 0.805rem; letter-spacing: 0.28em; text-transform: uppercase;
+      margin-bottom: 1.2rem; }
     /* K20, Sperre gegen Uebergriff. Kein Entwurfswert, reine Absicherung.
        .eyebrow und .legal-variant-label sind Ueberschriftzeilen und fallen NICHT
        unter Fliesstext. Sie sind aber als <p> ausgezeichnet und werden von den
@@ -563,13 +573,25 @@
        einheitenlos, das Verhaeltnis bleibt damit erhalten.
        Behebung waere je Zeile ein Einzeiler auf 0.7rem bzw. 0.75rem.
        Nicht eigenmaechtig gesetzt, gemeldet. */
-    /* M2: Diese vier Zeilen standen auf drei verschiedenen Groessen. Jede ist
-       einzeln um 15 % angehoben, KEIN gemeinsamer Wert. Die Zeilenhoehe kommt
-       einheitenlos aus der jeweiligen Traegerregel und waechst mit. */
-    .about-page-body .eyebrow   { font-size: 1.2075rem; }  /* 16,8 px -> 19,32 px */
-    .booking-page-hero .eyebrow { font-size: 1.2075rem; }  /* 16,8 px -> 19,32 px */
-    .thanks-page-body .eyebrow  { font-size: 1.2075rem; }  /* 16,8 px -> 19,32 px */
-    .booking-inline .eyebrow    { font-size: 1.0925rem; }  /* 15,2 px -> 17,48 px */
+    /* Die vier Prelines mit eigener Groesse. Sie standen auf drei verschiedenen
+       Werten (M2), das bleibt so.
+       N1 aendert hier zweierlei, beides ohne sichtbare Folge:
+       1. Doppelter Klassenname, also (0,3,0) statt (0,2,0). Damit steht die Regel
+          sicher ueber der Absatzregel des Traegers, auch fuer Eigenschaften, die
+          bisher von dort kamen.
+       2. Die Zeilenhoehe ist ausdruecklich gesetzt. Sie kam bisher einheitenlos aus
+          der Absatzregel des Traegers; die Werte sind von dort uebernommen und
+          unveraendert, die gerenderte Zeilenhoehe bleibt auf den Pixel gleich.
+       .booking-inline: dort setzt .booking-inline p ein margin: 0 auto, das der
+       Preline bisher jeden Abstand nach unten nahm. Seit die Grundregel (0,2,0)
+       traegt, wuerde sie mit 1.2rem durchgreifen — der Nullwert ist deshalb hier
+       ausdruecklich festgehalten. Waagerechte Zentrierung und max-width kommen
+       weiterhin aus der Absatzregel und sind unveraendert. */
+    .about-page-body .eyebrow.eyebrow   { font-size: 1.2075rem; line-height: 1.95; }  /* 19,32 px / 37,674 px */
+    .booking-page-hero .eyebrow.eyebrow { font-size: 1.2075rem; line-height: 1.8; }   /* 19,32 px / 34,776 px */
+    .thanks-page-body .eyebrow.eyebrow  { font-size: 1.2075rem; line-height: 1.8; }   /* 19,32 px / 34,776 px */
+    .booking-inline .eyebrow.eyebrow    { font-size: 1.0925rem; line-height: 1.7;     /* 17,48 px / 29,716 px */
+      margin-bottom: 0; }
     .legal-page-body .legal-variant-label { font-size: 1.02rem; }  /* Bestand 16.32px */
     .section-title { font-family: var(--serif); font-size: clamp(2.2rem, 3.5vw, 3.4rem);
       font-weight: 400; line-height: 1.15; color: var(--lilac); }
