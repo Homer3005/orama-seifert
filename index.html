@@ -546,7 +546,13 @@
  /* .offerings-head .eyebrow { color: var(--lilac); } */ /* Variante B - Alternative */
     .offerings-head .offerings-title { color: var(--ink); font-size: clamp(1.55rem, 2.9vw, 2.5rem);
       max-width: 640px; margin: 0 auto; text-wrap: balance; hyphens: none; }
-    .eyebrow { font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
+    /* M2: Grundgroesse der Preline um 15 % angehoben, 0.7rem -> 0.805rem
+       (11,2 px -> 12,88 px). Laufweite bleibt bei 0.28em und Schnitt bei 300 —
+       beide Deklarationen sind unveraendert. Die Laufweite steht in em und
+       waechst deshalb im selben Verhaeltnis mit (3,136 px -> 3,606 px).
+       Die Zeilenhoehe ist hier nicht gesetzt (normal) und folgt der Groesse
+       ohne eigene Regel. */
+    .eyebrow { font-size: 0.805rem; letter-spacing: 0.28em; text-transform: uppercase;
       color: var(--gold); margin-bottom: 1.2rem; }
     /* K20, Sperre gegen Uebergriff. Kein Entwurfswert, reine Absicherung.
        .eyebrow und .legal-variant-label sind Ueberschriftzeilen und fallen NICHT
@@ -562,10 +568,13 @@
        einheitenlos, das Verhaeltnis bleibt damit erhalten.
        Behebung waere je Zeile ein Einzeiler auf 0.7rem bzw. 0.75rem.
        Nicht eigenmaechtig gesetzt, gemeldet. */
-    .about-page-body .eyebrow   { font-size: 1.05rem; }  /* Bestand 16.8px */
-    .booking-page-hero .eyebrow { font-size: 1.05rem; }  /* Bestand 16.8px */
-    .thanks-page-body .eyebrow  { font-size: 1.05rem; }  /* Bestand 16.8px */
-    .booking-inline .eyebrow    { font-size: 0.95rem; }  /* Bestand 15.2px */
+    /* M2: Diese vier Zeilen standen auf drei verschiedenen Groessen. Jede ist
+       einzeln um 15 % angehoben, KEIN gemeinsamer Wert. Die Zeilenhoehe kommt
+       einheitenlos aus der jeweiligen Traegerregel und waechst mit. */
+    .about-page-body .eyebrow   { font-size: 1.2075rem; }  /* 16,8 px -> 19,32 px */
+    .booking-page-hero .eyebrow { font-size: 1.2075rem; }  /* 16,8 px -> 19,32 px */
+    .thanks-page-body .eyebrow  { font-size: 1.2075rem; }  /* 16,8 px -> 19,32 px */
+    .booking-inline .eyebrow    { font-size: 1.0925rem; }  /* 15,2 px -> 17,48 px */
     .legal-page-body .legal-variant-label { font-size: 1.02rem; }  /* Bestand 16.32px */
     .section-title { font-family: var(--serif); font-size: clamp(2.2rem, 3.5vw, 3.4rem);
       font-weight: 400; line-height: 1.15; color: var(--lilac); }
