@@ -1228,6 +1228,117 @@
       .notice-title { font-size: 1.5rem; }
     }
 
+    /* ================= P1 — TITELBEREICH UNTERHALB VON 900px =================
+       Die Kundin will keine Farbueberlagerung auf ihrem Bild. Das geht nur, wenn
+       Text und Bild sich nicht mehr ueberlagern. Der Titelbereich zerfaellt hier
+       deshalb in zwei Teile: oben das Foto ohne alles, darunter Headline und
+       Fliesstext auf dem cremefarbenen Grund der Seite.
+
+       HALTEPUNKT 899.98px, NICHT 900px. Der Auftrag verlangt, dass bei genau
+       900px alles unveraendert bleibt. Der Layout-Haltepunkt des Bestands
+       (max-width: 900px) SCHLIESST 900px EIN — dort steht heute das mobile
+       Layout ueber dem Querformat hero-v2.jpg. Diese Regeln liegen deshalb in
+       einem eigenen Block mit derselben Grenze wie die Bildquelle in <picture>
+       (max-width: 899.98px) und stehen NACH dem 900er-Block, damit sie ihn
+       unterhalb von 900px schlagen. Bei genau 900px greift weiterhin allein der
+       Bestand. */
+    @media (max-width: 899.98px) {
+
+      /* Der Kopf liegt nicht mehr ueber dem Bild. Das Bild beginnt unter ihm.
+         4.95rem ist die gemessene Hoehe des Kopfbalkens in diesem Bereich und
+         kein freier Wert: Polsterung 1.1rem oben + Symbol 2.75rem + Polsterung
+         1.1rem unten = 4.95rem = 79.2px. Das Symbol ist das hoechste Element im
+         Balken (Wortmarke 1.5rem, Buchungsknopf kleiner), die Hoehe ist damit
+         ueber den ganzen Bereich von 320px bis 899px konstant.
+         Die Flaeche unter dem Kopf traegt keinen eigenen Grund — dort steht der
+         cremefarbene Grund des body, auf dem der Kopf seinen zweiten Farbzustand
+         einnimmt (siehe unten). */
+      #home-hero { display: block; min-height: 0; padding-top: 4.95rem; }
+
+      /* DAS BILD. Ohne Abdunklung, ohne Verlauf, ohne Farbebene — .hero-overlay
+         ist unterhalb dieser Breite ersatzlos abgeschaltet.
+         Der Rahmen tritt aus der Ueberlagerung heraus (position: absolute; inset: 0)
+         und steht als eigener Block im Fluss. position: relative bleibt, weil das
+         Bild darin absolut sitzt.
+
+         AUSSCHNITT, in Bildpunkten der Datei hero-hoch.jpg (1000 x 1498):
+           waagerecht  x 150 bis 750   (600 von 1000)
+           senkrecht   y 698 bis 1498  (800 von 1498, bis zur Unterkante)
+         Das Fenster ist 600 x 800 gross, sein Seitenverhaeltnis 3:4 traegt der
+         Rahmen. Weil Rahmenbreite und Bildbreite im selben Verhaeltnis wachsen,
+         ist der Ausschnitt auf JEDER Breite von 320px bis 899px derselbe.
+
+         Darin liegen vollstaendig:
+           Haar und Kopf   x 300-530, y  745-1010
+           Gesicht         x 340-470, y  820- 960
+           Oberkoerper     x 175-600, y  975-1310
+           Laptop          x 365-710, y 1118-1345
+         Luft ringsum: 25px links, 40px rechts, 47px ueber dem Haaransatz.
+
+         Die Rechnung fuer die drei Werte am Bild:
+           width  = 1000/600 = 166.667 %  der Rahmenbreite
+           left   = -150/600 = -25 %      schiebt x=150 auf die linke Kante
+           bottom = 0                     legt y=1498 auf die untere Kante
+         height: auto laesst das Bild seinem eigenen Verhaeltnis folgen; die
+         Angaben width/height am <source> (1000/1498) liefern es. object-fit
+         wird damit gegenstandslos und faellt weg — es gibt keinen Fit mehr,
+         das Bild ist von Hand gesetzt.
+
+         Das Bild wird dadurch groesser dargestellt als bisher. Massstab neu
+         Rahmenbreite/600 gegen alt (gemessen), je Pruefbreite:
+           320px  0.533 gegen 0.524   (+1.8 %)
+           390px  0.650 gegen 0.563   (+15.4 %)
+           560px  0.933 gegen 0.601   (+55.3 %)
+           768px  1.280 gegen 0.768   (+66.7 %)
+           899px  1.498 gegen 0.899   (+66.7 %) */
+      .hero-overlay { display: none; }
+      .hero-bg-full { position: relative; inset: auto; aspect-ratio: 3 / 4; }
+      .hero-bg-full picture { display: block; height: auto; }
+      .hero-bg-full img { position: absolute; bottom: 0; left: -25%;
+        width: 166.667%; height: auto; object-fit: fill; }
+
+      /* DER TEXT DARUNTER, auf dem cremefarbenen Grund der Seite.
+         Die Abstaende sind die der Vorlage aus Block M (.about-text-side):
+         Polsterung 4rem 2rem, Headline 1.8rem Abstand nach unten.
+         Die Ueberlagerung ist aufgeloest, also entfaellt alles, was sie getragen
+         hat: die Bildschirmhoehe, die Verteilung ueber die volle Hoehe und die
+         12rem Kopfpolsterung, die den Text unter dem Kopf hielt. */
+      .hero-content { position: static; min-height: 0; display: block;
+        padding: 4rem 2rem; }
+
+      /* Die weisse Schrift entfaellt: es gibt auf schmalen Breiten keinen dunklen
+         Grund mehr. Die Farben sind die, die Textbloecke auf hellem Grund auf
+         dieser Seite ohnehin tragen — .section-title in --lilac, ihr em in
+         --gold, der Fliesstext im Ton von .about-body (#6a5a7a).
+         Der Kopfabstand der Headline (3rem) und der Fussabstand des Textes (3rem)
+         stammen aus der Verteilung ueber die volle Bildhoehe und fallen mit ihr
+         weg. Schriftgrad und Zeilenhoehe bleiben unangetastet. */
+      .hero-headline { margin-top: 0; margin-bottom: 1.8rem; color: var(--lilac); }
+      .hero-headline em { color: var(--gold); }
+      .hero-bottom { margin-bottom: 0; }
+      .hero-body { color: #6a5a7a; }
+
+      /* DER KOPF. Ohne Abdunklung stuende die weisse Schrift des ersten
+         Farbzustands auf hellem Grund und waere unlesbar. Der Kopf steht hier
+         nicht mehr ueber dem Bild, sondern auf dem cremefarbenen Grund der Seite
+         und nimmt deshalb den Farbzustand ein, den er auf hellem Grund schon
+         heute hat: Fall 2 aus Block I, Wortmarke --lilac, Kleintext und Symbol
+         --lilac-dark, Ueberfahren --gold. Kein neuer Farbwert.
+         Gilt nur fuer den ungescrollten Zustand; der gescrollte cremefarbene
+         Balken (nav.scrolled) bleibt unberuehrt.
+         Die Werte sind dieselben wie im Zustand "Menue offen" — die beiden
+         Regelgruppen koennen sich daher nicht widersprechen. */
+      body[data-page="home"] nav:not(.scrolled) .nav-logo { color: var(--lilac); }
+      body[data-page="home"] nav:not(.scrolled) .nav-links a,
+      body[data-page="home"] nav:not(.scrolled) .nav-book,
+      body[data-page="home"] nav:not(.scrolled) .nav-burger,
+      body[data-page="home"] nav:not(.scrolled) .nav-tagline { color: var(--lilac-dark); }
+      body[data-page="home"] nav:not(.scrolled) .nav-logo:hover,
+      body[data-page="home"] nav:not(.scrolled) .nav-links a:hover,
+      body[data-page="home"] nav:not(.scrolled) .nav-book:hover,
+      body[data-page="home"] nav:not(.scrolled) .nav-burger:hover { color: var(--gold); }
+    }
+
     /* ================= DRUCK =================
        Die Seite wird von der Kundin aus dem Browser als PDF gedruckt und darauf korrigiert.
        Drei Defekte im Ausdruck vom 23.07., die hier repariert werden:
@@ -1262,6 +1373,13 @@
       #home-hero, #offerings, .testimonials, .closing-cta, footer,
       .group-text, .about-text-side { background: none; }
       #home-hero, .testimonials, .group-feature, #about-teaser { min-height: 0; }
+      /* P1: Der Kopfabstand von 4.95rem haelt am Bildschirm das Titelbild unter dem
+         fixierten Kopfbalken frei. Im Ausdruck steht der Balken statisch im Fluss
+         (Regel 1 oben) und das Titelbild ist ausgeblendet — der Abstand waere dort
+         nur eine leere Zeile von 79px am Seitenanfang. Die Papierbreite liegt bei
+         A4 mit den Raendern dieser Seite bei rund 690px, der Haltepunkt 899.98px
+         greift im Ausdruck also mit. */
+      #home-hero { padding-top: 0; }
       .hero-content { min-height: 0; padding: 0 0 2rem; }
       .about-page-hero { height: auto; min-height: 0; }
       .offerings-head .eyebrow, .footer-logo, .footer-col h4 { color: var(--lilac); }
