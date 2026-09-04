@@ -520,31 +520,26 @@
           rgba(255,255,255,0.001) 97.5%,
           rgba(255,255,255,0.000) 100%); }
     /* Der Grund ist jetzt hell, Cream waere unlesbar -> Kopftext auf --ink. */
-    /* K19: Die Kundin vermisst eine Absetzung der Ueberschrift "Choose Your
-       Guidance" gegen den uebrigen Abschnitt. Sie stand bis hier auf --ink, also
-       auf derselben Farbe wie die Ueberschrift darunter. Ueberall sonst auf der
-       Seite traegt .eyebrow --gold (Grundregel weiter unten); allein hier war sie
-       auf --ink umgestellt. Variante A stellt damit den Hausstand wieder her.
+    /* M3 loest die Variantenwahl aus K19 endgueltig auf. K19 hatte fuer die Preline
+       zwei Varianten gebaut, A (--gold) aktiv und B (--lilac) auskommentiert
+       daneben. Die Entscheidung ist gefallen: die Preline steht auf --lilac, das
+       ist der Wert der frueheren Variante B; die auskommentierte Zeile ist damit
+       gegenstandslos und entfernt. Die Headline wechselt von --ink auf --gold.
 
-       Gemessen am Bildschirmfoto gegen den tatsaechlichen Grund des Abschnitts:
-       Graeserfoto + Cream-Schleier 0.65 + die weisse Lesbarkeitsflaeche von
-       .offerings-head::before. Text ausgeblendet, hellster Bildpunkt unter der
-       Zeile, je 9 Scrollpositionen wegen der Parallaxe, Breiten 390/768/1024/
-       1440/1920. Unguenstigster Wert ueber alle Breiten:
-         Variante A  --gold    2.40:1
-         Variante B  --lilac   3.18:1
-         (Bestand    --ink     9.80:1)
-       ACHTUNG: Der Auftrag fuehrt diese Zeile als Grosstext mit Grenze 3:1. Das
-       trifft auf sie nicht zu - sie misst 11.2px bei Schnitt 300 und ist damit
-       Kleintext, Grenze 4.5:1. Keine der beiden Varianten erreicht 4.5:1;
-       Variante A verfehlt auch die 3:1 des Auftrags. Beide Varianten sind
-       trotzdem wie beauftragt gebaut, die Werte sind gemeldet.
-
-       TAUSCH A <-> B: die aktive Zeile auskommentieren, die auskommentierte
-       Zeile freistellen. Genau zwei Zeilen, sonst nichts. */
-    .offerings-head .eyebrow { color: var(--gold); }    /* Variante A - aktiv */
- /* .offerings-head .eyebrow { color: var(--lilac); } */ /* Variante B - Alternative */
-    .offerings-head .offerings-title { color: var(--ink); font-size: clamp(1.55rem, 2.9vw, 2.5rem);
+       Gemessen wird am Bildschirmfoto gegen den tatsaechlichen Grund des
+       Abschnitts: Graeserfoto + Cream-Schleier 0.65 + die weisse Lesbarkeits-
+       flaeche von .offerings-head::before. Text ausgeblendet, dann JEDER Bildpunkt
+       des Zeilenkastens gegen die Textfarbe gerechnet und der schlechteste
+       genommen — nicht nur der hellste wie in K19, deshalb faellt der Wert fuer
+       --gold hier niedriger aus als die dort protokollierten 2.40:1. Je 9 Scroll-
+       positionen wegen der Parallaxe, Breiten 390/768/1024/1440/1920, Kopf jeweils
+       vollstaendig unter der Navigation. Schlechtester Wert ueber alle Breiten:
+         Preline   --lilac auf dem Grund   2.60:1   (vorher --gold  1.96:1)
+         Headline  --gold  auf dem Grund   1.96:1   (vorher --ink   8.03:1)
+       Beide Zeilen liegen damit unter 4.5:1, beide auch unter 3:1. Das ist
+       gemessen, gemeldet und ausdruecklich in Kauf genommen. Nicht korrigieren. */
+    .offerings-head .eyebrow { color: var(--lilac); }
+    .offerings-head .offerings-title { color: var(--gold); font-size: clamp(1.55rem, 2.9vw, 2.5rem);
       max-width: 640px; margin: 0 auto; text-wrap: balance; hyphens: none; }
     /* M2: Grundgroesse der Preline um 15 % angehoben, 0.7rem -> 0.805rem
        (11,2 px -> 12,88 px). Laufweite bleibt bei 0.28em und Schnitt bei 300 —
