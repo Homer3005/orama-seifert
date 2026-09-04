@@ -376,12 +376,19 @@
        und Horizont und Huegel fallen aus dem Ausschnitt. Waagerecht ist beides gleichwertig
        (top -5 px, 38 % +2 px), deshalb der Wert, der das Motiv haelt.
        max(...) faengt schmale, sehr hohe Desktopfenster ab, wo 105 % der Breite nicht mehr
-       bis zur Unterkante reichen wuerde. */
+       bis zur Unterkante reichen wuerde.
+
+       P3: beide Glieder um 10 Prozent angehoben, 105 % -> 115,5 % und 80vh -> 88vh.
+       Die Datei bleibt unberuehrt, es geht allein um die Darstellungsgroesse.
+       Der Ankerpunkt bleibt unveraendert (rechts, senkrecht 38 %); das Bild waechst
+       damit weiterhin nach links und der Beschnitt verteilt sich wie bisher.
+       Auf die Hoehe des Abschnitts wirkt das nicht — ein Hintergrundbild traegt
+       keine Groesse in das Layout. */
     .testimonials { position: relative; min-height: 70vh;
       display: flex; flex-direction: column; justify-content: center;
       background:
         linear-gradient(180deg, rgba(253,248,243,0) 0%, rgba(253,248,243,0.55) 50%, rgba(253,248,243,0) 100%),
-        url("images/window.jpg") right 38% / max(105%, 80vh) no-repeat;
+        url("images/window.jpg") right 38% / max(115.5%, 88vh) no-repeat;
       padding: 7rem 5rem; text-align: center; }
     .carousel { position: relative; max-width: 900px; margin: 0 auto;
       display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
@@ -1114,8 +1121,26 @@
             als Raster uebereinander in derselben Zelle (.carousel-track), die Zelle
             ist daher immer so hoch wie das laengste — die Hoehe springt beim
             Weiterklicken nicht. */
+      /* P3: cover ist hier durch einen Zahlenwert ersetzt, weil "cover mal 1,1"
+         in CSS nicht schreibbar ist. cover heisst bei einem quadratischen Motiv
+         "die groessere der beiden Kanten des Abschnitts". Welche das ist, haengt
+         allein an der Breite: die Hoehe ist max(90vw, Inhalt), und der Inhalt
+         haengt seinerseits nur an der Breite.
+         Gemessen in Schritten von 1px ueber den ganzen Bereich 320-899px:
+           bis 495px    ist der Abschnitt HOEHER als breit (320px: 451,2 zu 320)
+           ab  496px    ist er BREITER als hoch (H = 495,2 zu 496)
+         Darum zwei Werte, die Grenze steht im eigenen Block darunter:
+           hier, ab 496px:   110 %       = 1,1 x Breite
+           dort, bis 495px:  auto 110 %  = 1,1 x Hoehe (auto haelt das Quadrat)
+         An der Grenze fallen beide Werte praktisch zusammen (545,6 gegen 544,7px),
+         der Uebergang ist deshalb nicht sichtbar. Beide Werte decken den Abschnitt
+         mit Reserve: der Wechselpunkt ist nicht scharf, weil dort Breite und Hoehe
+         ohnehin fast gleich sind.
+         Ankerpunkt 50% 38% unveraendert. Die Hoehe des Abschnitts bleibt, wie in
+         Block O festgesetzt, unberuehrt — ein Hintergrundbild traegt keine Groesse
+         in das Layout. */
       .testimonials { padding: 5rem 1.25rem; min-height: 90vw;
-        background-position: 0% 0%, 50% 38%; background-size: auto, cover; }
+        background-position: 0% 0%, 50% 38%; background-size: auto, 110%; }
       /* O2: Unter 480px wird die Zitatschrift kleiner. Noetig, weil das laengste
          Zitat (264 Zeichen) bei 320px sonst 13 Zeilen zu 24px braucht: der Abschnitt
          waere 727,2px hoch und der Fensterrahmen damit weg (siehe oben). Mit 5vw
@@ -1349,6 +1374,19 @@
       body[data-page="home"] nav:not(.scrolled) .nav-links a:hover,
       body[data-page="home"] nav:not(.scrolled) .nav-book:hover,
       body[data-page="home"] nav:not(.scrolled) .nav-burger:hover { color: var(--gold); }
+    }
+
+    /* ================= P3 — FENSTERBILD, SCHMALE HOHE ABSCHNITTE =================
+       Zweite Haelfte der P3-Regel; die Begruendung steht vollstaendig am
+       .testimonials-Block im Haltepunkt max-width: 900px.
+       Bis 495px ist der Zitat-Abschnitt hoeher als breit. cover richtete sich
+       dort nach der HOEHE, also muss sich auch die Vergroesserung danach richten:
+       auto 110 % setzt die Hoehe auf 1,1 x Abschnittshoehe, auto haelt das
+       quadratische Motiv im Verhaeltnis und gibt der Breite denselben Wert.
+       Grenze 495.98px, nicht 496px, damit bei genau 496px der Breitenwert des
+       Blocks darueber gilt — dort ist der Abschnitt breiter als hoch. */
+    @media (max-width: 495.98px) {
+      .testimonials { background-size: auto, auto 110%; }
     }
 
     /* ================= DRUCK =================
