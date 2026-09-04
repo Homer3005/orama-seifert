@@ -298,6 +298,9 @@
        sichtbar (Kopf oben ~8%, Laptop-Oberkante ~60% nie beschnitten), beschnitten wird seitlich.
        Der senkrechte Wert wirkt nur bei Fenstern breiter als 16:9 (z.B. 1600x800) und haelt dort
        beide Grenzen. Waagerecht: center -> haelt die linke Wandflaeche bei allen Breiten. */
+    /* picture ist von Haus aus inline und gaebe dem Bild keine Hoehe; es traegt hier
+       nur die Quellenwahl und wird deshalb auf die Flaeche des Rahmens gestellt. */
+    .hero-bg-full picture { display: block; width: 100%; height: 100%; }
     .hero-bg-full img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
     .hero-overlay { position: absolute; inset: 0;
       /* Zwei Verlaeufe uebereinander, damit nur die linke Textspalte abdunkelt und Orama hell bleibt.
@@ -1043,8 +1046,11 @@
       /* Mobil laeuft die Schrift ueber die volle Breite — ein Quer-Verlauf hilft nicht.
          Stattdessen ein senkrechter Verlauf ueber das ganze Bild, angehoben auf 0.72/0.60/0.78
          fuer die Lilac2-Lesbarkeit. Mobil sitzt der Text ohnehin ueber ihr: Lesbarkeit vor
-         Bildhelligkeit. Ausschnitt: hochkant ist das Bild hoehenbegrenzt, der senkrechte
-         object-position-Wert wirkt nicht — daher keine eigene mobile object-position noetig. */
+         Bildhelligkeit. Ausschnitt: unterhalb von 900px traegt jetzt das Hochformat
+         hero-hoch.jpg (1000x1498). Bei schmalen, hohen Fenstern (320, 390, 560) ist es
+         hoehenbegrenzt, der senkrechte object-position-Wert wirkt dort nicht; bei 768 und
+         899 wird es breitenbegrenzt und die 30 % der Grundregel greifen. Eine eigene
+         mobile object-position ist nicht beauftragt und daher nicht gesetzt. */
       /* K3 mobil: ebenfalls Faktor 0.97 und gleitend gemittelt, damit der Umschlag in der
          Mitte (0.60 bei 45 %) keine sichtbare Zone mehr bildet. Nirgends dunkler als vorher. */
       .hero-overlay { background: linear-gradient(180deg,
@@ -1333,7 +1339,19 @@
 <div id="home-page">
 
   <section id="home-hero">
-    <div class="hero-bg-full"><img src="images/hero-v2.jpg" alt="Orama Seifert" /></div>
+    <!-- O1: Zwei Motive, eines je Breitenband. Der Browser waehlt GENAU EINE Quelle
+         aus und fordert nur diese an: passt die media-Angabe, gilt die source, sonst
+         das img. Beide Dateien gleichzeitig zu laden ist damit ausgeschlossen.
+         Grenze 899.98px, nicht 900px: der Auftrag verlangt das Hochformat UNTERHALB
+         von 900px und bei genau 900px ein unveraendertes Bild. Der Haltepunkt des
+         Layouts (max-width: 900px) bleibt davon unberuehrt — bei genau 900px steht
+         also weiterhin das mobile Layout ueber dem Querformat, so wie bisher. -->
+    <div class="hero-bg-full">
+      <picture>
+        <source media="(max-width: 899.98px)" srcset="images/hero-hoch.jpg" width="1000" height="1498">
+        <img src="images/hero-v2.jpg" alt="Orama Seifert" />
+      </picture>
+    </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div>
