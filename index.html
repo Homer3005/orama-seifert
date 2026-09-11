@@ -1462,6 +1462,67 @@
       color: var(--cream); animation: fadeUp 1s var(--ease) 0.55s both; }
     #about-hero .hero-headline { margin-top: 0; }
 
+    /* U1 — VERLAUF IM KOPFBAND. Der Kopf steht ueber 900px in Weiss auf dem Bild
+       (Fall 1). .hero-overlay laeuft quer und greift oben in der Mitte und rechts
+       nicht: Wortmarke und Dreiklang standen vor dem hellen Fenster und hellem
+       Haar (1,16-1,31:1), der Buchungsknopf auf einer hellen Stelle der Goldwand.
+       Dagegen ein leichter Verlauf nur im oberen Band, keine Flaeche.
+       Eigene Ebene ueber Bild und .hero-overlay, unter .hero-content (z-index 2).
+       Grundton rgba(20,15,40) wie .hero-overlay, nur eine andere Deckkraft, kein
+       neuer Farbwert. pointer-events: none, die Ebene faengt keine Klicks ab.
+
+       Hoehe 9rem = 144px statt der vorgegebenen rund 180px: die Gesichter liegen
+       im Bild ab y ~220 (Oramas Stirn) bzw. y ~230 (Profil der Frau in Grau).
+       Bei 1024 x 768 ist das Bild auf 0.711 verkleinert, Oramas Stirn steht dort
+       bei ~156px — 180px haetten sie beruehrt, 144px enden 12px darueber.
+       Gemessen bei 1024x768, 1280x800, 1440x900 und 1920x1080: beide Gesichter
+       unberuehrt, das Haar oben an den Koepfen liegt im Band. Grenze: in Fenstern
+       deutlich flacher als 16:9 wird das Bild oben beschnitten und die Gesichter
+       ruecken hoch, bei 1600x800 etwa steht Oramas Stirn bei ~133px im Band.
+       Der Kopf reicht bis ~95px (Unterkante Buchungsknopf), liegt also im Band.
+
+       Verlauf: Deckkraft = A x (1 - t^4)^2, t = 0 oben bis 1 unten, in 21
+       Schritten zu je 5 %. Oben flach, damit die Staerke dort sitzt, wo der Kopf
+       steht; unten laeuft die Kurve mit Steigung null auf 0 aus, es gibt also
+       keine Kante. Zwischen den Schritten aendert sich die Deckkraft um
+       hoechstens 0.072.
+
+       A = 0.60, die Obergrenze des Auftrags. Gemessen am schlechtesten
+       Grundbildpunkt hinter dem Bauteil, bei 1024/1280/1440/1920px:
+         Wortmarke (3:1)        haelt ab A = 0.45   (1920px: 3,22)
+         Buchungsknopf (4,5:1)  haelt ab A = 0.10   (1920px: 4,54)
+         Rahmen (3:1)           hielt schon vorher  (3,57-4,12)
+         Dreiklang (4,5:1)      haelt NICHT, bei 0.60 erst 3,24-3,47:1
+       Der Dreiklang steht vor dem hellen Fenster; um 4,5:1 zu erreichen,
+       braeuchte er dort rund 0.53 Deckkraft, mit diesem Verlauf also A ~0.7.
+       Nach Vorgabe nicht weiter erhoeht. A = 0.45 wuerde Wortmarke und
+       Buchungsknopf halten (Dreiklang dann 2,43-2,62:1).
+       Unter 900px und im Druck ausgeblendet (Regeln weiter unten). */
+    .about-hero-topband { position: absolute; top: 0; left: 0; right: 0; height: 9rem;
+      pointer-events: none;
+      background: linear-gradient(180deg,
+          rgba(20,15,40,0.600) 0%,
+          rgba(20,15,40,0.600) 5%,
+          rgba(20,15,40,0.600) 10%,
+          rgba(20,15,40,0.599) 15%,
+          rgba(20,15,40,0.598) 20%,
+          rgba(20,15,40,0.595) 25%,
+          rgba(20,15,40,0.590) 30%,
+          rgba(20,15,40,0.582) 35%,
+          rgba(20,15,40,0.570) 40%,
+          rgba(20,15,40,0.552) 45%,
+          rgba(20,15,40,0.527) 50%,
+          rgba(20,15,40,0.495) 55%,
+          rgba(20,15,40,0.455) 60%,
+          rgba(20,15,40,0.405) 65%,
+          rgba(20,15,40,0.346) 70%,
+          rgba(20,15,40,0.280) 75%,
+          rgba(20,15,40,0.209) 80%,
+          rgba(20,15,40,0.137) 85%,
+          rgba(20,15,40,0.071) 90%,
+          rgba(20,15,40,0.021) 95%,
+          rgba(20,15,40,0)     100%); }
+
     /* Unter 900px wie die Startseite (Block P1): Bild ohne Abdunklung, Text
        darunter auf Creme. Abdunklung, Textbereich und Headline schalten ueber die
        gemeinsamen Klassen von selbst mit um; hier steht nur, was an #home-hero
@@ -1478,6 +1539,8 @@
       #about-hero { display: block; min-height: 0; padding-top: 4.95rem; }
       .about-hero-bg { position: relative; inset: auto; aspect-ratio: 4 / 3; }
       .about-hero-bg img { position: absolute; inset: 0; }
+      /* U1: kein Verlauf im Kopfband, das Bild steht hier ohne jede Abdunklung. */
+      .about-hero-topband { display: none; }
       /* Preline auf Creme wieder in der Farbe aller Prelines auf hellem Grund. */
       #about-hero .eyebrow.eyebrow { margin-top: 0; color: var(--gold); }
 
@@ -1498,7 +1561,7 @@
        und Schriftfarbe regelt der Druckblock unten ueber die gemeinsamen Klassen;
        hier nur, was an #about-hero und .about-hero-bg haengt. */
     @media print {
-      .about-hero-bg { display: none; }
+      .about-hero-bg, .about-hero-topband { display: none; }
       #about-hero { min-height: 0; padding-top: 0; }
     }
 
@@ -1932,6 +1995,7 @@
       <img src="images/about-hero.jpg" alt="Orama working one-on-one with a client" />
     </div>
     <div class="hero-overlay"></div>
+    <div class="about-hero-topband"></div>
     <div class="hero-content">
       <div>
         <p class="eyebrow">Seeing Your Gifts Is My Gift</p>
