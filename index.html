@@ -1392,6 +1392,51 @@
       .testimonials { background-size: auto, auto 110%; }
     }
 
+    /* ================= R — ABOUT-SEITE =================
+       Alles in diesem Block gilt ausschliesslich fuer die About-Seite
+       (#about-page, body[data-page="about"]). Keine gemeinsam genutzte Regel ist
+       veraendert; wo die Seite eine gemeinsame Regel braucht, nutzt sie sie
+       unveraendert mit.
+
+       R2 — AUFMACHER. Wunsch der Kundin: Aufbau wie auf der Angebotsseite, die
+       Ueberschrift im Aufmacher. Der Aufmacher traegt deshalb dieselbe Klasse wie
+       der der Buchungsseite, .booking-page-hero, und damit dieselben Regeln:
+       Verlauf --sand nach --cream, Polsterung 15rem 5rem 5rem (bis 900px
+       12rem 2rem 3rem), Preline 1.2rem, Headline 1.8rem. Eine Kopie der Werte
+       koennte auseinanderlaufen, die gemeinsame Klasse nicht.
+       Abweichung zur Vorlage: kein Einleitungsabsatz unter der Headline — der
+       bisherige Satz im Aufmacher ist entfallen, der Text beginnt im Fliesstext.
+       Der alte Aufmacher (.about-page-hero mit portrait.jpg) ist aus dem HTML
+       entfernt. Seine Regeln stehen weiter oben und im Druckblock unveraendert
+       und greifen ins Leere; die Datei portrait.jpg bleibt liegen. */
+
+    /* Kopf. Auf About stand er bisher im Fall 1 (weiss) ueber dem dunklen Foto.
+       Auf dem hellen Aufmacher waere Weiss unlesbar. Er nimmt deshalb hier den
+       Farbzustand an, den er auf der Buchungsseite hat: Fall 2 aus Block I,
+       Wortmarke --lilac, Kleintext und Symbol --lilac-dark, Ueberfahren --gold.
+       Kein neuer Farbwert. Eigene Regel statt eines weiteren Eintrags in der
+       gemeinsamen Liste weiter oben — die bleibt unberuehrt. Die Werte sind
+       dieselben wie im Zustand "Menue offen", die beiden widersprechen sich nicht.
+       Gilt nur ungescrollt; der gescrollte Balken (nav.scrolled) bleibt, wie er ist. */
+    body[data-page="about"] nav:not(.scrolled) .nav-logo { color: var(--lilac); }
+    body[data-page="about"] nav:not(.scrolled) .nav-links a,
+    body[data-page="about"] nav:not(.scrolled) .nav-book,
+    body[data-page="about"] nav:not(.scrolled) .nav-burger,
+    body[data-page="about"] nav:not(.scrolled) .nav-tagline { color: var(--lilac-dark); }
+    body[data-page="about"] nav:not(.scrolled) .nav-logo:hover,
+    body[data-page="about"] nav:not(.scrolled) .nav-links a:hover,
+    body[data-page="about"] nav:not(.scrolled) .nav-book:hover,
+    body[data-page="about"] nav:not(.scrolled) .nav-burger:hover { color: var(--gold); }
+
+    /* Uebergang Aufmacher -> Fliesstext wie auf der Buchungsseite: dort beginnt
+       die Liste (.booking-services) mit 4rem, bis 900px mit 2rem. Vorher 7rem und
+       5rem — die hielten Preline und Headline vom Foto frei; beide stehen jetzt im
+       Aufmacher, der seinerseits schon 5rem bzw. 3rem nach unten mitbringt. */
+    #about-page .about-page-body { padding-top: 4rem; }
+    @media (max-width: 900px) {
+      #about-page .about-page-body { padding-top: 2rem; }
+    }
+
     /* ================= DRUCK =================
        Die Seite wird von der Kundin aus dem Browser als PDF gedruckt und darauf korrigiert.
        Drei Defekte im Ausdruck vom 23.07., die hier repariert werden:
@@ -1759,16 +1804,14 @@
 <!-- ABOUT -->
 <div id="about-page" style="display:none">
 
-  <div class="about-page-hero">
-    <img src="images/portrait.jpg" alt="Orama Seifert" />
-    <div class="about-page-hero-overlay">
-      <p class="about-page-quote">Orama has been one of those children, that grown ups came to for answers.</p>
-    </div>
+  <!-- R2: Aufmacher in der Bauweise der Buchungsseite, dieselbe Klasse und
+       damit dieselben Regeln. Begruendung im CSS-Block "R — ABOUT-SEITE". -->
+  <div class="booking-page-hero">
+    <p class="eyebrow">Seeing Your Gifts Is My Gift</p>
+    <h1 class="section-title"><em>Speaking the Language of the Soul</em></h1>
   </div>
 
   <div class="about-page-body reveal">
-    <p class="eyebrow">What Is Spiritual Guidance?</p>
-    <h2 class="section-title">Seeing Your Gifts Is My <em>Gift</em></h2>
     <p>Like for many people I work with, my gift became my profession. In my case, that is seeing how your essence wants to transmit into your life — helping you to receive what you truly wish for, whether that is more freedom, health, money or connection, by uncovering your gifts and releasing what is blocking them.</p>
     <p>For over ten years — but practically my whole life — I have been guiding others on their path in one-on-one work, Akashic readings and group work and trainings, with clear spiritual vision and a holistic, empathic and practical approach.</p>
     <p>People find me when they want to dive deeper into understanding and expressing who they are. Many of them are healing practitioners, consultants and creatives.</p>
