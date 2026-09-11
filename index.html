@@ -1398,40 +1398,114 @@
        veraendert; wo die Seite eine gemeinsame Regel braucht, nutzt sie sie
        unveraendert mit.
 
-       R2 — AUFMACHER. Wunsch der Kundin: Aufbau wie auf der Angebotsseite, die
-       Ueberschrift im Aufmacher. Der Aufmacher traegt deshalb dieselbe Klasse wie
-       der der Buchungsseite, .booking-page-hero, und damit dieselben Regeln:
-       Verlauf --sand nach --cream, Polsterung 15rem 5rem 5rem (bis 900px
-       12rem 2rem 3rem), Preline 1.2rem, Headline 1.8rem. Eine Kopie der Werte
-       koennte auseinanderlaufen, die gemeinsame Klasse nicht.
-       Abweichung zur Vorlage: kein Einleitungsabsatz unter der Headline — der
-       bisherige Satz im Aufmacher ist entfallen, der Text beginnt im Fliesstext.
-       Der alte Aufmacher (.about-page-hero mit portrait.jpg) ist aus dem HTML
-       entfernt. Seine Regeln stehen weiter oben und im Druckblock unveraendert
-       und greifen ins Leere; die Datei portrait.jpg bleibt liegen. */
+       T2 — AUFMACHER ALS BILDAUFMACHER. Loest den hellen Aufmacher aus R2 ab,
+       der die Klasse der Buchungsseite (.booking-page-hero) mitnutzte. Die Klasse
+       steht dort unveraendert weiter; auf About kommt sie nicht mehr vor.
+       Vorlage ist #home-hero der Startseite: Bild ueber die volle Flaeche, darueber
+       die Abdunklung, Text oben links, Mindesthoehe 100vh. Kein Einleitungstext
+       unten, den gibt es auf About nicht.
 
-    /* Kopf. Auf About stand er bisher im Fall 1 (weiss) ueber dem dunklen Foto.
-       Auf dem hellen Aufmacher waere Weiss unlesbar. Er nimmt deshalb hier den
-       Farbzustand an, den er auf der Buchungsseite hat: Fall 2 aus Block I,
-       Wortmarke --lilac, Kleintext und Symbol --lilac-dark, Ueberfahren --gold.
-       Kein neuer Farbwert. Eigene Regel statt eines weiteren Eintrags in der
-       gemeinsamen Liste weiter oben — die bleibt unberuehrt. Die Werte sind
-       dieselben wie im Zustand "Menue offen", die beiden widersprechen sich nicht.
-       Gilt nur ungescrollt; der gescrollte Balken (nav.scrolled) bleibt, wie er ist. */
-    body[data-page="about"] nav:not(.scrolled) .nav-logo { color: var(--lilac); }
-    body[data-page="about"] nav:not(.scrolled) .nav-links a,
-    body[data-page="about"] nav:not(.scrolled) .nav-book,
-    body[data-page="about"] nav:not(.scrolled) .nav-burger,
-    body[data-page="about"] nav:not(.scrolled) .nav-tagline { color: var(--lilac-dark); }
-    body[data-page="about"] nav:not(.scrolled) .nav-logo:hover,
-    body[data-page="about"] nav:not(.scrolled) .nav-links a:hover,
-    body[data-page="about"] nav:not(.scrolled) .nav-book:hover,
-    body[data-page="about"] nav:not(.scrolled) .nav-burger:hover { color: var(--gold); }
+       Mitgenutzt, weil ohne Seitenbezug und auf About passend — Werte also
+       durch die gemeinsame Klasse gleich, nicht durch eine Kopie:
+         .hero-overlay        Quer-Verlauf und Ecke unten links, dieselben Werte;
+                              bis 900px der senkrechte Verlauf, unter 900px aus
+         .hero-content        Polsterung 10rem 4rem 5rem, Mindesthoehe 100vh;
+                              unter 900px statisch, 4rem 2rem
+         .hero-headline (em)  Groesse, Schnitt, Zeilenabstand, Farbe, Einblendung;
+                              unter 900px --lilac, das kursive Wort --gold
+         .eyebrow             Grundregel der Preline (Farbe, Laufweite, Versalien,
+                              Abstand nach unten 1.2rem)
+       Eigene Regeln, weil der Bestand auf die Startseite zugeschnitten ist:
+         #about-hero          die Regel fuer #home-hero haengt an der id
+         .about-hero-bg       .hero-bg-full ist auf hero-v2.jpg (center 30 %)
+                              und unter 900px auf hero-hoch.jpg eingemessen
+         Preline              Groesse aus dem bisherigen About-Aufmacher, Lage
+         Kopf unter 900px     die Regel der Startseite haengt an data-page="home"
 
-    /* Uebergang Aufmacher -> Fliesstext wie auf der Buchungsseite: dort beginnt
-       die Liste (.booking-services) mit 4rem, bis 900px mit 2rem. Vorher 7rem und
-       5rem — die hielten Preline und Headline vom Foto frei; beide stehen jetzt im
-       Aufmacher, der seinerseits schon 5rem bzw. 3rem nach unten mitbringt. */
+       Der alte Aufmacher (.about-page-hero mit portrait.jpg) ist schon seit R2
+       aus dem HTML entfernt. Seine Regeln stehen weiter oben und im Druckblock
+       unveraendert und greifen ins Leere; die Datei portrait.jpg bleibt liegen.
+
+       Kopf: ueber dem abgedunkelten Bild gilt wieder Fall 1 aus Block I wie auf
+       der Startseite, weiss, Ueberfahren --gold. Die About-Regeln fuer Fall 2,
+       die hier bis T2 standen, sind entfernt; es greift die gemeinsame Regel.
+       Unter 900px steht der Kopf wie auf der Startseite auf Creme und nimmt
+       Fall 2 an, Regel im Haltepunkt unten. Gescrollter Balken und Zustand
+       "Menue offen" sind unberuehrt. */
+
+    #about-hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; }
+    /* Motiv about-hero.jpg (1920 x 1080, 16:9). Die Frau in Grau steht am rechten
+       Rand und endet bei x ~1830, also bei 95 % der Breite. Bei cover legt der
+       Prozentwert fest, welcher Punkt des Bildes auf demselben Punkt des Rahmens
+       liegt: 100 % legt die rechte Bildkante auf die rechte Rahmenkante,
+       beschnitten wird bei Fenstern schmaler als 16:9 also nur links. Jeder Wert
+       unter 95 % schnitte sie bei 4:3-Fenstern an. Senkrecht wirkt der Wert nur
+       bei Fenstern breiter als 16:9. Mit center bleiben die Koepfe (ab y ~95)
+       ganz, solange oben hoechstens 95 Bildpunkte wegfallen, also bis zu einem
+       Fensterverhaeltnis von 1920/890 = 2,16:1. */
+    .about-hero-bg { position: absolute; inset: 0; overflow: hidden; }
+    .about-hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 100% center; }
+    /* Preline. Groesse und Zeilenhoehe wie bisher im About-Aufmacher (dort aus
+       .booking-page-hero .eyebrow.eyebrow, 19,32 px / 34,776 px). Der Textblock
+       aus Preline und Headline beginnt dort, wo auf der Startseite die Headline
+       beginnt: 3rem unter der Polsterung. Den Abstand traegt deshalb die Preline,
+       die Headline setzt oben 0; zwischen beiden stehen die 1.2rem der Grundregel.
+       Einblendung wie die Headline, damit der Block als einer erscheint. Fuellung
+       both statt opacity: 0 plus forwards: gleiches Bild, aber ohne Animation (Druck)
+       ist die Zeile sichtbar und braucht keine eigene Freigabe.
+       Farbe --cream statt --gold, ausdruecklich angeordnete Ausnahme: --gold haelt
+       auf dem abgedunkelten Grund die 4,5:1 nicht. Gemessen am schlechtesten
+       Grundbildpunkt unter den Glyphen: 1024px 1,01:1 (die Zeile laeuft dort ueber
+       Oramas Haar), 1440px 2,95:1, 1920px 4,55:1. Unter 900px steht die Zeile auf
+       Creme und traegt wieder --gold, Regel im Haltepunkt unten. */
+    #about-hero .eyebrow.eyebrow { font-size: 1.2075rem; line-height: 1.8; margin-top: 3rem;
+      color: var(--cream); animation: fadeUp 1s var(--ease) 0.55s both; }
+    #about-hero .hero-headline { margin-top: 0; }
+
+    /* Unter 900px wie die Startseite (Block P1): Bild ohne Abdunklung, Text
+       darunter auf Creme. Abdunklung, Textbereich und Headline schalten ueber die
+       gemeinsamen Klassen von selbst mit um; hier steht nur, was an #home-hero
+       und hero-hoch.jpg haengt. Grenze 899.98px wie dort, bei genau 900px gilt
+       wie auf der Startseite noch das Bild mit Abdunklung.
+       4.95rem ist die Hoehe des Kopfbalkens in diesem Bereich, Wert aus P1.
+       Rahmen 4:3, das Bild fuellt ihn per cover. Das 16:9-Motiv ist darin
+       hoehenbegrenzt, sichtbar sind 1440 von 1920 Bildpunkten Breite, senkrecht
+       alles. 100 % zeigt x 480-1920: Oramas Gesicht (x ~995-1155) und der Kopf der
+       Frau in Grau (x ~1395-1765) ganz, sie selbst bis zur Kante (x ~1830).
+       Beide Koepfe blieben ab 68 % ganz; 100 % ist der Wert, der das Paar (x ~810-
+       1830) am naechsten zur Mitte rueckt, und derselbe wie ueber 900px. */
+    @media (max-width: 899.98px) {
+      #about-hero { display: block; min-height: 0; padding-top: 4.95rem; }
+      .about-hero-bg { position: relative; inset: auto; aspect-ratio: 4 / 3; }
+      .about-hero-bg img { position: absolute; inset: 0; }
+      /* Preline auf Creme wieder in der Farbe aller Prelines auf hellem Grund. */
+      #about-hero .eyebrow.eyebrow { margin-top: 0; color: var(--gold); }
+
+      /* Kopf wie auf der Startseite unter 900px: Fall 2 aus Block I. Kein neuer
+         Farbwert, dieselben Werte wie im Zustand "Menue offen". */
+      body[data-page="about"] nav:not(.scrolled) .nav-logo { color: var(--lilac); }
+      body[data-page="about"] nav:not(.scrolled) .nav-links a,
+      body[data-page="about"] nav:not(.scrolled) .nav-book,
+      body[data-page="about"] nav:not(.scrolled) .nav-burger,
+      body[data-page="about"] nav:not(.scrolled) .nav-tagline { color: var(--lilac-dark); }
+      body[data-page="about"] nav:not(.scrolled) .nav-logo:hover,
+      body[data-page="about"] nav:not(.scrolled) .nav-links a:hover,
+      body[data-page="about"] nav:not(.scrolled) .nav-book:hover,
+      body[data-page="about"] nav:not(.scrolled) .nav-burger:hover { color: var(--gold); }
+    }
+
+    /* Druck wie der Aufmacher der Startseite: Bild raus. Abdunklung, Polsterung
+       und Schriftfarbe regelt der Druckblock unten ueber die gemeinsamen Klassen;
+       hier nur, was an #about-hero und .about-hero-bg haengt. */
+    @media print {
+      .about-hero-bg { display: none; }
+      #about-hero { min-height: 0; padding-top: 0; }
+    }
+
+    /* Uebergang Aufmacher -> Fliesstext, Werte unveraendert aus R2: 4rem, bis
+       900px 2rem. Ueber 900px endet der Aufmacher mit dem Bild, der Fliesstext
+       beginnt 4rem darunter. Unter 900px folgt er auf den Textteil des
+       Aufmachers, der 4rem Polsterung und 1.8rem unter der Headline mitbringt. */
     #about-page .about-page-body { padding-top: 4rem; }
     @media (max-width: 900px) {
       #about-page .about-page-body { padding-top: 2rem; }
@@ -1843,12 +1917,21 @@
 <!-- ABOUT -->
 <div id="about-page" style="display:none">
 
-  <!-- R2: Aufmacher in der Bauweise der Buchungsseite, dieselbe Klasse und
-       damit dieselben Regeln. Begruendung im CSS-Block "R — ABOUT-SEITE". -->
-  <div class="booking-page-hero">
-    <p class="eyebrow">Seeing Your Gifts Is My Gift</p>
-    <h1 class="section-title"><em>Speaking the Language of the Soul</em></h1>
-  </div>
+  <!-- T2: Bildaufmacher in der Bauweise der Startseite (#home-hero). Abdunklung,
+       Textbereich und Headline tragen deren Klassen; Rahmen, Bild und Preline
+       eigene Regeln. Begruendung im CSS-Block "R — ABOUT-SEITE". -->
+  <section id="about-hero">
+    <div class="about-hero-bg">
+      <img src="images/about-hero.jpg" alt="Orama working one-on-one with a client" />
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div>
+        <p class="eyebrow">Seeing Your Gifts Is My Gift</p>
+        <h1 class="hero-headline">Speaking<br>the Language<br>of the <em>Soul</em></h1>
+      </div>
+    </div>
+  </section>
 
   <div class="about-page-body reveal">
     <p>Like for many people I work with, my gift became my profession. I have always worked with my perception and my connection to the higher realms, but 12 years ago life called me in a way I had to answer. I put my career in journalism, art direction and creative counselling to the side to take up my real profession - that is seeing the soul and path of the ones coming to me in great clarity and detail, and how their essence and qualities wants to transmit into their life.</p>
