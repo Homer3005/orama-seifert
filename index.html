@@ -1437,6 +1437,45 @@
       #about-page .about-page-body { padding-top: 2rem; }
     }
 
+    /* R4 — BILDER ALS TEXTBRECHER. Im Bestand gibt es keine Bauweise fuer ein
+       Bild im Fliesstext: die Buchungsliste setzt ihre Bilder als 12rem-Quadrat
+       NEBEN den Text, About-Block und Gruppenblock teilen den Abschnitt in zwei
+       Spalten. Deshalb eine eigene Regel nur fuer diese Seite.
+       Uebernommen ist das Prinzip der Buchungsliste: ein Rahmen mit festem
+       Seitenverhaeltnis traegt die Form, das Bild fuellt ihn per cover, der
+       Ausschnitt ist je Motiv gesetzt. So stehen Hoch- und Querformat im
+       gleichen Mass untereinander.
+       4:3 ist das Verhaeltnis des Gruppenbilds (1400/1045 = 1,34). Darin bleiben
+       alle Gesichter ganz, gerechnet in Bildpunkten der Dateien:
+         desk      800 x 1200, sichtbar y  90-690  (15 %),  Kopf  y 140-393
+         hands     900 x 1200, sichtbar y  53-728  (10 %),  Koepfe y 103-375
+         teaching 1200 x  799, sichtbar x  27-1092 (20 %),  Gesichter x 140-877
+       teaching steht auf 20 % statt mittig: mittig schnitte der linke Rand den
+       Hinterkopf der Teilnehmerin ganz links an, bei 20 % bleibt er ganz und
+       rechts die Kerze ebenso.
+       Breite: die Textspalte (bis 900px volle Breite, siehe unten).
+       Abstand ueber und unter dem Bild 2.2rem: der Wert, mit dem der About-Block
+       der Startseite (Vorlage Block M) vom Fliesstext zum naechsten Element
+       uebergeht. Oben faellt er mit den 1.6rem des Absatzes zusammen. */
+    .about-figure { aspect-ratio: 4 / 3; overflow: hidden; margin: 2.2rem 0; }
+    .about-figure img { height: 100%; object-fit: cover; }
+    .about-figure-desk img  { object-position: center 15%; }
+    .about-figure-hands img { object-position: center 10%; }
+    .about-figure-teaching img { object-position: 20% center; }
+
+    /* Bis 900px volle Breite, wie das Gruppenbild aus Block O3. Die Textspalte
+       ist dort 36rem breit mit 1.5rem Rand; ab 577px steht sie mittig und ein
+       Bild darin koennte nicht an die Kanten reichen. Deshalb gibt der Block
+       Breite und Rand an seine Absaetze ab und laeuft selbst ueber die volle
+       Breite. Die Absaetze tragen dieselben Werte wie vorher der Block —
+       Satzbreite und Umbruch sind unveraendert. Ohne 100vw, das auf Geraeten
+       mit fester Bildlaufleiste ueber den Rand liefe. */
+    @media (max-width: 900px) {
+      #about-page .about-page-body { max-width: none; padding-left: 0; padding-right: 0; }
+      #about-page .about-page-body > p { max-width: 36rem; margin-left: auto; margin-right: auto;
+        padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+
     /* ================= DRUCK =================
        Die Seite wird von der Kundin aus dem Browser als PDF gedruckt und darauf korrigiert.
        Drei Defekte im Ausdruck vom 23.07., die hier repariert werden:
@@ -1815,14 +1854,23 @@
     <p>Like for many people I work with, my gift became my profession. I have always worked with my perception and my connection to the higher realms, but 12 years ago life called me in a way I had to answer. I put my career in journalism, art direction and creative counselling to the side to take up my real profession - that is seeing the soul and path of the ones coming to me in great clarity and detail, and how their essence and qualities wants to transmit into their life.</p>
     <p>I moved to Ibiza, where I said I would live later since I was a girl, and started my new business, that picked up fast.</p>
     <p>Here on this island I am living still with my son, embraced by nature, freedom and creativity.</p>
+    <figure class="about-figure about-figure-desk">
+      <img src="images/about-desk.jpg" alt="Orama at her desk in her home on Ibiza" />
+    </figure>
     <p>People find me when they want to dive deeper into understanding and expressing who they are. Many of them are healing practitioners, consultants and creatives.</p>
     <p>I am guiding my clients to receive what is true to them, whether that is more freedom, health, money or connection, by uncovering their gifts and releasing what is blocking them. Concretely in one-on-one work, Akashic readings, seminars and trainings. My clear spiritual vision is grounded through my extensive experience and holistic, empathic and practical approach. I am a thoroughly trained somatic coach, bridging the gap between heaven and earth with nervous system education and embodiment work.</p>
     <p>Since unfolding my business a decade ago I have facilitated more than 2.000 one-on-one consultations and healing sessions, gained extensive experience as a teacher — leading myself as well as assisting my own teachers — and have given hundreds of Akashic readings.</p>
     <p>My way of reading the Akasha connects you to your soul: your heavenly origin, energy, colours, purpose, power — to bring you back home and remember yourself, in various lifetimes and this one.</p>
     <p>A reading is a spiritual initiation, a deep call to move closer to who you are and what you want to bring into this world. It reminds you of your magic and shows you the directions in life that are fortunate for you.</p>
+    <figure class="about-figure about-figure-hands">
+      <img src="images/about-hands.jpg" alt="Orama working one-on-one with a client" />
+    </figure>
     <p>I am specialised in reading and initiating seminars, trainings and offers for practitioners, healers and trainers from their own knowledge and energy from the Akasha.</p>
     <p>As a trainer I offer advanced seminars and workshops for those who want to lead themselves and others on a deep journey of homecoming, inspiration and fulfilment.</p>
     <p>In the school of my root teacher, I am serving as a trainer for Spiritual Teachers in the Tradition of Agni.</p>
+    <figure class="about-figure about-figure-teaching">
+      <img src="images/about-teaching.jpg" alt="Orama teaching a seminar" />
+    </figure>
     <p>In one-on-one work I bring together my ability to read patterns, symptoms and qualities with somatic knowledge and practical advice. Many simple yet powerful tools support your growth and healing for all areas of your private and professional life: messages from the subtle realms, energetic transmission and clearing, herbs, flower essences and structural approaches.</p>
     <p>I am looking forward to meet you, and sending my love and encouragement ahead for you always,</p>
     <p>Orama</p>
