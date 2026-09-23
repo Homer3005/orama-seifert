@@ -983,6 +983,9 @@
        die Klasse is-open setzt — ohne JavaScript erscheint es also nie und kann die
        Seite nicht blockieren. Kein Gedaechtnis: es erscheint bei jedem Laden neu,
        nichts wird im Geraet des Besuchers abgelegt.
+       (Gilt fuer dieses Bauteil. Die fruehere seitenweite Regel, nichts im Geraet
+       abzulegen, ist mit Block V aufgehoben: der Buchungskalender merkt seine
+       Einwilligung per localStorage.)
        Farben, Schriften und Abstaende vollstaendig aus dem Bestand; Basiseinheit
        0.5rem wie beim Kontaktformular, jeder Wert ein Vielfaches davon. */
     .notice-overlay { position: fixed; inset: 0; z-index: 400;
@@ -1779,7 +1782,8 @@
      backdrop-filter wird zum Bezugsrahmen fuer position:fixed darin - die
      Klappe wuerde dann am Kopf kleben statt am Fenster.
      Kein Gedaechtnis: der Zustand lebt nur in der Klassenliste, nichts wird im
-     Geraet des Besuchers abgelegt. -->
+     Geraet des Besuchers abgelegt. (Gilt fuer dieses Bauteil; die seitenweite
+     Regel ist mit Block V aufgehoben, siehe Buchungskalender.) -->
 <div class="nav-overlay" id="nav-menu">
   <div class="nav-overlay-panel">
     <p class="nav-overlay-tagline">Luminary · Consultant · Teacher</p>
@@ -2221,7 +2225,7 @@
   <p class="legal-draft">DRAFT — not for publication. Pending legal review.</p>
   <div class="legal-page-body">
     <h1 class="section-title">Privacy Policy</h1>
-    <p>This privacy policy is a working draft. Every entry in double brackets is a placeholder that must be completed and verified by legal counsel before publication. It reflects the technical state of this website after third-party fonts were removed and the booking calendar was deferred to explicit consent: on load the site requests nothing from third parties and sets no cookies. No cookie banner is therefore used.</p>
+    <p>This privacy policy is a working draft. Every entry in double brackets is a placeholder that must be completed and verified by legal counsel before publication. It reflects the technical state of this website: when you open it, it requests nothing from third parties and sets no cookies. Third-party requests and cookies occur only on the booking page, and only once you have agreed there to load the booking calendar (see section 5). That consent notice stands on the booking page in place of the calendar; there is no site-wide cookie banner.</p>
 
     <h3>1. Controller and contact</h3>
     <p>The controller responsible for data processing on this website is:</p>
@@ -2237,15 +2241,27 @@
     <p>This website is hosted on GitHub Pages, provided by GitHub, Inc., USA. When pages are retrieved, GitHub’s servers automatically process connection data in server log files, including the visitor’s IP address, date and time of the request, the requested resource and the referring page. This is technically necessary to deliver the site. [[PLATZHALTER: Vollstaendige Anschrift von GitHub, Inc., Speicherdauer der Server-Logs und Grundlage der Auftragsverarbeitung durch Rechtsberatung ergaenzen]]</p>
 
     <h3>4. Fonts</h3>
-    <p>The fonts used on this website (Cormorant Garamond and Jost) are hosted locally on the same server as the website. They are not requested from Google Fonts or any other third party, so no data is transmitted to a third party when fonts are loaded.</p>
+    <p>The fonts used on this website (Cormorant Garamond and Jost) are hosted locally on the same server as the website. They are not requested from Google Fonts or any other third party, so no data is transmitted to a third party when fonts are loaded. The booking calendar, once loaded with your consent, brings its own fonts; see section 5.</p>
 
     <h3>5. Booking calendar — Acuity Scheduling</h3>
-    <p>Appointment booking is provided by Acuity Scheduling, a service of Squarespace, Inc., USA. The calendar is not loaded when the site opens. It is loaded only after you explicitly click to open it; at that point your IP address and browser data are transmitted to Squarespace, and any details you enter to book are processed by Squarespace. Legal basis: Art. 6(1)(a) GDPR (consent), which you may withdraw at any time with future effect. The consent applies to the current browser session only; no cookie or local storage is set to remember it. [[PLATZHALTER: Vollstaendige Anschrift von Squarespace, Inc., Link zur Datenschutzerklaerung von Acuity Scheduling / Squarespace und Grundlage der Auftragsverarbeitung durch Rechtsberatung ergaenzen]]</p>
+    <p>The booking page offers an appointment calendar provided by Acuity Scheduling, a service of Squarespace, Inc., based in the USA. The calendar is not loaded when you open this website or the booking page. In its place you first see a notice; the calendar loads only after you click “Load booking calendar” and thereby give your explicit consent. Until then, no data is transmitted to Squarespace or to any of the services named below.</p>
+    <p>Once the calendar loads, your browser connects to the servers of Squarespace. This transmits your IP address, information about your browser and device (such as browser type, language and screen size), the date and time of access and the address of the page on which the calendar is embedded. If you book an appointment, the details you enter — such as your name, email address, phone number, the appointment chosen and any notes — are processed by Squarespace to carry out the booking, as are payment details where an offering is paid online. [[PLATZHALTER: Felder des Buchungsformulars mit den Einstellungen im Acuity-Konto abgleichen und hier vollstaendig nennen]]</p>
+    <p>The calendar itself loads further services, all operated by providers in the USA or their European subsidiaries. They are integrated by Squarespace, not by this website, and are loaded only together with the calendar:</p>
+    <div class="legal-field"><b>Google reCAPTCHA</b>Google LLC, USA / Google Ireland Limited. Protects the booking form against automated misuse and evaluates device and usage data for that purpose. Google also delivers the calendar’s fonts.</div>
+    <div class="legal-field"><b>Stripe</b>Stripe, Inc., USA / Stripe Payments Europe, Ltd. Payment processing for offerings that are paid online.</div>
+    <div class="legal-field"><b>Sentry</b>Functional Software, Inc., USA. Error monitoring for the calendar.</div>
+    <p>[[PLATZHALTER: Liste der im Kalender eingebundenen Dienste, Anschriften und Links zu deren Datenschutzerklaerungen durch Rechtsberatung bestaetigen und ergaenzen]]</p>
+    <p>Loading the calendar sets cookies in your browser, among them a session cookie of Acuity Scheduling (PHPSESSID) and cookies of the payment provider Stripe (__stripe_mid, __stripe_sid, m); Google reCAPTCHA may store further information on your device. These cookies are set by the providers under their own domains. [[PLATZHALTER: Vollstaendige Liste der Cookies mit Zweck und Speicherdauer durch Rechtsberatung ergaenzen]]</p>
+    <p>So that you do not have to agree on every visit, this website remembers your consent in your browser’s local storage (entry <span style="white-space:nowrap">“orama-booking-consent”</span>). The entry only records that you agreed. It is not a cookie and is not transmitted to anyone.</p>
+    <p>You can withdraw your consent at any time with future effect using the button below. It deletes the stored entry and removes a calendar that is already loaded from the booking page; the calendar will not load again until you agree anew. Cookies already set by Acuity Scheduling and the services named above are stored under their domains and cannot be removed by this website; you can delete them in your browser settings.</p>
     <!-- V1: Widerruf. Der Knopf loescht den gemerkten Wert (localStorage) und nimmt
          einen bereits geladenen Kalender wieder aus der Buchungsseite. Die Zeile
          darunter meldet den Stand; role="status" liest sie Bildschirmlesern vor. -->
     <p><button type="button" class="btn-filled" id="booking-consent-revoke">Withdraw consent</button></p>
     <p id="booking-consent-status" role="status"></p>
+    <p>Legal basis: your consent, Art. 6(1)(a) GDPR, for loading the calendar and the services it contains and for storing and reading information on your device. [[PLATZHALTER: Rechtsgrundlage fuer den Zugriff auf das Endgeraet je nach Sitz (Deutschland: § 25 Abs. 1 TDDDG / Spanien: Art. 22.2 LSSI-CE) und fuer die Verarbeitung der Buchungsdaten (Art. 6 Abs. 1 lit. b DSGVO) durch Rechtsberatung bestaetigen]]</p>
+    <p>[[PLATZHALTER: Auftragsverarbeitungsvertrag nach Art. 28 DSGVO mit Squarespace, Inc. abschliessen und hier nennen, dazu vollstaendige Anschrift von Squarespace, Inc. und Link zur Datenschutzerklaerung von Acuity Scheduling / Squarespace]]</p>
+    <p>[[PLATZHALTER: Rechtsgrundlage der Uebermittlung in die USA fuer Squarespace, Google und Stripe (Zertifizierung nach dem EU-US Data Privacy Framework pruefen, hilfsweise EU-Standardvertragsklauseln) durch Rechtsberatung angeben]]</p>
 
     <h3>6. Contact by email</h3>
     <p>If you contact the controller by email, your address and the content of your message are processed to handle your enquiry. [[PLATZHALTER: Speicherdauer und weitere Angaben zur E-Mail-Kontaktaufnahme durch Rechtsberatung ergaenzen]]</p>
@@ -2262,7 +2278,7 @@
     <p>[[PLATZHALTER: Speicherdauer je Verarbeitung (Server-Logs, E-Mail-Kontakt, Formularanfragen, Buchung) durch Rechtsberatung festlegen]]</p>
 
     <h3>10. Recipients and third-country transfer</h3>
-    <p>Processing on this website involves service providers in the United States (GitHub, Inc. for hosting; Squarespace, Inc. for the Acuity Scheduling booking calendar, only after consent; Substack Inc. for the newsletter, only if you subscribe there). Transfers to the USA are transfers to a third country. Enquiries sent through the contact form are processed by Forminit on servers in Ireland; that is not a third-country transfer. [[PLATZHALTER: Grundlage des Drittlandtransfers je Anbieter (z. B. EU-Standardvertragsklauseln, EU-US Data Privacy Framework) durch Rechtsberatung angeben]]</p>
+    <p>Processing on this website involves service providers in the United States (GitHub, Inc. for hosting; Squarespace, Inc. for the Acuity Scheduling booking calendar and, loaded within it, Google LLC for reCAPTCHA and fonts, Stripe, Inc. for payments and Functional Software, Inc. (Sentry) for error monitoring, all only after consent; Substack Inc. for the newsletter, only if you subscribe there). Transfers to the USA are transfers to a third country. Enquiries sent through the contact form are processed by Forminit on servers in Ireland; that is not a third-country transfer. [[PLATZHALTER: Grundlage des Drittlandtransfers je Anbieter (z. B. EU-Standardvertragsklauseln, EU-US Data Privacy Framework) durch Rechtsberatung angeben]]</p>
 
     <h3>11. Your rights</h3>
     <p>Under the GDPR you have the right of access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20) and to object to processing (Art. 21). Where processing is based on consent, you may withdraw that consent at any time with future effect.</p>
@@ -2559,6 +2575,8 @@
   /* ---- Spamschutz des Kontaktformulars ----
      Vier Massnahmen, alle ausschliesslich im Arbeitsspeicher. Kein Cookie, kein
      localStorage, kein sessionStorage — nach dem Neuladen ist jede Sperre weg.
+     (Gilt fuer das Formular; die seitenweite Regel ist mit Block V aufgehoben,
+     siehe Buchungskalender.)
      Ohne JavaScript bleibt das Formular absendbar: dann wirken allein die beiden
      Fallenfelder ueber den Filter des Empfaengers, die drei anderen Massnahmen
      nicht. Das ist so gewollt. Die Zieladresse steht im action-Attribut und wird
@@ -2632,6 +2650,8 @@
   /* ---- Burger-Menue (L2) ----
      Kein Gedaechtnis: der Zustand lebt allein in der Klassenliste und in
      aria-expanded. Kein Cookie, kein localStorage, kein sessionStorage.
+     (Gilt fuer dieses Bauteil; die seitenweite Regel ist mit Block V
+     aufgehoben, siehe Buchungskalender.)
      closeNavMenu wird hier gesetzt und vom Hinweisfenster weiter unten gerufen,
      falls beide gleichzeitig aufgehen wollen (L4). */
   let closeNavMenu = null;
@@ -2743,7 +2763,8 @@
   /* ---- Hinweisfenster fuer kommende Kurse ----
      Kein Gedaechtnis: kein Cookie, kein localStorage, kein sessionStorage. Das
      Fenster erscheint bei jedem Laden der Startseite neu und ist nach dem
-     Schliessen nur fuer die laufende Sitzung weg.
+     Schliessen nur fuer die laufende Sitzung weg. (Gilt fuer dieses Bauteil;
+     die seitenweite Regel ist mit Block V aufgehoben, siehe Buchungskalender.)
      Steht hinter routeFromHash, damit ein Aufruf mit #thank-you die Seite bereits
      umgeschaltet hat, bevor die Anzeigebedingung geprueft wird. */
   (function () {
