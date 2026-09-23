@@ -912,10 +912,26 @@
       .booking-service-btn { min-width: 0; width: 100%; }
     }
     .booking-host { max-width: 1000px; margin: 3rem auto 6rem; padding: 0 5rem; }
+    /* V1: Ziel der Kartenknoepfe (openBooking, block: start). Haelt den Kasten
+       unter dem fixierten Kopf frei, gemessen 124px bei 1440px. */
+    #booking-embed { scroll-margin-top: 9rem; }
     .booking-inline { background: var(--white); border: 1px solid rgba(123,125,184,0.18);
       padding: 4rem 3rem; text-align: center; min-height: 200px; }
     .booking-inline .ph-icon { font-size: 2.2rem; opacity: 0.25; margin-bottom: 1rem; color: var(--lilac); }
     .booking-inline p { font-size: 1.15rem; line-height: 1.7; color: var(--lilac); max-width: 480px; margin: 0 auto; }
+    /* V1: Einwilligungskasten. Traeger ist .booking-inline (Grund, Rahmen,
+       Polsterung unveraendert). Ueberschrift wie .notice-title, Fliesstext auf
+       --ink wie .notice-body: das --lilac von .booking-inline p misst auf Weiss
+       nur 3.94:1, --ink 11.85:1. Knopf .btn-filled aus dem Bestand; als <button>
+       erbt er Schrift und Zeiger nicht, beides wie beim Kontaktformular gesetzt.
+       Nur Tokens aus :root, kein neuer Farbwert. */
+    .booking-consent-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500;
+      color: var(--lilac); line-height: 1.2; margin-bottom: 1rem; }
+    .booking-inline .booking-consent-text { color: var(--ink); margin-bottom: 2rem; text-wrap: pretty; }
+    .booking-inline .booking-consent-note { font-size: 1rem; color: var(--ink); margin-top: 1.5rem; }
+    .booking-consent-note a { color: var(--lilac-dark); text-decoration: underline; }
+    #booking-embed button.btn-filled,
+    #privacy-page button.btn-filled { font-family: var(--sans); cursor: pointer; }
 
     /* LEGAL PAGES — Legal Notice / Privacy, linksbuendig, Measure ~65 Zeichen */
     .legal-draft { max-width: 40rem; margin: 10.5rem auto 0; padding: 0.9rem 1.25rem;
@@ -2118,12 +2134,18 @@
     </div>
   </div>
 
+  <!-- V1: Einwilligungskasten an der Stelle des Kalenders. Vor dem Klick steht
+       hier nur dieser Kasten, es geht keine Anfrage an Acuity, Squarespace oder
+       Google hinaus. Ohne JavaScript bleibt der Knopf verborgen (hidden) und der
+       Verweis darunter sichtbar: ein normaler Link auf die Buchungsseite bei
+       Acuity, der erst beim Anklicken etwas laedt. Das Skript tauscht beides. -->
   <div class="booking-host" id="booking-embed">
-    <div class="booking-inline">
-      <div class="ph-icon">📅</div>
-      <p class="eyebrow">Schedule your appointment</p>
-      <br>
-      <p>Click any “Book” button above. Once Orama’s Acuity Scheduling links are connected, the booking calendar will open in a popup right here — no page reload, no friction.</p>
+    <div class="booking-inline booking-consent" id="booking-consent">
+      <h2 class="booking-consent-title">Before the calendar loads</h2>
+      <p class="booking-consent-text">The booking calendar is provided by Acuity Scheduling, a service of Squarespace based in the USA. When it loads, cookies are set and data such as your IP address is transmitted there.</p>
+      <button type="button" class="btn-filled" id="booking-consent-btn" hidden>Load booking calendar</button>
+      <p class="booking-consent-note" id="booking-consent-fallback"><a href="https://app.acuityscheduling.com/schedule.php?owner=40352201">Open the booking page at Acuity Scheduling</a></p>
+      <p class="booking-consent-note">You can withdraw your consent at any time. Details in the <a href="#" onclick="return showPage('privacy')">privacy policy</a>.</p>
     </div>
   </div>
 
@@ -2203,6 +2225,11 @@
 
     <h3>5. Booking calendar — Acuity Scheduling</h3>
     <p>Appointment booking is provided by Acuity Scheduling, a service of Squarespace, Inc., USA. The calendar is not loaded when the site opens. It is loaded only after you explicitly click to open it; at that point your IP address and browser data are transmitted to Squarespace, and any details you enter to book are processed by Squarespace. Legal basis: Art. 6(1)(a) GDPR (consent), which you may withdraw at any time with future effect. The consent applies to the current browser session only; no cookie or local storage is set to remember it. [[PLATZHALTER: Vollstaendige Anschrift von Squarespace, Inc., Link zur Datenschutzerklaerung von Acuity Scheduling / Squarespace und Grundlage der Auftragsverarbeitung durch Rechtsberatung ergaenzen]]</p>
+    <!-- V1: Widerruf. Der Knopf loescht den gemerkten Wert (localStorage) und nimmt
+         einen bereits geladenen Kalender wieder aus der Buchungsseite. Die Zeile
+         darunter meldet den Stand; role="status" liest sie Bildschirmlesern vor. -->
+    <p><button type="button" class="btn-filled" id="booking-consent-revoke">Withdraw consent</button></p>
+    <p id="booking-consent-status" role="status"></p>
 
     <h3>6. Contact by email</h3>
     <p>If you contact the controller by email, your address and the content of your message are processed to handle your enquiry. [[PLATZHALTER: Speicherdauer und weitere Angaben zur E-Mail-Kontaktaufnahme durch Rechtsberatung ergaenzen]]</p>
@@ -2321,79 +2348,93 @@
         if (el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
       }, 300);
     }
+    // V1: Kalender erst auf der Buchungsseite und nur mit Zustimmung einsetzen
+    if (page === 'booking') initBookingCalendar();
+    if (page === 'privacy') renderBookingConsentStatus();
     setTimeout(initReveal, 150);
     return false;
   }
 
-  // Replace these placeholder URLs with Orama's real Acuity Scheduling links when ready
-  const bookingLinks = {
-    consultation: '',  // e.g. 'https://app.acuityscheduling.com/schedule.php?owner=00000000&appointmentType=consultation'
-    nervous:      '',
-    akashic:      '',
-    workshops:    ''
-  };
+  /* ---- Buchungskalender: Einwilligung (V1) ----
+     Acuity laedt NICHTS beim Seitenaufruf. Erst wenn der Besucher auf der
+     Buchungsseite "Load booking calendar" anklickt, wird der Kalender eingesetzt.
+     Vorher geht keine Anfrage an acuityscheduling.com, squarespace.com oder
+     google.com hinaus - der Kalender wird nicht versteckt, er ist gar nicht da.
+     Seit Block V wird die Zustimmung im Geraet gemerkt (localStorage, Schluessel
+     unten), damit sie nicht bei jedem Aufruf neu gegeben werden muss. Die fruehere
+     Grundregel "die Seite legt nichts im Geraet ab" ist damit ausdruecklich
+     aufgehoben. Die Seite selbst setzt weiterhin kein Cookie; Cookies setzt erst
+     der geladene Kalender, unter der Domain von Acuity.
+     Ist localStorage gesperrt (privates Fenster, blockierte Websitedaten), gilt die
+     Zustimmung nur bis zum Neuladen - bookingConsentSession traegt sie dann.
+     Widerruf: Knopf in der Datenschutzerklaerung -> revokeBookingConsent(). */
+  const BOOKING_CONSENT_KEY = 'orama-booking-consent';
+  let bookingConsentSession = false;
 
-  // Acuity laedt NICHTS beim Seitenaufruf. Erst nach ausdruecklicher
-  // Einwilligung wird embed.js dynamisch nachgeladen. Die Zustimmung
-  // gilt nur fuer die laufende Sitzung - kein localStorage, kein Cookie.
-  let bookingConsented = false;
-  let acuityAssets = null;
+  function hasBookingConsent() {
+    if (bookingConsentSession) return true;
+    try { return localStorage.getItem(BOOKING_CONSENT_KEY) === 'granted'; }
+    catch (e) { return false; }
+  }
 
-  function loadAcuityAssets() {
-    if (acuityAssets) return acuityAssets;
-    acuityAssets = new Promise(function (resolve, reject) {
-      const js = document.createElement('script');
-      js.src = 'https://embed.acuityscheduling.com/js/embed.js';
-      js.async = true;
-      js.onload = resolve;
-      js.onerror = reject;
-      document.body.appendChild(js);
+  function grantBookingConsent() {
+    bookingConsentSession = true;
+    try { localStorage.setItem(BOOKING_CONSENT_KEY, 'granted'); } catch (e) {}
+  }
+
+  // Setzt den Kalender an die Stelle des Kastens. V2 baut hier den Rahmen ein.
+  function mountBookingCalendar() {
+    document.getElementById('booking-consent').hidden = true;
+  }
+
+  function unmountBookingCalendar() {
+    document.getElementById('booking-consent').hidden = false;
+  }
+
+  // Aufgerufen von showPage, sobald die Buchungsseite erscheint
+  function initBookingCalendar() {
+    if (hasBookingConsent()) mountBookingCalendar();
+  }
+
+  function revokeBookingConsent() {
+    const had = hasBookingConsent();
+    bookingConsentSession = false;
+    try { localStorage.removeItem(BOOKING_CONSENT_KEY); } catch (e) {}
+    unmountBookingCalendar();
+    renderBookingConsentStatus(had ? 'withdrawn' : 'none');
+  }
+
+  // Standzeile unter dem Widerrufsknopf in der Datenschutzerklaerung
+  function renderBookingConsentStatus(event) {
+    const el = document.getElementById('booking-consent-status');
+    if (!el) return;
+    if (event === 'withdrawn') {
+      el.textContent = 'Your consent has been withdrawn. The booking calendar will not load again until you agree anew.';
+    } else if (hasBookingConsent()) {
+      el.textContent = 'Current status: you have agreed to load the booking calendar in this browser.';
+    } else {
+      el.textContent = 'Current status: no consent is stored in this browser. The booking calendar is not loaded.';
+    }
+  }
+
+  (function () {
+    const btn = document.getElementById('booking-consent-btn');
+    const fallback = document.getElementById('booking-consent-fallback');
+    const revoke = document.getElementById('booking-consent-revoke');
+    // JavaScript laeuft: Knopf zeigen, Ausweichverweis zuruecknehmen
+    btn.hidden = false;
+    fallback.hidden = true;
+    btn.addEventListener('click', function () {
+      grantBookingConsent();
+      mountBookingCalendar();
     });
-    return acuityAssets;
-  }
+    revoke.addEventListener('click', revokeBookingConsent);
+  })();
 
-  function launchAcuity(url) {
-    // Acuity's embed.js macht aus einem Link zum Terminplan ein Overlay.
-    // Laedt das Skript nicht, geht der Termin in einem neuen Tab auf.
-    const link = document.createElement('a');
-    link.href = url;
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    loadAcuityAssets().then(
-      function () { link.click(); },
-      function () { window.open(url, '_blank'); }
-    );
-  }
-
+  // "Book now" und die uebrigen Knoepfe der Angebotskarten fuehren zum Kalender
+  // bzw. zum Einwilligungskasten an seiner Stelle.
   function openBooking(type) {
-    const url = bookingLinks[type];
-    const host = document.getElementById('booking-embed');
-    if (!url) {
-      // Keine URL hinterlegt -> heutiges Verhalten: zum Kasten scrollen, nichts laden
-      host.scrollIntoView({behavior: 'smooth', block: 'center'});
-      return false;
-    }
-    if (bookingConsented) {
-      // Einwilligung liegt fuer diese Sitzung vor -> direkt oeffnen
-      launchAcuity(url);
-      return false;
-    }
-    // Erste Buchung: Hinweis zeigen, noch NICHTS von Acuity laden
-    host.innerHTML =
-      '<div class="booking-inline">' +
-        '<p class="eyebrow">Before you continue</p>' +
-        '<br>' +
-        '<p>The booking calendar is provided by Acuity Scheduling (Squarespace, Inc., USA). ' +
-        'Opening it transmits your IP address and browser data to Squarespace. See our ' +
-        '<a href="#" onclick="return showPage(\'privacy\')" style="text-decoration:underline">privacy policy</a>.</p>' +
-        '<br>' +
-        '<button type="button" class="btn-filled" id="booking-consent-btn">Open booking calendar</button>' +
-      '</div>';
-    host.scrollIntoView({behavior: 'smooth', block: 'center'});
-    document.getElementById('booking-consent-btn').addEventListener('click', function () {
-      bookingConsented = true;   // gilt nur fuer die laufende Sitzung
-      launchAcuity(url);
-    });
+    document.getElementById('booking-embed').scrollIntoView({behavior: 'smooth', block: 'start'});
     return false;
   }
 
