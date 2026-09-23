@@ -911,7 +911,15 @@
       .booking-service-cta { justify-content: stretch; }
       .booking-service-btn { min-width: 0; width: 100%; }
     }
-    .booking-host { max-width: 1000px; margin: 3rem auto 6rem; padding: 0 5rem; }
+    /* V2: Breite und Seitenraender wie .booking-services (1200px, 3rem, mobil
+       1.5rem), damit der Kalender die volle Breite des Textbereichs nimmt und
+       mit den Karten fluchtet. Oben 0: die Liste traegt darueber 6rem Luft. */
+    .booking-host { max-width: 1200px; margin: 0 auto 6rem; padding: 0 3rem; }
+    .booking-calendar-title { text-align: center; margin-bottom: 2.5rem; }
+    /* Rahmen. embed.js setzt die Hoehe nach der Meldung aus dem Kalender selbst
+       (height !important, overflow hidden). Die 800px gelten nur, bis die erste
+       Meldung eintrifft oder falls das Skript nicht laedt. */
+    .booking-frame { display: block; width: 100%; height: 800px; border: 0; }
     /* V1: Ziel der Kartenknoepfe (openBooking, block: start). Haelt den Kasten
        unter dem fixierten Kopf frei, gemessen 124px bei 1440px. */
     #booking-embed { scroll-margin-top: 9rem; }
@@ -2139,7 +2147,15 @@
        Google hinaus. Ohne JavaScript bleibt der Knopf verborgen (hidden) und der
        Verweis darunter sichtbar: ein normaler Link auf die Buchungsseite bei
        Acuity, der erst beim Anklicken etwas laedt. Das Skript tauscht beides. -->
+  <!-- V2: Kalender. Nach der Zustimmung setzt das Skript den Rahmen in
+       #booking-frame-slot ein (mountBookingCalendar). Eingebettet wird die
+       vollstaendige Buchungsseite, KEIN appointmentType, KEIN category: spaeter
+       angelegte Angebote und Kategorien erscheinen dann von selbst.
+       Die vier Karten oben sind unabhaengig davon. Entfallen sie, bleibt dieser
+       Block unveraendert stehen. -->
   <div class="booking-host" id="booking-embed">
+    <h2 class="section-title booking-calendar-title"><em>Book your session</em></h2>
+    <div class="booking-frame-slot" id="booking-frame-slot"></div>
     <div class="booking-inline booking-consent" id="booking-consent">
       <h2 class="booking-consent-title">Before the calendar loads</h2>
       <p class="booking-consent-text">The booking calendar is provided by Acuity Scheduling, a service of Squarespace based in the USA. When it loads, cookies are set and data such as your IP address is transmitted there.</p>
@@ -2382,12 +2398,52 @@
     try { localStorage.setItem(BOOKING_CONSENT_KEY, 'granted'); } catch (e) {}
   }
 
-  // Setzt den Kalender an die Stelle des Kastens. V2 baut hier den Rahmen ein.
+  /* ---- Buchungskalender: Rahmen (V2) ----
+     Die vollstaendige Buchungsseite des Kontos, ausdruecklich OHNE
+     appointmentType und OHNE category. Nur so erscheinen spaeter angelegte
+     Angebote und Kategorien von selbst, ohne Aenderung an diesem Dokument.
+     embed.js von Acuity passt die Rahmenhoehe an den Inhalt an. Es durchsucht
+     die Seite nur in dem Moment, in dem es ausgefuehrt wird, nach Rahmen - der
+     Rahmen muss also VOR dem Skript im Dokument stehen. Nach Widerruf und neuer
+     Zustimmung wird das Skript deshalb erneut eingehaengt; den Nachrichten-
+     Empfaenger bindet es nur einmal (window.__acuityEmbedBound). */
+  const BOOKING_URL = 'https://app.acuityscheduling.com/schedule.php?owner=40352201';
+
+  /* Bei jedem Schrittwechsel im Kalender rollt embed.js die Seite an die
+     Oberkante des Rahmens - die laege unter dem fixierten Kopf (gemessen 79px
+     bei 390, 124px bei 1440). data-offset-top ist die dafuer vorgesehene
+     Stellschraube von embed.js: Kopfhoehe plus 1rem Luft, bei jeder
+     Groessenaenderung neu gemessen. */
+  function setBookingFrameOffset(frame) {
+    const head = document.getElementById('main-nav');
+    frame.setAttribute('data-offset-top', Math.ceil(head.getBoundingClientRect().height) + 16);
+  }
+  window.addEventListener('resize', function () {
+    const frame = document.querySelector('.booking-frame');
+    if (frame) setBookingFrameOffset(frame);
+  });
+
+  // Setzt den Kalender an die Stelle des Kastens
   function mountBookingCalendar() {
+    const slot = document.getElementById('booking-frame-slot');
     document.getElementById('booking-consent').hidden = true;
+    if (slot.firstChild) return;   // bereits eingesetzt
+    const frame = document.createElement('iframe');
+    frame.className = 'booking-frame';
+    frame.src = BOOKING_URL;
+    frame.title = 'Booking calendar (Acuity Scheduling)';
+    frame.setAttribute('allow', 'payment');
+    setBookingFrameOffset(frame);
+    slot.appendChild(frame);
+    const js = document.createElement('script');
+    js.src = 'https://embed.acuityscheduling.com/js/embed.js';
+    js.async = true;
+    slot.appendChild(js);
   }
 
+  // Nimmt Rahmen und Skript wieder heraus und zeigt den Kasten
   function unmountBookingCalendar() {
+    document.getElementById('booking-frame-slot').replaceChildren();
     document.getElementById('booking-consent').hidden = false;
   }
 
