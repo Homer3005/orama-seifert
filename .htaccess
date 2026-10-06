@@ -1,0 +1,89 @@
+# Serverregeln fuer oramaseifert.com auf dem Webspace von All-Inkl (Apache).
+# Gilt fuer das Wurzelverzeichnis und alle Unterordner. fonts/.htaccess setzt
+# zusaetzlich die Freigabe fuer fremde Herkunft, die Kopfzeilen beider Dateien
+# werden zusammengefuehrt.
+# Bewusst KEINE Content-Security-Policy: Acuity, Google reCAPTCHA und spaeter
+# Stripe brauchen eine eigene, gepruefte Regel, wenn alle Dienste stehen.
+
+
+# --- Umleitung auf https ---------------------------------------------------
+# Jeder Aufruf ueber http geht dauerhaft (301) auf dieselbe Adresse unter
+# https. Pfad und Abfrageteil bleiben erhalten: REQUEST_URI traegt den Pfad,
+# den Abfrageteil haengt mod_rewrite von selbst wieder an.
+# Umgeleitet wird nur, wenn WEDER der Server selbst eine verschluesselte
+# Verbindung meldet (HTTPS) NOCH der vorgeschaltete Mittler in der Kopfzeile
+# X-Forwarded-Proto https weitergibt. Prueft man nur eine der beiden, kann
+# eine Anfrage, die schon verschluesselt ankam, erneut umgeleitet werden,
+# und es entsteht eine Endlosschleife.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Alles unterhalb eines Ordners .git abweisen (403), falls er je auf den
+  # Server geraet. Ein Ordner laesst sich mit FilesMatch unten nicht fassen,
+  # weil dort nur der Dateiname geprueft wird.
+  RewriteRule (^|/)\.git(/|$) - [F]
+</IfModule>
+
+
+# --- Zeichensatz -------------------------------------------------------------
+# UTF-8 als Vorgabe fuer HTML und Text, damit die spanischen Sonderzeichen
+# (n mit Tilde, Akzente, umgekehrte Satzzeichen) auch dann richtig ankommen,
+# wenn der Browser die Angabe im Dokument nicht auswertet.
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+  AddCharset UTF-8 .html .css .js .txt
+</IfModule>
+
+
+# --- Verzeichnisauflistung -----------------------------------------------------
+# Keine Liste von Ordnerinhalten. /images/ oder /fonts/ ohne Dateinamen
+# liefern 403 statt eines Verzeichnisses.
+Options -Indexes
+
+
+# --- Zugriff auf Dateien, die niemanden angehen --------------------------------
+# Zweite Sicherung hinter deploy.sh, das diese Dateien beim Ausspielen
+# ohnehin auslaesst: Repo-Verwaltung, Mac-Ordnerdaten, Notizen und Auftraege
+# (*.md), Skripte (*.sh, *.py) und die lokale Kennwortdatei von deploy.sh.
+# Alles davon wird mit 403 abgewiesen.
+<FilesMatch "(^\.git|^\.gitignore$|^\.DS_Store$|^\.ftp-kennwort$|\.(md|sh|py)$)">
+  Require all denied
+</FilesMatch>
+
+
+# --- Sicherheitskopfzeilen -------------------------------------------------------
+<IfModule mod_headers.c>
+  # Der Browser haelt sich an den angegebenen Dateityp und raet nicht selbst.
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Fremde Seiten erfahren beim Klick auf einen Verweis nur die Domain, nicht
+  # die volle Adresse. Innerhalb der Seite bleibt die volle Adresse erhalten.
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Diese Seite darf nur von sich selbst in einem Rahmen gezeigt werden.
+  # Betrifft nicht den eingebetteten Acuity-Planer: fuer dessen Rahmen
+  # zaehlt allein, was Acuity selbst ausliefert.
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+
+# --- Zwischenspeicher ----------------------------------------------------------
+<IfModule mod_headers.c>
+  # Bilder und Schriften ein Jahr im Browser halten. Achtung: wird ein Bild
+  # unter gleichem Dateinamen ersetzt, sehen wiederkehrende Besucher bis zu
+  # ein Jahr lang das alte. Neues Bild, neuer Dateiname.
+  <FilesMatch "\.(jpe?g|png|gif|webp|avif|svg|ico|woff2?|ttf|otf|eot)$">
+    Header set Cache-Control "public, max-age=31536000"
+  </FilesMatch>
+
+  # Seite und Formularskript bei jedem Aufruf beim Server nachfragen. Hat
+  # sich nichts geaendert, antwortet er knapp mit 304, sonst kommt der neue
+  # Stand sofort an.
+  <FilesMatch "\.(html|php)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
