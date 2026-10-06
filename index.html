@@ -582,7 +582,7 @@
     .eyebrow.eyebrow { font-size: 0.805rem; letter-spacing: 0.28em; text-transform: uppercase;
       margin-bottom: 1.2rem; }
     /* K20, Sperre gegen Uebergriff. Kein Entwurfswert, reine Absicherung.
-       .eyebrow und .legal-variant-label sind Ueberschriftzeilen und fallen NICHT
+       .eyebrow ist eine Ueberschriftzeile und faellt NICHT
        unter Fliesstext. Sie sind aber als <p> ausgezeichnet und werden von den
        Absatzregeln ihres Traegers geschlagen: .about-page-body p ist (0,1,1),
        .eyebrow nur (0,1,0). Diese Zeilen rendern deshalb SCHON HEUTE nicht in
@@ -614,7 +614,6 @@
     .thanks-page-body .eyebrow.eyebrow  { font-size: 1.2075rem; line-height: 1.8; }   /* 19,32 px / 34,776 px */
     .booking-inline .eyebrow.eyebrow    { font-size: 1.0925rem; line-height: 1.7;     /* 17,48 px / 29,716 px */
       margin-bottom: 0; }
-    .legal-page-body .legal-variant-label { font-size: 1.02rem; }  /* Bestand 16.32px */
     .section-title { font-family: var(--serif); font-size: clamp(2.2rem, 3.5vw, 3.4rem);
       font-weight: 400; line-height: 1.15; color: var(--lilac); }
     .section-title em { font-style: italic; color: var(--gold); font-weight: 400; }
@@ -970,10 +969,27 @@
       color: var(--ink); font-weight: 500; margin: 1.6rem 0 0.5rem; }
     .legal-page-body p { font-size: 1.15rem; line-height: 1.85; color: #5a4a6a; margin-bottom: 1.1rem; }
     .legal-page-body a { color: var(--lilac); text-decoration: underline; }
-    .legal-variant { border-left: 2px solid rgba(123,125,184,0.35);
-      padding: 0.2rem 0 0.2rem 1.5rem; margin: 1.8rem 0 2.6rem; }
-    .legal-variant-label { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--gold); font-weight: 500; margin-bottom: 0.8rem; }
+    /* Y1: Sprachumschalter der Rechtsseiten. Knopfbauweise .btn-outline aus dem
+       Bestand, hier nur angepasst, wo sie auf diesem Grund nicht traegt:
+       - min-width 0: die 14rem des Bestands sind fuer "EN"/"ES" zu breit.
+       - Farbe --lilac-dark statt --lilac: --lilac misst auf --cream 3.64:1 und
+         faellt unter 4,5:1 fuer Kleintext, --lilac-dark 5.00:1.
+       - Aktiv und beim Ueberfahren gefuellt in --lilac-dark, Schrift --white
+         (5.28:1). Das :hover des Bestands (--white auf --lilac) misst 3.84:1.
+       - background transparent, Schrift und Zeiger: ein <button> erbt sie nicht,
+         wie bei #privacy-page button.btn-filled.
+       Abstaende aus dem Bestand: 0.6rem wie der Zeilenabstand der Menueliste,
+       1rem wie .legal-page-body h3 nach unten. Nur Tokens aus :root.
+       Grundzustand hidden: erst das Skript zeigt den Umschalter, ohne JavaScript
+       steht nur die englische Fassung da. */
+    .legal-lang-switch { display: flex; justify-content: flex-end; margin-bottom: 1rem; }
+    .legal-lang-switch[hidden] { display: none; }
+    .legal-lang-switch .btn-outline { min-width: 0; font-family: var(--sans); cursor: pointer;
+      background: transparent; color: var(--lilac-dark); border-color: var(--lilac-dark); }
+    .legal-lang-switch .btn-outline + .btn-outline { margin-left: 0.6rem; }
+    .legal-lang-switch .btn-outline:hover,
+    .legal-lang-switch .btn-outline[aria-pressed="true"] { background: var(--lilac-dark);
+      color: var(--white); }
     .legal-field { margin-bottom: 0.9rem; }
     .legal-field b { display: block; font-family: var(--sans); font-size: 0.82rem;
       letter-spacing: 0.04em; color: var(--ink); font-weight: 500; margin-bottom: 0.15rem; }
@@ -2165,58 +2181,59 @@
 </div>
 
 <!-- LEGAL NOTICE -->
-<!-- HINWEIS: Der Sitz der Anbieterin ist noch offen (Deutschland oder Spanien).
-     Beide Varianten sind als Geruest angelegt. Vor dem Livegang wird GENAU EINE
-     der beiden Varianten (A Spanien / B Deutschland) auf dieser Seite UND in der
-     Privacy Policy geloescht. -->
+<!-- Seit Block Y eine Rechtslage, Spanien, in zwei Sprachfassungen (EN/ES).
+     Die frueheren Varianten A Spanien / B Deutschland sind entfallen. -->
 <div id="imprint-page" style="display:none">
   <p class="legal-draft">DRAFT — not for publication. Pending legal review.</p>
   <div class="legal-page-body">
-    <h1 class="section-title">Legal Notice</h1>
-    <p>This legal notice is a working draft. Every entry in double brackets is a placeholder that must be completed and verified by legal counsel before publication. The provider’s place of establishment has not yet been determined; two jurisdiction variants are drafted below, and one of them will be removed before go-live.</p>
-
-    <div class="legal-variant">
-      <p class="legal-variant-label">Variante A — Spanien (LSSI-CE Art. 10)</p>
-      <div class="legal-field"><b>Name / company name</b>Sonja Seifert</div>
-      <div class="legal-field"><b>Legal form</b>Autonoma, Einzelselbstaendigkeit</div>
-      <!-- OFFEN: Buzon ist ein Postfach und in aller Regel keine ladungsfaehige
-           Anschrift. Klaerung ueber die Gestoria der Kundin steht aus. -->
-      <div class="legal-field"><b>Summonable address</b>Buzon Seret 83, KM 5,4 Carretera San Miguel, 07815 Santa Gertrudis, Islas Balears, Ibiza</div>
-      <!-- Kein mailto-Verweis: die Adresse steht als reiner Text, damit sie nach
-           LSSI-CE Art. 10 leicht zugaenglich, lesbar und kopierbar bleibt, ohne
-           Adresssammlern einen fertigen Link zu liefern. Nicht verschleiern. -->
-      <div class="legal-field"><b>Email</b>orama@orama-coaching.com</div>
-      <!-- OFFEN: Telefonnummer. Die Kundin hat gefragt, ob die Nummer oeffentlich
-           lesbar waere, und noch nicht zugestimmt. Es ist ihre private Nummer.
-           Erst einkommentieren, wenn sie ausdruecklich zustimmt.
-           Vorbereitete Zeile: +34 681 262 515
-      <div class="legal-field"><b>Second direct contact</b>+34 681 262 515</div>
-      -->
-      <div class="legal-field"><b>Tax number (NIF / CIF)</b>NIF Y5078156T</div>
-      <div class="legal-field"><b>Responsible for content</b>Sonja Seifert</div>
-      <div class="legal-field"><b>EU dispute resolution</b>[[PLATZHALTER: Aktuellen Hinweis zur Verbraucher-/Online-Streitbeilegung durch Rechtsberatung einsetzen; Rechtslage zur EU-ODR-Plattform pruefen]]</div>
+    <!-- Y1: Sprachumschalter. Beide Fassungen stehen im Dokument, das Skript
+         blendet um und merkt die Wahl (localStorage "orama-legal-lang"). Ohne
+         JavaScript bleibt der Umschalter verborgen und die englische Fassung sichtbar. -->
+    <div class="legal-lang-switch" role="group" aria-label="Language / Idioma" hidden>
+      <button type="button" class="btn-outline" data-set-lang="en" lang="en" aria-pressed="true">EN</button>
+      <button type="button" class="btn-outline" data-set-lang="es" lang="es" aria-pressed="false">ES</button>
     </div>
+    <div data-legal-lang="en" lang="en">
+    <h1 class="section-title">Legal Notice</h1>
+    <p>This legal notice is a working draft. Every entry in double brackets is a placeholder that must be completed and verified by legal counsel before publication.</p>
 
-    <div class="legal-variant">
-      <p class="legal-variant-label">Variante B — Deutschland (DDG)</p>
-      <div class="legal-field"><b>Name / company name and legal form</b>[[PLATZHALTER: Vollstaendiger Name / Firmenname]] — [[PLATZHALTER: Rechtsform und Vertretungsberechtigte(r), falls Gesellschaft]]</div>
-      <div class="legal-field"><b>Summonable address (no P.O. box)</b>[[PLATZHALTER: Strasse und Hausnummer]], [[PLATZHALTER: PLZ und Ort]]</div>
-      <div class="legal-field"><b>Email</b>[[PLATZHALTER: E-Mail-Adresse]]</div>
-      <div class="legal-field"><b>Second direct contact</b>[[PLATZHALTER: Telefon oder anderer direkter Kontaktweg]]</div>
-      <div class="legal-field"><b>VAT / tax number</b>[[PLATZHALTER: USt-IdNr. gem. §27a UStG bzw. Steuernummer, falls vorhanden]]</div>
-      <div class="legal-field"><b>Register entry</b>[[PLATZHALTER: Registergericht und Handelsregisternummer, falls vorhanden]]</div>
-      <div class="legal-field"><b>Responsible for content (§18 Abs. 2 MStV)</b>[[PLATZHALTER: Name und Anschrift der verantwortlichen Person]]</div>
-      <div class="legal-field"><b>EU dispute resolution</b>[[PLATZHALTER: Hinweis nach §36 VSBG (Verbraucherstreitbeilegung) durch Rechtsberatung einsetzen; Rechtslage zur EU-ODR-Plattform pruefen]]</div>
+    <div class="legal-field"><b>Name / company name</b>Sonja Seifert</div>
+    <div class="legal-field"><b>Legal form</b>Autonoma, Einzelselbstaendigkeit</div>
+    <!-- OFFEN: Buzon ist ein Postfach und in aller Regel keine ladungsfaehige
+         Anschrift. Klaerung ueber die Gestoria der Kundin steht aus. -->
+    <div class="legal-field"><b>Summonable address</b>Buzon Seret 83, KM 5,4 Carretera San Miguel, 07815 Santa Gertrudis, Islas Balears, Ibiza</div>
+    <!-- Kein mailto-Verweis: die Adresse steht als reiner Text, damit sie nach
+         LSSI-CE Art. 10 leicht zugaenglich, lesbar und kopierbar bleibt, ohne
+         Adresssammlern einen fertigen Link zu liefern. Nicht verschleiern. -->
+    <div class="legal-field"><b>Email</b>orama@orama-coaching.com</div>
+    <!-- OFFEN: Telefonnummer. Die Kundin hat gefragt, ob die Nummer oeffentlich
+         lesbar waere, und noch nicht zugestimmt. Es ist ihre private Nummer.
+         Erst einkommentieren, wenn sie ausdruecklich zustimmt.
+         Vorbereitete Zeile: +34 681 262 515
+    <div class="legal-field"><b>Second direct contact</b>+34 681 262 515</div>
+    -->
+    <div class="legal-field"><b>Tax number (NIF / CIF)</b>NIF Y5078156T</div>
+    <div class="legal-field"><b>Responsible for content</b>Sonja Seifert</div>
+    <div class="legal-field"><b>EU dispute resolution</b>[[PLATZHALTER: Aktuellen Hinweis zur Verbraucher-/Online-Streitbeilegung durch Rechtsberatung einsetzen; Rechtslage zur EU-ODR-Plattform pruefen]]</div>
+    </div>
+    <div data-legal-lang="es" lang="es" hidden>
+      <p>[[POR CONFIRMAR: versión española pendiente]]</p>
     </div>
   </div>
 </div>
 
 <!-- PRIVACY POLICY -->
-<!-- HINWEIS: Wie beim Legal Notice — vor Livegang GENAU EINE der beiden Varianten
-     (A Spanien / B Deutschland) im Abschnitt "Right to lodge a complaint" loeschen. -->
 <div id="privacy-page" style="display:none">
   <p class="legal-draft">DRAFT — not for publication. Pending legal review.</p>
   <div class="legal-page-body">
+    <!-- Y1: Sprachumschalter. Beide Fassungen stehen im Dokument, das Skript
+         blendet um und merkt die Wahl (localStorage "orama-legal-lang"). Ohne
+         JavaScript bleibt der Umschalter verborgen und die englische Fassung sichtbar. -->
+    <div class="legal-lang-switch" role="group" aria-label="Language / Idioma" hidden>
+      <button type="button" class="btn-outline" data-set-lang="en" lang="en" aria-pressed="true">EN</button>
+      <button type="button" class="btn-outline" data-set-lang="es" lang="es" aria-pressed="false">ES</button>
+    </div>
+    <div data-legal-lang="en" lang="en">
     <h1 class="section-title">Privacy Policy</h1>
     <p>This privacy policy is a working draft. Every entry in double brackets is a placeholder that must be completed and verified by legal counsel before publication. It reflects the technical state of this website: when you open it, it requests nothing from third parties and stores nothing on your device. This website stores information on your device only when you submit the contact form or agree to load the booking calendar (see section 8). Third-party requests and third-party cookies occur only on the booking page, and only once you have agreed there to load the booking calendar (see section 5). That consent notice stands on the booking page in place of the calendar; there is no site-wide cookie banner.</p>
 
@@ -2290,17 +2307,14 @@
     <p>Under the GDPR you have the right of access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20) and to object to processing (Art. 21). Where processing is based on consent, you may withdraw that consent at any time with future effect.</p>
 
     <h3>13. Right to lodge a complaint</h3>
-    <div class="legal-variant">
-      <p class="legal-variant-label">Variante A — Spanien (LSSI-CE Art. 10)</p>
-      <p>You have the right to lodge a complaint with the Spanish supervisory authority, the Agencia Española de Protección de Datos (AEPD). [[PLATZHALTER: Anschrift und Kontaktangaben der AEPD durch Rechtsberatung bestaetigen]]</p>
-    </div>
-    <div class="legal-variant">
-      <p class="legal-variant-label">Variante B — Deutschland (DDG)</p>
-      <p>You have the right to lodge a complaint with the competent data protection supervisory authority. [[PLATZHALTER: Zustaendige Landesaufsichtsbehoerde nach Sitz einsetzen — Name und Anschrift]]</p>
-    </div>
+    <p>You have the right to lodge a complaint with the Spanish supervisory authority, the Agencia Española de Protección de Datos (AEPD). [[PLATZHALTER: Anschrift und Kontaktangaben der AEPD durch Rechtsberatung bestaetigen]]</p>
 
     <h3>14. Document status</h3>
     <p>[[PLATZHALTER: Stand (Datum der letzten Aktualisierung)]]</p>
+    </div>
+    <div data-legal-lang="es" lang="es" hidden>
+      <p>[[POR CONFIRMAR: versión española pendiente]]</p>
+    </div>
   </div>
 </div>
 
@@ -2392,6 +2406,36 @@
     setTimeout(initReveal, 150);
     return false;
   }
+
+  /* ---- Sprachumschalter der Rechtsseiten (Y1) ----
+     Beide Fassungen stehen im Dokument ([data-legal-lang]); umgeschaltet wird
+     ueber das hidden-Attribut, ohne Neuladen. Ein Umschalter je Rechtsseite, beide
+     schalten gemeinsam, damit die Wahl beim Wechsel zwischen Impressum und
+     Datenschutz erhalten bleibt. Gemerkt im localStorage unter "orama-legal-lang"
+     (die Grundregel, nichts im Geraet abzulegen, ist mit Block V aufgehoben).
+     Voreinstellung Englisch. Ist localStorage gesperrt, gilt die Wahl bis zum
+     Neuladen. Ohne JavaScript bleibt der Umschalter verborgen und die englische
+     Fassung sichtbar. */
+  const LEGAL_LANG_KEY = 'orama-legal-lang';
+  function setLegalLang(lang, remember) {
+    if (lang !== 'es') lang = 'en';
+    document.querySelectorAll('[data-legal-lang]').forEach(el => {
+      el.hidden = el.dataset.legalLang !== lang;
+    });
+    document.querySelectorAll('[data-set-lang]').forEach(btn => {
+      btn.setAttribute('aria-pressed', btn.dataset.setLang === lang ? 'true' : 'false');
+    });
+    if (remember) { try { localStorage.setItem(LEGAL_LANG_KEY, lang); } catch (e) {} }
+  }
+  (function () {
+    let stored = null;
+    try { stored = localStorage.getItem(LEGAL_LANG_KEY); } catch (e) {}
+    setLegalLang(stored, false);
+    document.querySelectorAll('[data-set-lang]').forEach(btn => {
+      btn.addEventListener('click', () => setLegalLang(btn.dataset.setLang, true));
+    });
+    document.querySelectorAll('.legal-lang-switch').forEach(el => { el.hidden = false; });
+  })();
 
   /* ---- Buchungskalender: Einwilligung (V1) ----
      Acuity laedt NICHTS beim Seitenaufruf. Erst wenn der Besucher auf der
