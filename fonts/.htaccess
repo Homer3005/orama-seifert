@@ -1,0 +1,11 @@
+# Erlaubt fremden Herkuenften, die Schriften dieses Ordners zu laden.
+# Noetig fuer den eingebetteten Acuity-Buchungsplaner: Browser blockieren
+# Schriften fremder Herkunft ohne diese Freigabe, und All-Inkl schickt sie
+# nicht von selbst mit. Gilt nur fuer Schriftdateien, nur mit mod_headers.
+# Inhalt unterhalb ist auf dem Server im Einsatz und geprueft, nicht aendern.
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(woff2?|ttf|otf|eot)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
