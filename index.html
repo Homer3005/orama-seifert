@@ -2218,7 +2218,7 @@
   <p class="legal-draft">DRAFT — not for publication. Pending legal review.</p>
   <div class="legal-page-body">
     <h1 class="section-title">Privacy Policy</h1>
-    <p>This privacy policy is a working draft. Every entry in double brackets is a placeholder that must be completed and verified by legal counsel before publication. It reflects the technical state of this website: when you open it, it requests nothing from third parties and sets no cookies. Third-party requests and cookies occur only on the booking page, and only once you have agreed there to load the booking calendar (see section 5). That consent notice stands on the booking page in place of the calendar; there is no site-wide cookie banner.</p>
+    <p>This privacy policy is a working draft. Every entry in double brackets is a placeholder that must be completed and verified by legal counsel before publication. It reflects the technical state of this website: when you open it, it requests nothing from third parties and stores nothing on your device. This website stores information on your device only when you submit the contact form or agree to load the booking calendar (see section 8). Third-party requests and third-party cookies occur only on the booking page, and only once you have agreed there to load the booking calendar (see section 5). That consent notice stands on the booking page in place of the calendar; there is no site-wide cookie banner.</p>
 
     <h3>1. Controller and contact</h3>
     <p>The controller responsible for data processing on this website is:</p>
@@ -2265,19 +2265,28 @@
     <p>The form is processed by the server of this website itself, not by a third party. When you submit it, your details are sent by email to the controller; the email is sent through the mail server of ALL-INKL.COM (see section 3). Your details are not stored in a file or a database on the server. Nothing is transmitted when the page opens — transmission happens only when you submit the form.</p>
     <p>Retention: the email remains in the controller’s mailbox. Enquiries received through the form are kept for two years after your enquiry has been dealt with, and are deleted afterwards. Where statutory retention periods apply, they take precedence.</p>
 
-    <h3>8. Newsletter — Substack</h3>
+    <!-- X3: Was im Geraet abgelegt wird. Die Seite selbst legt beim Aufruf nichts
+         ab; seit W2 setzt kontakt.php beim Absenden ein Sitzungscookie, seit
+         Block V merkt der Buchungskalender die Einwilligung per localStorage. -->
+    <h3>8. Information stored on your device</h3>
+    <p>Opening this website stores nothing on your device and sets no cookies. This website stores information on your device only in the following cases:</p>
+    <div class="legal-field"><b>Session cookie “kontakt”</b>Set by this website when you submit the contact form. The cookie holds only a random session identifier. On the server, this session holds a single piece of information: the time of your last submission, so that the form cannot be sent again within a minute. It contains nothing you entered in the form and is not used to recognise or track you. It expires when you close your browser. Legal basis: technically necessary to provide the contact form you are using. [[PLATZHALTER: Rechtsgrundlage fuer das Sitzungscookie (Deutschland: § 25 Abs. 2 Nr. 2 TDDDG / Spanien: Art. 22.2 LSSI-CE) und Loeschfrist der Sitzungsdaten auf dem Server durch Rechtsberatung bestaetigen]]</div>
+    <div class="legal-field"><b>Local storage entry “orama-booking-consent”</b>Set only when you agree to load the booking calendar. It records only that you agreed, so that you do not have to agree again on every visit. It is not transmitted to anyone. Legal basis: your consent, Art. 6(1)(a) GDPR. You can withdraw it at any time with the “Withdraw consent” button in section 5, which deletes the entry.</div>
+    <div class="legal-field"><b>Booking calendar</b>Acuity Scheduling and the services loaded within the calendar, among them Google reCAPTCHA, set their own cookies or store information on your device, only after you have agreed to load the calendar. See section 5.</div>
+
+    <h3>9. Newsletter — Substack</h3>
     <p>Orama’s newsletter “Being Divine” is published on Substack, provided by Substack Inc., USA. This website only links to Substack. No newsletter content and no subscription form is embedded here, so opening this site transmits no data to Substack. If you follow the link and subscribe there, your email address and any further details you enter are processed by Substack under its own privacy policy; that transfer is a transfer to a third country. [[PLATZHALTER: Vollstaendige Anschrift von Substack Inc., Link zu Substacks Datenschutzerklaerung, Rechtsgrundlage und Grundlage des Drittlandtransfers durch Rechtsberatung ergaenzen]]</p>
 
-    <h3>9. Storage duration</h3>
+    <h3>10. Storage duration</h3>
     <p>[[PLATZHALTER: Speicherdauer je Verarbeitung (Server-Logs, E-Mail-Kontakt, Formularanfragen, Buchung) durch Rechtsberatung festlegen]]</p>
 
-    <h3>10. Recipients and third-country transfer</h3>
+    <h3>11. Recipients and third-country transfer</h3>
     <p>Processing on this website involves service providers in the United States (Squarespace, Inc. for the Acuity Scheduling booking calendar and, loaded within it, Google LLC for reCAPTCHA and fonts, Stripe, Inc. for payments and Functional Software, Inc. (Sentry) for error monitoring, all only after consent; Substack Inc. for the newsletter, only if you subscribe there). Transfers to the USA are transfers to a third country. [[PLATZHALTER: Grundlage des Drittlandtransfers je Anbieter (z. B. EU-Standardvertragsklauseln, EU-US Data Privacy Framework) durch Rechtsberatung angeben]]</p>
 
-    <h3>11. Your rights</h3>
+    <h3>12. Your rights</h3>
     <p>Under the GDPR you have the right of access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20) and to object to processing (Art. 21). Where processing is based on consent, you may withdraw that consent at any time with future effect.</p>
 
-    <h3>12. Right to lodge a complaint</h3>
+    <h3>13. Right to lodge a complaint</h3>
     <div class="legal-variant">
       <p class="legal-variant-label">Variante A — Spanien (LSSI-CE Art. 10)</p>
       <p>You have the right to lodge a complaint with the Spanish supervisory authority, the Agencia Española de Protección de Datos (AEPD). [[PLATZHALTER: Anschrift und Kontaktangaben der AEPD durch Rechtsberatung bestaetigen]]</p>
@@ -2287,7 +2296,7 @@
       <p>You have the right to lodge a complaint with the competent data protection supervisory authority. [[PLATZHALTER: Zustaendige Landesaufsichtsbehoerde nach Sitz einsetzen — Name und Anschrift]]</p>
     </div>
 
-    <h3>13. Document status</h3>
+    <h3>14. Document status</h3>
     <p>[[PLATZHALTER: Stand (Datum der letzten Aktualisierung)]]</p>
   </div>
 </div>
@@ -2389,8 +2398,9 @@
      Seit Block V wird die Zustimmung im Geraet gemerkt (localStorage, Schluessel
      unten), damit sie nicht bei jedem Aufruf neu gegeben werden muss. Die fruehere
      Grundregel "die Seite legt nichts im Geraet ab" ist damit ausdruecklich
-     aufgehoben. Die Seite selbst setzt weiterhin kein Cookie; Cookies setzt erst
-     der geladene Kalender, unter der Domain von Acuity.
+     aufgehoben. Cookies setzen der geladene Kalender, unter der Domain von
+     Acuity, und seit W2 kontakt.php beim Absenden des Formulars (Sitzungscookie
+     "kontakt"). Beides steht in Abschnitt 8 der Datenschutzerklaerung.
      Ist localStorage gesperrt (privates Fenster, blockierte Websitedaten), gilt die
      Zustimmung nur bis zum Neuladen - bookingConsentSession traegt sie dann.
      Widerruf: Knopf in der Datenschutzerklaerung -> revokeBookingConsent(). */
@@ -2567,8 +2577,10 @@
   })();
 
   /* ---- Spamschutz des Kontaktformulars ----
-     Vier Massnahmen, alle ausschliesslich im Arbeitsspeicher. Kein Cookie, kein
-     localStorage, kein sessionStorage — nach dem Neuladen ist jede Sperre weg.
+     Vier Massnahmen, alle ausschliesslich im Arbeitsspeicher. Dieses Skript setzt
+     kein Cookie, kein localStorage, kein sessionStorage — nach dem Neuladen ist
+     jede Sperre weg. Die serverseitige Sperre in kontakt.php dagegen setzt beim
+     Absenden das Sitzungscookie "kontakt", siehe Datenschutzerklaerung Abschnitt 8.
      (Gilt fuer das Formular; die seitenweite Regel ist mit Block V aufgehoben,
      siehe Buchungskalender.)
      Ohne JavaScript bleibt das Formular absendbar: dann wirken die beiden
