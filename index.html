@@ -1940,29 +1940,23 @@
     <h2 class="section-title"><em>Find Your Next Step</em></h2>
     <p class="closing-cta-body">Whether a first consultation, an Akashic Reading, or a group training to learn more about healing and build yourself up — find the right space for you.</p>
 
-    <!-- OFFEN: Forminit-Konto noch nicht angelegt. Nur FORM_ID_HIER_EINSETZEN
-         im action-Attribut durch die Kennung ersetzen, sonst nichts.
-         Zielmailadresse ergibt sich aus dem Forminit-Konto. -->
-    <!-- OFFEN: Bis das Forminit-Konto angelegt ist, hat die Seite keinen
-         funktionierenden Kontaktweg. Der mailto-Ausweg wurde am 23.08.2026
-         bewusst entfernt, um die Adresse vor Adresssammlern zu schuetzen. -->
-    <form class="contact-form-block" action="https://forminit.com/f/FORM_ID_HIER_EINSETZEN" method="POST">
+    <!-- Versand ueber kontakt.php auf dem eigenen Webspace (W2). Empfaenger,
+         Absender und Betreff stehen dort. Erfolg leitet auf index.html#thank-you,
+         ein Fehler auf index.html?kontakt=<code>#contact-form.
+         Der mailto-Ausweg wurde am 23.08.2026 bewusst entfernt, um die Adresse
+         vor Adresssammlern zu schuetzen. -->
+    <form class="contact-form-block" id="contact-form" action="kontakt.php" method="POST">
       <h3 class="contact-form-title">Write to Orama</h3>
       <p class="contact-form-note"><span aria-hidden="true">*</span> Required field</p>
 
-      <!-- Betreff der Benachrichtigungsmail an Orama -->
-      <input type="hidden" name="_subject" value="Anfrage ueber die Website">
-      <!-- Weiterleitung nach dem Absenden, relativ auf die Dankeseite -->
-      <input type="hidden" name="_redirect" value="index.html#thank-you">
-
       <div class="contact-field">
         <label for="contact-name">Name <span aria-hidden="true">*</span></label>
-        <input type="text" id="contact-name" name="name" autocomplete="name" required aria-required="true">
+        <input type="text" id="contact-name" name="name" autocomplete="name" maxlength="100" required aria-required="true">
       </div>
 
       <div class="contact-field">
         <label for="contact-email">Email <span aria-hidden="true">*</span></label>
-        <input type="email" id="contact-email" name="email" autocomplete="email" required aria-required="true">
+        <input type="email" id="contact-email" name="email" autocomplete="email" maxlength="254" required aria-required="true">
       </div>
 
       <div class="contact-field">
@@ -1980,7 +1974,7 @@
 
       <div class="contact-field">
         <label for="contact-message">Message <span aria-hidden="true">*</span></label>
-        <textarea id="contact-message" name="message" rows="6" required aria-required="true"></textarea>
+        <textarea id="contact-message" name="message" rows="6" maxlength="5000" required aria-required="true"></textarea>
       </div>
 
       <div class="contact-consent">
@@ -1989,8 +1983,7 @@
       </div>
 
       <!-- Spamschutz: bleibt leer. Bots fuellen es, Menschen sehen es nicht.
-           Der von Forminit erwartete Feldname ist nicht gesichert, daher ein
-           neutraler Name. -->
+           Neutraler Name, kontakt.php prueft ihn. -->
       <div class="contact-trap" aria-hidden="true">
         <label for="contact-website">Leave this field empty</label>
         <input type="text" id="contact-website" name="contact-website" tabindex="-1" autocomplete="off">
@@ -2577,9 +2570,9 @@
      localStorage, kein sessionStorage — nach dem Neuladen ist jede Sperre weg.
      (Gilt fuer das Formular; die seitenweite Regel ist mit Block V aufgehoben,
      siehe Buchungskalender.)
-     Ohne JavaScript bleibt das Formular absendbar: dann wirken allein die beiden
-     Fallenfelder ueber den Filter des Empfaengers, die drei anderen Massnahmen
-     nicht. Das ist so gewollt. Die Zieladresse steht im action-Attribut und wird
+     Ohne JavaScript bleibt das Formular absendbar: dann wirken die beiden
+     Fallenfelder und die 60-Sekunden-Sperre in kontakt.php, Zeitfalle und
+     Linkgrenze nicht. Das ist so gewollt. Die Zieladresse steht im action-Attribut und wird
      hier bewusst NICHT gesetzt — sonst waere das Formular ohne JavaScript tot,
      und seit dem Entfernen der Mailadresse gibt es keinen Ersatzweg. */
   (function () {
@@ -2638,7 +2631,7 @@
   })();
 
   /* Die Dankeseite ist die einzige Unterseite, die von aussen angesprungen werden
-     koennen muss: Forminit leitet nach dem Absenden auf index.html#thank-you.
+     koennen muss: kontakt.php leitet nach dem Absenden auf index.html#thank-you.
      Die uebrigen Seiten behalten ihren Weg ueber showPage. Deren Verweise stehen
      alle auf href="#", der Vergleich unten trifft sie deshalb nicht. */
   function routeFromHash() {
@@ -2646,6 +2639,33 @@
   }
   window.addEventListener('hashchange', routeFromHash);
   routeFromHash();
+
+  /* Rueckmeldung von kontakt.php bei einem Fehler: index.html?kontakt=<code>.
+     Zeigt den Text in der vorhandenen Hinweiszeile des Formulars und scrollt
+     sie nach dem Laden in die Mitte. Code und Anker kommen sofort aus der
+     Adresse, sonst stuende der Hinweis nach dem Neuladen wieder da — deshalb
+     scrollt der Browser nicht selbst zum Anker, das macht load. Der Anker
+     #contact-form bleibt fuer den Fall ohne JavaScript.
+     Der Inhalt der Felder kommt nicht zurueck: kontakt.php reicht nichts
+     zurueck, damit nichts davon in einer Adresse landet. */
+  (function () {
+    const MELDUNG = {
+      pflicht: 'Please fill in your name, email and message, and tick the consent box.',
+      adresse: 'That email address does not look right. Please check it and send again.',
+      laenge:  'Your message is a little too long. Please shorten it and send again.',
+      warten:  'Your message is on its way. Please wait a minute before sending another one.',
+      versand: 'Your message could not be sent just now. Please try again in a few minutes.'
+    };
+    const code = new URLSearchParams(location.search).get('kontakt');
+    if (!code) return;
+    const hint = document.getElementById('contact-form-hint');
+    if (hint) {
+      hint.textContent = MELDUNG[code] || MELDUNG.versand;
+      hint.hidden = false;
+      window.addEventListener('load', function () { hint.scrollIntoView({block: 'center'}); });
+    }
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  })();
 
   /* ---- Burger-Menue (L2) ----
      Kein Gedaechtnis: der Zustand lebt allein in der Klassenliste und in
