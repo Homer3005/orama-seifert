@@ -885,6 +885,12 @@
     .booking-service-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem;
       font-size: 0.85rem; color: var(--gold); margin-bottom: 1rem; }
     .booking-service-meta span { color: rgba(184,145,90,0.6); margin-right: 0.4rem; }
+    /* Preise (bisher nur One on One Consultation): zwei Zeilen untereinander im
+       Stil der Metazeile (0.85rem, --gold, blasses Etikett), Abstand ueber den
+       Zeilenabstand der Metazeile (0.5rem). Darunter die Steuerzeile kleiner im
+       gedaempften Fliesstextton der Seite (#6a5a7a wie .booking-service-desc). */
+    .booking-service-price { flex-direction: column; }
+    .booking-service-tax { font-size: 0.75rem; color: #6a5a7a; }
     /* Deckel fuer die Zeilenlaenge. Jost laeuft schmal: in 576px standen gemessen
        83-92 Zeichen, weit ueber dem Ebene-0-Band. 30rem = 480px ergibt gemessen
        69-76 Zeichen. Achtung, rem = 16px (html traegt keine Schriftgroesse, die
@@ -900,15 +906,20 @@
       border-radius: 4px; transition: all 0.3s; border: 1px solid var(--lilac);
       white-space: nowrap; text-align: center; min-width: 15rem; }
     .booking-service-btn:hover { background: var(--ink); border-color: var(--ink); }
-    /* Gestapelt bereits ab 1100px, nicht erst am allgemeinen Haltepunkt 900px:
-       darunter bleiben der Textspalte neben Bild (12rem) und Button (15rem) keine
-       60 Zeichen mehr — bei 1024px waeren es gemessen 48. Statt den Button zu
-       verkleinern (er wird unveraendert aus dem Bestand uebernommen) bricht der
-       Eintrag hier um. Reihenfolge gestapelt: Bild, Titel, Metazeile, Text, Button. */
+    /* Unter 1100px bleiben der Textspalte neben Bild (12rem) und Button (15rem)
+       keine 60 Zeichen mehr — bei 1024px waeren es gemessen 48. Bis Tabletbreite
+       (768px) geht deshalb nur das Bild ueber die volle Zeile nach oben; Text und
+       Button bleiben nebeneinander, der Button in derselben Breite wie auf grossen
+       Bildschirmen (min-width 15rem). Erst unter 768px steht er unter dem Text,
+       linksbuendig in seiner normalen Breite, nicht ueber die volle Zeile.
+       Reihenfolge gestapelt: Bild, Titel, Metazeile, Text, Button. */
     @media (max-width: 1100px) {
-      .booking-service-card { grid-template-columns: 1fr; row-gap: 1.5rem; }
-      .booking-service-cta { justify-content: stretch; }
-      .booking-service-btn { min-width: 0; width: 100%; }
+      .booking-service-card { grid-template-columns: 1fr auto; row-gap: 1.5rem; }
+      .booking-service-img { grid-column: 1 / -1; }
+    }
+    @media (max-width: 767.98px) {
+      .booking-service-card { grid-template-columns: 1fr; }
+      .booking-service-cta { justify-content: flex-start; }
     }
     /* V2: Breite und Seitenraender wie .booking-services (1200px, 3rem, mobil
        1.5rem), damit der Kalender die volle Breite des Textbereichs nimmt und
@@ -1287,7 +1298,7 @@
       .contact-form-block { margin-top: 2.5rem; }
       footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 2rem; }
       .booking-page-hero { padding: 12rem 2rem 3rem; }
-      /* Stapeln und Buttonbreite regelt der Haltepunkt 1100px weiter oben. */
+      /* Stapeln und Buttonlage regeln die Haltepunkte 1100px und 768px weiter oben. */
       .booking-services { padding: 2rem 1.5rem 4rem; }
       .booking-service-card { padding: 2rem 0; }
       .offer-btn, .btn-outline { min-width: 0; }
@@ -2103,6 +2114,11 @@
           <div><span>Format</span>Online / In person</div>
           <div><span>Duration</span>60–90 min</div>
         </div>
+        <div class="booking-service-meta booking-service-price">
+          <div><span>Private</span>400&nbsp;€</div>
+          <div><span>Business</span>600&nbsp;€</div>
+          <p class="booking-service-tax">excl. VAT · 484&nbsp;€ / 726&nbsp;€ incl. 21% IVA for private clients in Spain</p>
+        </div>
         <p class="booking-service-desc">Receive in-person or remote consultation tailored to your current situation and life path. Clear energetic blockages and engage in vision work to support your personal growth across all areas of life. Orama is trained in aura and chakra work, perception and spiritual consultation — her guidance is open to beginners and advanced practitioners alike.</p>
       </div>
       <div class="booking-service-cta">
@@ -2557,6 +2573,15 @@
      Empfaenger bindet es nur einmal (window.__acuityEmbedBound). */
   const BOOKING_URL = 'https://app.acuityscheduling.com/schedule.php?owner=40352201';
 
+  /* Kartenknoepfe mit eigenem Einstieg in den Kalender. Die Grundadresse oben
+     bleibt ohne category; nur diese Knoepfe schalten den Rahmen gezielt um.
+     Adresse exakt wie von Acuity vergeben, einschliesslich des %20 am Ende. */
+  const BOOKING_TARGETS = {
+    consultation: 'https://app.acuityscheduling.com/schedule.php?owner=40352201&appointmentType=category:One%20on%20One%20Consultations%20'
+  };
+  // Ziel eines Kartenknopfs, der vor der Zustimmung angeklickt wurde
+  let pendingBookingUrl = null;
+
   /* Bei jedem Schrittwechsel im Kalender rollt embed.js die Seite an die
      Oberkante des Rahmens - die laege unter dem fixierten Kopf (gemessen 79px
      bei 390, 124px bei 1440). data-offset-top ist die dafuer vorgesehene
@@ -2578,7 +2603,8 @@
     if (slot.firstChild) return;   // bereits eingesetzt
     const frame = document.createElement('iframe');
     frame.className = 'booking-frame';
-    frame.src = BOOKING_URL;
+    frame.src = pendingBookingUrl || BOOKING_URL;
+    pendingBookingUrl = null;
     frame.title = 'Booking calendar (Acuity Scheduling)';
     frame.setAttribute('allow', 'payment');
     setBookingFrameOffset(frame);
@@ -2649,7 +2675,15 @@
 
   // "Book now" und die uebrigen Knoepfe der Angebotskarten fuehren zum Kalender
   // bzw. zum Einwilligungskasten an seiner Stelle.
+  // Knoepfe mit Eintrag in BOOKING_TARGETS schalten den Rahmen um; ist er noch
+  // nicht eingesetzt, gilt das Ziel ab der Zustimmung.
   function openBooking(type) {
+    const target = BOOKING_TARGETS[type];
+    if (target) {
+      const frame = document.querySelector('.booking-frame');
+      if (frame) frame.src = target;
+      else pendingBookingUrl = target;
+    }
     document.getElementById('booking-embed').scrollIntoView({behavior: 'smooth', block: 'start'});
     return false;
   }
