@@ -936,9 +936,19 @@
        (height !important, overflow hidden). Die 800px gelten nur, bis die erste
        Meldung eintrifft oder falls das Skript nicht laedt. */
     .booking-frame { display: block; width: 100%; height: 800px; border: 0; }
-    /* V1: Ziel der Kartenknoepfe (openBooking, block: start). Haelt den Kasten
-       unter dem fixierten Kopf frei, gemessen 124px bei 1440px. */
-    #booking-embed { scroll-margin-top: 9rem; }
+    /* Sprungziele (showPage mit Anker, block: start): #booking-embed vor der
+       Zustimmung, die vier Kategorie-Abschnitte danach, und das Kontaktformular
+       der Startseite (ENQUIRE). 9rem haelt das Ziel unter dem fixierten Kopf frei,
+       gemessen 124px bei 1440px; mobil 6rem gegen 79px, siehe unten. */
+    #booking-embed, .booking-category, #contact-form { scroll-margin-top: 9rem; }
+    /* Zwischenueberschrift je Kategorie-Fenster. Gliedert nur: Bauart der Preline
+       (.eyebrow: Jost, Versalien, Sperrung 0.28em, --gold), in 1rem kleiner als die
+       Preline der Kopfbloecke (1.2075rem) und ohne Headline darunter. Eigene
+       Klasse statt .eyebrow, damit keine der Prelines-Regeln (N1/K20) mitgreift. */
+    .booking-category + .booking-category { margin-top: 5rem; }
+    .booking-category-title { font-family: var(--sans); font-size: 1rem; font-weight: 400;
+      line-height: 1.6; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold); text-align: center; margin-bottom: 1.5rem; }
     .booking-inline { background: var(--white); border: 1px solid rgba(123,125,184,0.18);
       padding: 4rem 3rem; text-align: center; min-height: 200px; }
     .booking-inline .ph-icon { font-size: 2.2rem; opacity: 0.25; margin-bottom: 1rem; color: var(--lilac); }
@@ -1311,6 +1321,8 @@
       .booking-service-card { padding: 2rem 0; }
       .offer-btn, .btn-outline { min-width: 0; }
       .booking-host { padding: 0 1.5rem; }
+      #booking-embed, .booking-category, #contact-form { scroll-margin-top: 6rem; }
+      .booking-category + .booking-category { margin-top: 4rem; }
       .booking-inline { padding: 3rem 1.5rem; }
       .about-page-body { padding: 5rem 1.5rem 3rem; }
       .about-page-hero-overlay { padding: 2rem; }
@@ -1883,7 +1895,7 @@
       <div class="offer-card reveal">
         <h3 class="offer-title">Online Group Courses</h3>
         <p class="offer-desc">Orama offers live online group work, like her nervous system course Dancing Cloud for practitioners and those on the path of healing alike. Transformative teaching and community in a compassionate and inspiring space.</p>
-        <a class="offer-btn" href="#" onclick="return showPage('booking', 'workshops')">Know more</a>
+        <a class="offer-btn" href="#" onclick="return showPage('booking', 'trainings')">Know more</a>
       </div>
     </div>
   </section>
@@ -1966,7 +1978,7 @@
       <p class="eyebrow">Groups are healing spaces</p>
       <h2 class="section-title">We Grow, When<br>We Show Our <em>Self</em></h2>
       <p class="about-body">In Orama’s groups, transformation unfolds through resonance. A protected space where genuine encounter becomes possible — and where what is essential can come to light, held by community and presence.</p>
-      <a class="btn-outline" href="#" onclick="return showPage('booking', 'workshops')">Upcoming dates</a>
+      <a class="btn-outline" href="#" onclick="return showPage('booking', 'trainings')">Upcoming dates</a>
     </div>
   </section>
 
@@ -2122,14 +2134,32 @@
        Google hinaus. Ohne JavaScript bleibt der Knopf verborgen (hidden) und der
        Verweis darunter sichtbar: ein normaler Link auf die Buchungsseite bei
        Acuity, der erst beim Anklicken etwas laedt. Das Skript tauscht beides. -->
-  <!-- V2: Kalender. Nach der Zustimmung setzt das Skript den Rahmen in
-       #booking-frame-slot ein (mountBookingCalendar). Eingebettet wird die
-       vollstaendige Buchungsseite, KEIN appointmentType, KEIN category: spaeter
-       angelegte Angebote und Kategorien erscheinen dann von selbst.
-       Die Kategorie-Einstiege (Menuepunkte Akashic Readings und One on One)
-       schalten den Rahmen ueber BOOKING_TARGETS um, siehe Skript. -->
+  <!-- V2: Kalender, vier feste Kategorie-Fenster untereinander. Jedes Fenster
+       steht in einem eigenen Abschnitt mit eigener Zwischenueberschrift und
+       eigener Sprungmarke (#booking-<schluessel>, Ziel von showPage). Die Adresse
+       steht in data-booking-src, genau wie von Acuity vergeben (bei One on One
+       einschliesslich des %20 am Ende). Nach der Zustimmung setzt das Skript je
+       Abschnitt den Rahmen in .booking-frame-slot ein (mountBookingCalendar) und
+       zeigt die Abschnitte; vorher sind sie verborgen und nur der Kasten steht da.
+       Acuitys eigene Kategoriezeile ist im Erweiterten CSS von Acuity ausgeblendet,
+       die Zwischenueberschrift hier ersetzt sie. -->
   <div class="booking-host" id="booking-embed">
-    <div class="booking-frame-slot" id="booking-frame-slot"></div>
+    <section class="booking-category" id="booking-akashic" hidden>
+      <h2 class="booking-category-title">Akashic Readings</h2>
+      <div class="booking-frame-slot" data-booking-src="https://app.acuityscheduling.com/schedule.php?owner=40352201&amp;appointmentType=category:Akashic%20Readings"></div>
+    </section>
+    <section class="booking-category" id="booking-consultation" hidden>
+      <h2 class="booking-category-title">One on One Consultations</h2>
+      <div class="booking-frame-slot" data-booking-src="https://app.acuityscheduling.com/schedule.php?owner=40352201&amp;appointmentType=category:One%20on%20One%20Consultations%20"></div>
+    </section>
+    <section class="booking-category" id="booking-nervous" hidden>
+      <h2 class="booking-category-title">Nervous System Healing</h2>
+      <div class="booking-frame-slot" data-booking-src="https://app.acuityscheduling.com/schedule.php?owner=40352201&amp;appointmentType=category:Nervous%20System%20Healing"></div>
+    </section>
+    <section class="booking-category" id="booking-seminars" hidden>
+      <h2 class="booking-category-title">Seminars &amp; Trainings</h2>
+      <div class="booking-frame-slot" data-booking-src="https://app.acuityscheduling.com/schedule.php?owner=40352201&amp;appointmentType=category:Seminars%20%26%20Trainings"></div>
+    </section>
     <div class="booking-inline booking-consent" id="booking-consent">
       <h2 class="booking-consent-title">Before the calendar loads</h2>
       <p class="booking-consent-text">The booking calendar is provided by Acuity Scheduling, a service of Squarespace based in the USA. When it loads, cookies are set and data such as your IP address is transmitted there.</p>
@@ -2161,7 +2191,7 @@
         <p class="booking-service-desc">Orama offers live online group work, like her nervous system course Dancing Cloud for practitioners and those on the path of healing alike. Transformative teaching and community in a compassionate and inspiring space.</p>
       </div>
       <div class="booking-service-cta">
-        <a class="booking-service-btn" href="#" onclick="return openBooking('workshops')">Enquire</a>
+        <a class="booking-service-btn" href="#" onclick="return showPage('home', 'contact-form')">Enquire</a>
       </div>
     </div>
   </div>
@@ -2468,21 +2498,17 @@
       try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
     }
     window.scrollTo({top:0, behavior:'smooth'});
-    /* Anker der Buchungsseite: mit Eintrag in BOOKING_TARGETS zum Kalender
-       (Menuepunkte Akashic Readings, One on One), sonst eine Sprungmarke
-       #booking-<anker> (Courses -> Kopfblock 2) oder eine Karte #card-<anker>. */
-    if (anchor && page === 'booking') {
+    /* Anker: Sprungmarke auf der Zielseite. Buchungsseite #booking-<anker>
+       (akashic, consultation, nervous, seminars -> Kategorie-Fenster, trainings ->
+       Kopfblock 2), sonst das Element mit dieser id (contact-form auf der
+       Startseite). Vor der Zustimmung sind die Kategorie-Abschnitte verborgen;
+       dann gilt der Einwilligungskasten an ihrer Stelle als Ziel. */
+    if (anchor) {
       setTimeout(() => {
-        const el = BOOKING_TARGETS[anchor] ? document.getElementById('booking-embed')
-          : document.getElementById('booking-' + anchor) || document.getElementById('card-' + anchor);
-        if (el) scrollToBookingMark(el, el.id.indexOf('card-') === 0 ? 'center' : 'start');
+        let el = document.getElementById(page === 'booking' ? 'booking-' + anchor : anchor);
+        if (el && el.hidden) el = document.getElementById('booking-embed');
+        if (el) scrollToBookingMark(el);
       }, 300);
-    }
-    /* Jeder Einstieg ohne Anker ("Book A Session") oder mit Kalenderziel stellt
-       den Rahmen neu ein - ohne Anker auf die Gesamtseite. So bleibt der Kalender
-       nicht in der zuletzt geoeffneten Kategorie haengen. */
-    if (page === 'booking' && (!anchor || BOOKING_TARGETS[anchor])) {
-      setBookingTarget(BOOKING_TARGETS[anchor] || BOOKING_URL);
     }
     // V1: Kalender erst auf der Buchungsseite und nur mit Zustimmung einsetzen
     if (page === 'booking') initBookingCalendar();
@@ -2550,67 +2576,50 @@
   }
 
   /* ---- Buchungskalender: Rahmen (V2) ----
-     Die vollstaendige Buchungsseite des Kontos, ausdruecklich OHNE
-     appointmentType und OHNE category. Nur so erscheinen spaeter angelegte
-     Angebote und Kategorien von selbst, ohne Aenderung an diesem Dokument.
-     embed.js von Acuity passt die Rahmenhoehe an den Inhalt an. Es durchsucht
-     die Seite nur in dem Moment, in dem es ausgefuehrt wird, nach Rahmen - der
-     Rahmen muss also VOR dem Skript im Dokument stehen. Nach Widerruf und neuer
-     Zustimmung wird das Skript deshalb erneut eingehaengt; den Nachrichten-
-     Empfaenger bindet es nur einmal (window.__acuityEmbedBound). */
-  const BOOKING_URL = 'https://app.acuityscheduling.com/schedule.php?owner=40352201';
+     Vier feste Kategorie-Fenster, je eines in einem .booking-frame-slot mit der
+     Adresse in data-booking-src (siehe Markup). Kein Umschalten: jedes Fenster
+     bleibt auf seiner Kategorie, die Navigation springt nur.
+     embed.js von Acuity passt die Hoehe JEDES Rahmens an seinen Inhalt an
+     (height !important, overflow hidden) und ordnet die Meldungen ueber das
+     absendende Fenster dem richtigen Rahmen zu. Es durchsucht die Seite nur in
+     dem Moment, in dem es ausgefuehrt wird, nach Rahmen - alle vier muessen also
+     VOR dem Skript im Dokument stehen. Nach Widerruf und neuer Zustimmung wird
+     das Skript deshalb erneut eingehaengt; den Nachrichten-Empfaenger bindet es
+     nur einmal (window.__acuityEmbedBound). */
 
-  /* Einstiege mit eigener Kategorie im Kalender (Menuepunkte Akashic Readings und
-     One on One, showPage('booking', <schluessel>)). Die Grundadresse oben bleibt
-     ohne category; nur diese Einstiege schalten den Rahmen gezielt um.
-     Adressen exakt wie von Acuity vergeben, bei One on One einschliesslich des
-     %20 am Ende. */
-  const BOOKING_TARGETS = {
-    akashic:      'https://app.acuityscheduling.com/schedule.php?owner=40352201&appointmentType=category:Akashic%20Readings',
-    consultation: 'https://app.acuityscheduling.com/schedule.php?owner=40352201&appointmentType=category:One%20on%20One%20Consultations%20'
-  };
-  // Ziel eines Einstiegs, der vor der Zustimmung angeklickt wurde
-  let pendingBookingUrl = null;
-
-  /* Stellt den Kalender auf eine Adresse. Ein bereits eingesetzter Rahmen wird
-     durch einen neuen ersetzt, nicht per src umgestellt: das holt ihn aus jeder
-     Kategorie und jedem Schritt zurueck, in den der Besucher darin weitergeklickt
-     hat. Ausserdem rollt embed.js die Seite bei jedem Neuladen eines BESTEHENDEN
-     Rahmens an dessen Oberkante (gemessen), bei einem neu eingesetzten nicht -
-     "Book A Session" bliebe sonst nicht am Seitenanfang stehen. Ist der Rahmen
-     noch nicht eingesetzt, gilt die Adresse ab der Zustimmung. */
-  function setBookingTarget(url) {
-    pendingBookingUrl = url;
-    const slot = document.getElementById('booking-frame-slot');
-    if (slot.firstChild) {
-      slot.replaceChildren();
-      mountBookingCalendar();
-    }
-  }
-
-  /* Sprung zu einer Marke unterhalb des Kalenders. Der Rahmen waechst nach dem
-     Laden noch nach (embed.js setzt die Hoehe, gemessen bis ueber 1000px bei
-     390px, teils erst waehrend des Scrollens) und schoebe die Marke weg. Waechst
-     er in den 3 s nach dem Sprung, wird die Marke erneut angefahren; eine eigene
-     Bewegung des Besuchers (Rad, Wischen, Taste) beendet das sofort. */
-  function scrollToBookingMark(el, block) {
-    el.scrollIntoView({behavior: 'smooth', block: block});
-    const slot = document.getElementById('booking-frame-slot');
-    if (!slot.firstChild || typeof ResizeObserver === 'undefined') return;
-    let first = true;
-    const ro = new ResizeObserver(() => {
-      if (first) { first = false; return; }   // Erstmeldung beim Anmelden
-      el.scrollIntoView({block: block});
-    });
+  /* Sprung zu einer Marke (showPage mit Anker). Die vier Rahmen laden nach dem
+     Sprung noch und verschieben jede Marke darunter: embed.js setzt ihre Hoehe
+     nach (gemessen bis ueber 1000px je Fenster bei 390px), und ein Rahmen, der
+     ein zweites Mal laedt (Nervous System Healing leitet direkt in den Kalender
+     weiter), rollt die Seite an seine Oberkante. Gemessen wanderte die Marke noch
+     4 s nach dem Sprung; die erste Hoehe kam gemessen erst nach rund 3 s.
+     Deshalb wird nach dem weichen Sprung alle 250ms nachgesehen und die Marke bei
+     Abweichung erneut angefahren - bis embed.js JEDEM Rahmen seine Hoehe gesetzt
+     hat (style.height) und die Marke danach 2 s lang ruhig steht, hoechstens 15 s. Eine eigene Bewegung des Besuchers (Rad,
+     Wischen, Taste, Maus) und jeder neue Klick (showPage) beenden das sofort. */
+  function scrollToBookingMark(el) {
+    el.scrollIntoView({behavior: 'smooth', block: 'start'});
+    if (!document.querySelector('.booking-frame')) return;
+    const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+    let still = 0, timer = null;
+    const check = () => {
+      const off = el.getBoundingClientRect().top - margin;
+      // Am Seitenende kann die Marke nicht hoeher stehen: das gilt als ruhig
+      const atEnd = innerHeight + scrollY >= document.documentElement.scrollHeight - 1;
+      const sized = Array.prototype.every.call(document.querySelectorAll('.booking-frame'), f => f.style.height);
+      if (Math.abs(off) > 4 && !(off > 0 && atEnd)) { el.scrollIntoView({block: 'start'}); still = 0; }
+      else if (!sized) still = 0;
+      else if ((still += 250) >= 2000) stop();
+    };
+    const start = setTimeout(() => { timer = setInterval(check, 250); }, 1000);
+    const end = setTimeout(() => stop(), 15000);
     const stop = () => {
-      ro.disconnect();
-      ['wheel', 'touchstart', 'keydown'].forEach(t => window.removeEventListener(t, stop));
+      clearTimeout(start); clearTimeout(end); clearInterval(timer);
+      ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(t => window.removeEventListener(t, stop));
       if (stopBookingMark === stop) stopBookingMark = null;
     };
     stopBookingMark = stop;
-    ro.observe(slot);
-    ['wheel', 'touchstart', 'keydown'].forEach(t => window.addEventListener(t, stop, {passive: true}));
-    setTimeout(stop, 3000);
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(t => window.addEventListener(t, stop, {passive: true}));
   }
 
   /* Bei jedem Schrittwechsel im Kalender rollt embed.js die Seite an die
@@ -2623,32 +2632,40 @@
     frame.setAttribute('data-offset-top', Math.ceil(head.getBoundingClientRect().height) + 16);
   }
   window.addEventListener('resize', function () {
-    const frame = document.querySelector('.booking-frame');
-    if (frame) setBookingFrameOffset(frame);
+    document.querySelectorAll('.booking-frame').forEach(setBookingFrameOffset);
   });
 
-  // Setzt den Kalender an die Stelle des Kastens
+  // Setzt die vier Rahmen ein, zeigt ihre Abschnitte und nimmt den Kasten weg
   function mountBookingCalendar() {
-    const slot = document.getElementById('booking-frame-slot');
+    const host = document.getElementById('booking-embed');
     document.getElementById('booking-consent').hidden = true;
-    if (slot.firstChild) return;   // bereits eingesetzt
-    const frame = document.createElement('iframe');
-    frame.className = 'booking-frame';
-    frame.src = pendingBookingUrl || BOOKING_URL;
-    pendingBookingUrl = null;
-    frame.title = 'Booking calendar (Acuity Scheduling)';
-    frame.setAttribute('allow', 'payment');
-    setBookingFrameOffset(frame);
-    slot.appendChild(frame);
+    if (host.querySelector('.booking-frame')) return;   // bereits eingesetzt
+    host.querySelectorAll('.booking-frame-slot').forEach(slot => {
+      const frame = document.createElement('iframe');
+      frame.className = 'booking-frame';
+      frame.src = slot.dataset.bookingSrc;
+      frame.title = 'Booking calendar: ' + slot.previousElementSibling.textContent + ' (Acuity Scheduling)';
+      frame.setAttribute('allow', 'payment');
+      setBookingFrameOffset(frame);
+      slot.appendChild(frame);
+      slot.parentElement.hidden = false;
+    });
     const js = document.createElement('script');
+    js.id = 'booking-embed-js';
     js.src = 'https://embed.acuityscheduling.com/js/embed.js';
     js.async = true;
-    slot.appendChild(js);
+    host.appendChild(js);
   }
 
-  // Nimmt Rahmen und Skript wieder heraus und zeigt den Kasten
+  // Nimmt Rahmen und Skript wieder heraus, verbirgt die Abschnitte, zeigt den Kasten
   function unmountBookingCalendar() {
-    document.getElementById('booking-frame-slot').replaceChildren();
+    const host = document.getElementById('booking-embed');
+    host.querySelectorAll('.booking-frame-slot').forEach(slot => {
+      slot.replaceChildren();
+      slot.parentElement.hidden = true;
+    });
+    const js = document.getElementById('booking-embed-js');
+    if (js) js.remove();
     document.getElementById('booking-consent').hidden = false;
   }
 
@@ -2703,16 +2720,6 @@
       el.addEventListener('click', revokeBookingConsent);
     });
   })();
-
-  // Der Knopf der Angebotskarte fuehrt zum Kalender bzw. zum
-  // Einwilligungskasten an seiner Stelle.
-  // Knoepfe mit Eintrag in BOOKING_TARGETS schalten den Rahmen um.
-  function openBooking(type) {
-    const target = BOOKING_TARGETS[type];
-    if (target) setBookingTarget(target);
-    document.getElementById('booking-embed').scrollIntoView({behavior: 'smooth', block: 'start'});
-    return false;
-  }
 
   // Home is shown without showPage on first load, so set the ground hook here too
   document.body.dataset.page = 'home';
