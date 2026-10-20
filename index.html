@@ -2009,7 +2009,7 @@
       <div class="contact-field">
         <label for="contact-offering">Offering</label>
         <div class="contact-select">
-          <select id="contact-offering" name="offering">
+          <select id="contact-offering" name="offering" autocomplete="off">
             <option value="">No particular offering</option>
             <option value="One on One Consultation">One on One Consultation</option>
             <option value="Nervous System Healing">Nervous System Healing</option>
@@ -2191,7 +2191,11 @@
         <p class="booking-service-desc">Orama offers live online group work, like her nervous system course Dancing Cloud for practitioners and those on the path of healing alike. Transformative teaching and community in a compassionate and inspiring space.</p>
       </div>
       <div class="booking-service-cta">
-        <a class="booking-service-btn" href="#" onclick="return showPage('home', 'contact-form')">Enquire</a>
+        <!-- Vorauswahl im Kontaktformular: der Wert muss exakt dem Eintrag in
+             #contact-offering und der Kartenueberschrift oben entsprechen. Wird
+             einer der drei umbenannt, die anderen beiden mitaendern. Fehlt der
+             Wert in der Liste, bleibt das Feld still auf "No particular offering". -->
+        <a class="booking-service-btn" href="#" onclick="return enquireOffering('Group Courses &amp; Trainings')">Enquire</a>
       </div>
     </div>
   </div>
@@ -2482,9 +2486,45 @@
   // Beendet eine laufende Nachfuehrung aus scrollToBookingMark (siehe dort)
   let stopBookingMark = null;
 
+  /* Vorauswahl "Offering" im Kontaktformular, nur ueber enquireOffering (ENQUIRE
+     auf der Karte Group Courses & Trainings). Die Vorauswahl gilt nur fuer diesen
+     einen Sprung: jeder weitere showPage setzt sie zurueck, solange der Besucher
+     das Feld nicht selbst geaendert hat. Eine eigene Wahl des Besuchers wird nie
+     ueberschrieben. autocomplete="off" am Feld verhindert, dass der Browser die
+     Vorauswahl beim Neuladen wiederherstellt. */
+  let offeringPreset = false;   // Feldwert stammt von enquireOffering
+  let offeringChosen = false;   // Besucher hat das Feld selbst geaendert
+
+  function enquireOffering(value) {
+    const result = showPage('home', 'contact-form');
+    const select = document.getElementById('contact-offering');
+    if (select && !offeringChosen &&
+        Array.prototype.some.call(select.options, o => o.value === value)) {
+      select.value = value;
+      offeringPreset = true;
+    }
+    return result;
+  }
+
+  function clearOfferingPreset() {
+    if (!offeringPreset) return;
+    const select = document.getElementById('contact-offering');
+    if (select) select.value = '';
+    offeringPreset = false;
+  }
+
+  (function () {
+    const select = document.getElementById('contact-offering');
+    if (select) select.addEventListener('change', () => {
+      offeringChosen = true;
+      offeringPreset = false;
+    });
+  })();
+
   function showPage(page, anchor) {
     // Ein neuer Klick loest jede noch laufende Nachfuehrung des vorigen Sprungs ab
     if (stopBookingMark) stopBookingMark();
+    clearOfferingPreset();
     document.body.dataset.page = page;
     ['home','about','booking','imprint','privacy','thank-you'].forEach(p => {
       const el = document.getElementById(p+'-page');
