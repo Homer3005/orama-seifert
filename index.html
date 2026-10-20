@@ -692,7 +692,17 @@
        1400/1045 zeigt 56 % der 1866px Bildhoehe. object-position 17 % legt das Fenster auf
        7.5 % bis 44 % Beschnitt oben/unten — oben faellt nur die Decke weg, die erhobene Hand
        (ab 13 %), beide Koepfe und beide Gesichter (bis rund 62 %) bleiben vollstaendig. */
-    .group-img { overflow: hidden; aspect-ratio: 1400 / 1045; }
+    /* P1: min-height ergaenzt. Die aspect-ratio aus C4 leitete die Bildhoehe fest aus der
+       Spaltenbreite ab; das Rasterkind wurde dadurch nicht mehr auf die Zeilenhoehe
+       gestreckt. Zwischen 901px und rund 1250px ist .group-text hoeher als das Bild —
+       darunter blieb Cremegrund stehen (357px bei 920, 280px bei 1024, 49px bei 1200).
+       min-height: 100% bezieht sich auf die Zeilenhoehe des Rasters: die aspect-ratio
+       bleibt die Grundhoehe und greift unveraendert, solange sie groesser ist als die
+       Textspalte (breite Fenster, bei 1600px nachgemessen identisch). Ist die Textspalte
+       hoeher, waechst das Bild auf deren Hoehe mit. Der Ausschnitt wird in diesem
+       Breitenbereich seitlich enger — bewusst in Kauf genommen, mit dem Kunden
+       abgestimmt. Im Haltepunkt unter 901px setzt O3 height: auto, dort unveraendert. */
+    .group-img { overflow: hidden; aspect-ratio: 1400 / 1045; min-height: 100%; }
     .group-img img { height: 100%; object-fit: cover; object-position: center 17%; }
     /* Waagerecht 4rem (Measure bleibt ohnehin bei max-width 480px auf .about-body gedeckelt).
        C4 senkrecht auf 3rem = 48px: Inhaltshoehe der Spalte 354px bei 1440, 349px bei 390,
