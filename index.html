@@ -860,6 +860,14 @@
     .booking-page-hero .section-title { margin: 0 auto 1.8rem; }
     .booking-page-hero p { font-size: 1.15rem; line-height: 1.8; color: #6a5a7a;
       max-width: 580px; margin: 0 auto; }
+    /* Subline aus mehreren Absaetzen: Abstand nur zwischen ihnen. Die Preline ist
+       ebenfalls ein <p>, steht aber vor dem Titel und wird von p + p nicht erfasst. */
+    .booking-page-hero p + p { margin-top: 1rem; }
+    /* Kopfblock 2 (Trainings) steht mitten auf der Seite unter dem Kalender: die
+       15rem oben sind Luft fuer den fixierten Kopf und entfallen hier. Sonst wie
+       Kopfblock 1. scroll-margin-top haelt die Preline beim Sprung ueber "Courses"
+       unter dem Kopf frei (Kopf gemessen 124px bei 1440px). */
+    .booking-page-hero-trainings { padding-top: 5rem; scroll-margin-top: 4rem; }
     /* Buchungsliste (Ebene 2, dokumentlokal). Loest die zweispaltige Karte ab:
        je Angebot eine Zeile ueber die volle Breite, links das quadratische Bild,
        in der Mitte Titel / Metazeile / Text, rechts der Button oben ausgerichtet.
@@ -880,13 +888,8 @@
     .booking-service-img { width: 12rem; aspect-ratio: 1 / 1;
       overflow: hidden; border-radius: 4px; }
     .booking-service-img img { width: 100%; height: 100%; object-fit: cover; }
-    /* Bildausschnitte: waagerecht mittig, senkrecht je Motiv gesetzt.
-       consultation 35 % haelt Haende, Tastatur und Tasse im Quadrat, ohne das
-       angeschnittene Gesicht am linken Rand hereinzuholen. nervous 35 % behaelt
-       den Horizont — ohne ihn wird der Ausschnitt zur abstrakten Flaeche.
-       courses 30 % haelt die Koepfe der Gruppe frei. akashic bleibt mittig. */
-    #card-consultation .booking-service-img img { object-position: center 35%; }
-    #card-nervous .booking-service-img img { object-position: center 35%; }
+    /* Bildausschnitt: waagerecht mittig, senkrecht gesetzt.
+       courses 30 % haelt die Koepfe der Gruppe frei. */
     #card-workshops .booking-service-img img { object-position: center 30%; }
     .booking-service-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500;
       color: var(--ink); line-height: 1.2; margin-bottom: 0.5rem; }
@@ -895,12 +898,6 @@
     .booking-service-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem;
       font-size: 0.85rem; color: var(--gold); margin-bottom: 1rem; }
     .booking-service-meta span { color: rgba(184,145,90,0.6); margin-right: 0.4rem; }
-    /* Preise (bisher nur One on One Consultation): zwei Zeilen untereinander im
-       Stil der Metazeile (0.85rem, --gold, blasses Etikett), Abstand ueber den
-       Zeilenabstand der Metazeile (0.5rem). Darunter die Steuerzeile kleiner im
-       gedaempften Fliesstextton der Seite (#6a5a7a wie .booking-service-desc). */
-    .booking-service-price { flex-direction: column; }
-    .booking-service-tax { font-size: 0.75rem; color: #6a5a7a; }
     /* Deckel fuer die Zeilenlaenge. Jost laeuft schmal: in 576px standen gemessen
        83-92 Zeichen, weit ueber dem Ebene-0-Band. 30rem = 480px ergibt gemessen
        69-76 Zeichen. Achtung, rem = 16px (html traegt keine Schriftgroesse, die
@@ -933,9 +930,8 @@
     }
     /* V2: Breite und Seitenraender wie .booking-services (1200px, 3rem, mobil
        1.5rem), damit der Kalender die volle Breite des Textbereichs nimmt und
-       mit den Karten fluchtet. Oben 0: die Liste traegt darueber 6rem Luft. */
+       mit den Karten fluchtet. Oben 0: Kopfblock 1 traegt darueber 5rem Luft. */
     .booking-host { max-width: 1200px; margin: 0 auto 6rem; padding: 0 3rem; }
-    .booking-calendar-title { text-align: center; margin-bottom: 2.5rem; }
     /* Rahmen. embed.js setzt die Hoehe nach der Meldung aus dem Kalender selbst
        (height !important, overflow hidden). Die 800px gelten nur, bis die erste
        Meldung eintrifft oder falls das Skript nicht laedt. */
@@ -1308,6 +1304,8 @@
       .contact-form-block { margin-top: 2.5rem; }
       footer { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 2rem; }
       .booking-page-hero { padding: 12rem 2rem 3rem; }
+      /* Kopfblock 2 ohne die 12rem fuer den Kopf, wie oben bei 5rem */
+      .booking-page-hero-trainings { padding-top: 4rem; }
       /* Stapeln und Buttonlage regeln die Haltepunkte 1100px und 768px weiter oben. */
       .booking-services { padding: 2rem 1.5rem 4rem; }
       .booking-service-card { padding: 2rem 0; }
@@ -1785,7 +1783,7 @@
     <li><a href="#" onclick="return showPage('about')">About</a></li>
     <li><a href="#" onclick="return showPage('booking', 'akashic')">Akashic Readings</a></li>
     <li><a href="#" onclick="return showPage('booking', 'consultation')">One on One</a></li>
-    <li><a href="#" onclick="return showPage('booking', 'workshops')">Courses</a></li>
+    <li><a href="#" onclick="return showPage('booking', 'trainings')">Courses</a></li>
   </ul>
   <!-- Die Wortmarke traegt seit K16 den Rueckweg zur Startseite: der Menuepunkt
        "Home" ist entfallen, an seiner Stelle steht "About" (Auffindbarkeit).
@@ -1828,7 +1826,7 @@
       <li><a href="#" onclick="return showPage('about')">About</a></li>
       <li><a href="#" onclick="return showPage('booking', 'akashic')">Akashic Readings</a></li>
       <li><a href="#" onclick="return showPage('booking', 'consultation')">One on One</a></li>
-      <li><a href="#" onclick="return showPage('booking', 'workshops')">Courses</a></li>
+      <li><a href="#" onclick="return showPage('booking', 'trainings')">Courses</a></li>
     </ul>
   </div>
 </div>
@@ -2109,62 +2107,49 @@
 <!-- BOOKING (Saent-style) -->
 <div id="booking-page" style="display:none">
 
+  <!-- Kopfblock 1. Ziel von "Book A Session": showPage('booking') rollt an den
+       Seitenanfang. Der Block uebernimmt auch die Rolle der frueheren
+       Zwischenueberschrift "Book your session" ueber dem Kalender. -->
   <div class="booking-page-hero">
-    <p class="eyebrow">Your session</p>
-    <h1 class="section-title"><em>Choose your offering</em></h1>
-    <p>All sessions are available online and in person. Choose the format that speaks to you — and book your appointment directly.</p>
+    <p class="eyebrow">Online Booking &amp; Enquiry</p>
+    <h1 class="section-title"><em>Select your appointment</em></h1>
+    <p>Find here my regular offers like consultations, readings as well as nervous system group courses.</p>
+    <p>Special offers like seminars will be mostly available for online booking as well, trainings for professionals will be on enquiry, means you register with me personally via email. See more details and find the online booking below.</p>
+  </div>
+
+  <!-- V1: Einwilligungskasten an der Stelle des Kalenders. Vor dem Klick steht
+       hier nur dieser Kasten, es geht keine Anfrage an Acuity, Squarespace oder
+       Google hinaus. Ohne JavaScript bleibt der Knopf verborgen (hidden) und der
+       Verweis darunter sichtbar: ein normaler Link auf die Buchungsseite bei
+       Acuity, der erst beim Anklicken etwas laedt. Das Skript tauscht beides. -->
+  <!-- V2: Kalender. Nach der Zustimmung setzt das Skript den Rahmen in
+       #booking-frame-slot ein (mountBookingCalendar). Eingebettet wird die
+       vollstaendige Buchungsseite, KEIN appointmentType, KEIN category: spaeter
+       angelegte Angebote und Kategorien erscheinen dann von selbst.
+       Die Kategorie-Einstiege (Menuepunkte Akashic Readings und One on One)
+       schalten den Rahmen ueber BOOKING_TARGETS um, siehe Skript. -->
+  <div class="booking-host" id="booking-embed">
+    <div class="booking-frame-slot" id="booking-frame-slot"></div>
+    <div class="booking-inline booking-consent" id="booking-consent">
+      <h2 class="booking-consent-title">Before the calendar loads</h2>
+      <p class="booking-consent-text">The booking calendar is provided by Acuity Scheduling, a service of Squarespace based in the USA. When it loads, cookies are set and data such as your IP address is transmitted there.</p>
+      <button type="button" class="btn-filled" id="booking-consent-btn" hidden>Load booking calendar</button>
+      <p class="booking-consent-note" id="booking-consent-fallback"><a href="https://app.acuityscheduling.com/schedule.php?owner=40352201">Open the booking page at Acuity Scheduling</a></p>
+      <p class="booking-consent-note">You can withdraw your consent at any time. Details in the <a href="#" onclick="return showPage('privacy')">privacy policy</a>.</p>
+    </div>
+  </div>
+
+  <!-- Kopfblock 2, gleiche Bauart wie Kopfblock 1. Sprungmarke des
+       Menuepunkts "Courses" (showPage('booking', 'trainings')). -->
+  <div class="booking-page-hero booking-page-hero-trainings" id="booking-trainings">
+    <p class="eyebrow">Trainings for Professionals</p>
+    <h2 class="section-title"><em>Learning &amp; transformation</em></h2>
+    <p>I am training 'Spiritual Teachers in the Tradition of Agni'.</p>
+    <p>This training is for Alpha Chi Consultants from this school on invitation. Please enquire here, if you are interested or want to book the training.</p>
+    <p>Also, I am offering my trainings 'Reading Creation' and 'Energywork and Somatics: Keys To Embodiment' continuously. Please enquire here as well.</p>
   </div>
 
   <div class="booking-services">
-    <div class="booking-service-card" id="card-consultation">
-      <div class="booking-service-img"><img src="images/book-consultation.jpg" alt="A woman's hands on a laptop keyboard at a sunlit wooden desk, a cup of tea beside her" /></div>
-      <div class="booking-service-content">
-        <h3 class="booking-service-title">One on One Consultation</h3>
-        <div class="booking-service-meta">
-          <div><span>Format</span>Online / In person</div>
-          <div><span>Duration</span>60–90 min</div>
-        </div>
-        <div class="booking-service-meta booking-service-price">
-          <div><span>Private</span>400&nbsp;€</div>
-          <div><span>Business</span>600&nbsp;€</div>
-          <p class="booking-service-tax">excl. VAT · 484&nbsp;€ / 726&nbsp;€ incl. 21% IVA for private clients in Spain</p>
-        </div>
-        <p class="booking-service-desc">Receive in-person or remote consultation tailored to your current situation and life path. Clear energetic blockages and engage in vision work to support your personal growth across all areas of life. Orama is trained in aura and chakra work, perception and spiritual consultation — her guidance is open to beginners and advanced practitioners alike.</p>
-      </div>
-      <div class="booking-service-cta">
-        <a class="booking-service-btn" href="#" onclick="return openBooking('consultation')">Book now</a>
-      </div>
-    </div>
-
-    <div class="booking-service-card" id="card-nervous">
-      <div class="booking-service-img"><img src="images/book-nervous.jpg" alt="Sunlight on shallow water over a rocky shore, with the open sea and horizon beyond" /></div>
-      <div class="booking-service-content">
-        <h3 class="booking-service-title">Nervous System Healing</h3>
-        <div class="booking-service-meta">
-          <div><span>Format</span>Group or One on One</div>
-          <div><span>Duration</span>60–90 min</div>
-        </div>
-        <p class="booking-service-desc">Learn how your nervous system shapes your health, emotions, and behavioural patterns. Expand your capacity for regulation and heal imprints from past experiences. A deeply transformational and integrative form of therapy — gentle, profound and lastingly effective.</p>
-      </div>
-      <div class="booking-service-cta">
-        <a class="booking-service-btn" href="#" onclick="return openBooking('nervous')">Book / Request</a>
-      </div>
-    </div>
-
-    <div class="booking-service-card" id="card-akashic">
-      <div class="booking-service-img"><img src="images/book-akashic.jpg" alt="Orama sitting at her laptop during an online reading, eyes closed and hands open, flowers beside her" /></div>
-      <div class="booking-service-content">
-        <h3 class="booking-service-title">Akashic Readings</h3>
-        <div class="booking-service-meta">
-          <div><span>Format</span>Recording</div>
-        </div>
-        <p class="booking-service-desc">With hundreds of Akashic readings to her name, Orama helps people reconnect with the magic of their divine spark. She specialises in readings on soul origin, soul qualities, family lineage, incarnation paths, and timelines. She also supports facilitators by reading seminar concepts from their own multi-lifetime stream of knowledge.</p>
-      </div>
-      <div class="booking-service-cta">
-        <a class="booking-service-btn" href="#" onclick="return openBooking('akashic')">Book now</a>
-      </div>
-    </div>
-
     <div class="booking-service-card" id="card-workshops">
       <div class="booking-service-img"><img src="images/book-courses.jpg" alt="A group sitting together in the grass under a tree, Orama in the middle with a frame drum" /></div>
       <div class="booking-service-content">
@@ -2178,29 +2163,6 @@
       <div class="booking-service-cta">
         <a class="booking-service-btn" href="#" onclick="return openBooking('workshops')">Enquire</a>
       </div>
-    </div>
-  </div>
-
-  <!-- V1: Einwilligungskasten an der Stelle des Kalenders. Vor dem Klick steht
-       hier nur dieser Kasten, es geht keine Anfrage an Acuity, Squarespace oder
-       Google hinaus. Ohne JavaScript bleibt der Knopf verborgen (hidden) und der
-       Verweis darunter sichtbar: ein normaler Link auf die Buchungsseite bei
-       Acuity, der erst beim Anklicken etwas laedt. Das Skript tauscht beides. -->
-  <!-- V2: Kalender. Nach der Zustimmung setzt das Skript den Rahmen in
-       #booking-frame-slot ein (mountBookingCalendar). Eingebettet wird die
-       vollstaendige Buchungsseite, KEIN appointmentType, KEIN category: spaeter
-       angelegte Angebote und Kategorien erscheinen dann von selbst.
-       Die vier Karten oben sind unabhaengig davon. Entfallen sie, bleibt dieser
-       Block unveraendert stehen. -->
-  <div class="booking-host" id="booking-embed">
-    <h2 class="section-title booking-calendar-title"><em>Book your session</em></h2>
-    <div class="booking-frame-slot" id="booking-frame-slot"></div>
-    <div class="booking-inline booking-consent" id="booking-consent">
-      <h2 class="booking-consent-title">Before the calendar loads</h2>
-      <p class="booking-consent-text">The booking calendar is provided by Acuity Scheduling, a service of Squarespace based in the USA. When it loads, cookies are set and data such as your IP address is transmitted there.</p>
-      <button type="button" class="btn-filled" id="booking-consent-btn" hidden>Load booking calendar</button>
-      <p class="booking-consent-note" id="booking-consent-fallback"><a href="https://app.acuityscheduling.com/schedule.php?owner=40352201">Open the booking page at Acuity Scheduling</a></p>
-      <p class="booking-consent-note">You can withdraw your consent at any time. Details in the <a href="#" onclick="return showPage('privacy')">privacy policy</a>.</p>
     </div>
   </div>
 
@@ -2487,7 +2449,12 @@
 </div>
 
 <script>
+  // Beendet eine laufende Nachfuehrung aus scrollToBookingMark (siehe dort)
+  let stopBookingMark = null;
+
   function showPage(page, anchor) {
+    // Ein neuer Klick loest jede noch laufende Nachfuehrung des vorigen Sprungs ab
+    if (stopBookingMark) stopBookingMark();
     document.body.dataset.page = page;
     ['home','about','booking','imprint','privacy','thank-you'].forEach(p => {
       const el = document.getElementById(p+'-page');
@@ -2501,11 +2468,21 @@
       try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
     }
     window.scrollTo({top:0, behavior:'smooth'});
+    /* Anker der Buchungsseite: mit Eintrag in BOOKING_TARGETS zum Kalender
+       (Menuepunkte Akashic Readings, One on One), sonst eine Sprungmarke
+       #booking-<anker> (Courses -> Kopfblock 2) oder eine Karte #card-<anker>. */
     if (anchor && page === 'booking') {
       setTimeout(() => {
-        const el = document.getElementById('card-' + anchor);
-        if (el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
+        const el = BOOKING_TARGETS[anchor] ? document.getElementById('booking-embed')
+          : document.getElementById('booking-' + anchor) || document.getElementById('card-' + anchor);
+        if (el) scrollToBookingMark(el, el.id.indexOf('card-') === 0 ? 'center' : 'start');
       }, 300);
+    }
+    /* Jeder Einstieg ohne Anker ("Book A Session") oder mit Kalenderziel stellt
+       den Rahmen neu ein - ohne Anker auf die Gesamtseite. So bleibt der Kalender
+       nicht in der zuletzt geoeffneten Kategorie haengen. */
+    if (page === 'booking' && (!anchor || BOOKING_TARGETS[anchor])) {
+      setBookingTarget(BOOKING_TARGETS[anchor] || BOOKING_URL);
     }
     // V1: Kalender erst auf der Buchungsseite und nur mit Zustimmung einsetzen
     if (page === 'booking') initBookingCalendar();
@@ -2583,14 +2560,58 @@
      Empfaenger bindet es nur einmal (window.__acuityEmbedBound). */
   const BOOKING_URL = 'https://app.acuityscheduling.com/schedule.php?owner=40352201';
 
-  /* Kartenknoepfe mit eigenem Einstieg in den Kalender. Die Grundadresse oben
-     bleibt ohne category; nur diese Knoepfe schalten den Rahmen gezielt um.
-     Adresse exakt wie von Acuity vergeben, einschliesslich des %20 am Ende. */
+  /* Einstiege mit eigener Kategorie im Kalender (Menuepunkte Akashic Readings und
+     One on One, showPage('booking', <schluessel>)). Die Grundadresse oben bleibt
+     ohne category; nur diese Einstiege schalten den Rahmen gezielt um.
+     Adressen exakt wie von Acuity vergeben, bei One on One einschliesslich des
+     %20 am Ende. */
   const BOOKING_TARGETS = {
+    akashic:      'https://app.acuityscheduling.com/schedule.php?owner=40352201&appointmentType=category:Akashic%20Readings',
     consultation: 'https://app.acuityscheduling.com/schedule.php?owner=40352201&appointmentType=category:One%20on%20One%20Consultations%20'
   };
-  // Ziel eines Kartenknopfs, der vor der Zustimmung angeklickt wurde
+  // Ziel eines Einstiegs, der vor der Zustimmung angeklickt wurde
   let pendingBookingUrl = null;
+
+  /* Stellt den Kalender auf eine Adresse. Ein bereits eingesetzter Rahmen wird
+     durch einen neuen ersetzt, nicht per src umgestellt: das holt ihn aus jeder
+     Kategorie und jedem Schritt zurueck, in den der Besucher darin weitergeklickt
+     hat. Ausserdem rollt embed.js die Seite bei jedem Neuladen eines BESTEHENDEN
+     Rahmens an dessen Oberkante (gemessen), bei einem neu eingesetzten nicht -
+     "Book A Session" bliebe sonst nicht am Seitenanfang stehen. Ist der Rahmen
+     noch nicht eingesetzt, gilt die Adresse ab der Zustimmung. */
+  function setBookingTarget(url) {
+    pendingBookingUrl = url;
+    const slot = document.getElementById('booking-frame-slot');
+    if (slot.firstChild) {
+      slot.replaceChildren();
+      mountBookingCalendar();
+    }
+  }
+
+  /* Sprung zu einer Marke unterhalb des Kalenders. Der Rahmen waechst nach dem
+     Laden noch nach (embed.js setzt die Hoehe, gemessen bis ueber 1000px bei
+     390px, teils erst waehrend des Scrollens) und schoebe die Marke weg. Waechst
+     er in den 3 s nach dem Sprung, wird die Marke erneut angefahren; eine eigene
+     Bewegung des Besuchers (Rad, Wischen, Taste) beendet das sofort. */
+  function scrollToBookingMark(el, block) {
+    el.scrollIntoView({behavior: 'smooth', block: block});
+    const slot = document.getElementById('booking-frame-slot');
+    if (!slot.firstChild || typeof ResizeObserver === 'undefined') return;
+    let first = true;
+    const ro = new ResizeObserver(() => {
+      if (first) { first = false; return; }   // Erstmeldung beim Anmelden
+      el.scrollIntoView({block: block});
+    });
+    const stop = () => {
+      ro.disconnect();
+      ['wheel', 'touchstart', 'keydown'].forEach(t => window.removeEventListener(t, stop));
+      if (stopBookingMark === stop) stopBookingMark = null;
+    };
+    stopBookingMark = stop;
+    ro.observe(slot);
+    ['wheel', 'touchstart', 'keydown'].forEach(t => window.addEventListener(t, stop, {passive: true}));
+    setTimeout(stop, 3000);
+  }
 
   /* Bei jedem Schrittwechsel im Kalender rollt embed.js die Seite an die
      Oberkante des Rahmens - die laege unter dem fixierten Kopf (gemessen 79px
@@ -2683,17 +2704,12 @@
     });
   })();
 
-  // "Book now" und die uebrigen Knoepfe der Angebotskarten fuehren zum Kalender
-  // bzw. zum Einwilligungskasten an seiner Stelle.
-  // Knoepfe mit Eintrag in BOOKING_TARGETS schalten den Rahmen um; ist er noch
-  // nicht eingesetzt, gilt das Ziel ab der Zustimmung.
+  // Der Knopf der Angebotskarte fuehrt zum Kalender bzw. zum
+  // Einwilligungskasten an seiner Stelle.
+  // Knoepfe mit Eintrag in BOOKING_TARGETS schalten den Rahmen um.
   function openBooking(type) {
     const target = BOOKING_TARGETS[type];
-    if (target) {
-      const frame = document.querySelector('.booking-frame');
-      if (frame) frame.src = target;
-      else pendingBookingUrl = target;
-    }
+    if (target) setBookingTarget(target);
     document.getElementById('booking-embed').scrollIntoView({behavior: 'smooth', block: 'start'});
     return false;
   }
