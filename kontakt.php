@@ -87,7 +87,9 @@ if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST')
 
 // ---- 2. Fallenfelder ----
 // Gefuellt heisst Bot. Wie ein Erfolg aussehen lassen, aber nichts senden.
-if (feld('contact-website') !== '' || feld('company') !== '') {
+// Namen wie im Formular von index.html (bis 21.10.2026 "contact-website"
+// und "company", umbenannt, weil Chrome "company" automatisch ausfuellte).
+if (feld('lumen') !== '' || feld('motif') !== '') {
     zurueck('index.html#thank-you');
 }
 

@@ -2033,23 +2033,27 @@
       </div>
 
       <!-- Spamschutz: bleibt leer. Bots fuellen es, Menschen sehen es nicht.
-           Neutraler Name, kontakt.php prueft ihn.
-           autocomplete traegt einen Wert, den kein Browser als Feldart kennt:
-           "off" uebergeht Chrome bei Adress- und Firmenfeldern und fuellte
-           "company" trotzdem aus. Die data-Attribute halten 1Password, LastPass
-           und Bitwarden heraus. Faellt die Automatik dennoch hinein, raeumt das
-           Absende-Skript das Feld wieder (siehe Spamschutz im Skript). -->
+           kontakt.php prueft den Namen. Bis 21.10.2026 hiessen die beiden Felder
+           "contact-website" und "company"; Chrome hielt "company" fuer ein
+           Firmenfeld und fuellte es aus, die Nachricht ging verloren. Deshalb
+           Namen ohne jede Feldart: kein Wort, das Browser oder Passwortmanager
+           mit Name, Adresse, Firma, Telefon, Mail oder Webadresse verbinden.
+           autocomplete traegt einen Wert, den kein Browser als Feldart kennt
+           ("off" uebergeht Chrome bei Adress- und Firmenfeldern). Die
+           data-Attribute halten 1Password, LastPass und Bitwarden heraus. Faellt
+           die Automatik dennoch hinein, raeumt das Absende-Skript das Feld
+           wieder (siehe Spamschutz im Skript). -->
       <div class="contact-trap" aria-hidden="true">
-        <label for="contact-website">Leave this field empty</label>
-        <input type="text" id="contact-website" name="contact-website" tabindex="-1" autocomplete="contact-trap" data-1p-ignore data-lpignore="true" data-bwignore>
+        <label for="contact-lumen">Leave this field empty</label>
+        <input type="text" id="contact-lumen" name="lumen" tabindex="-1" autocomplete="contact-trap" data-1p-ignore data-lpignore="true" data-bwignore>
       </div>
 
-      <!-- Zweites Fallenfeld fuer Bots, die das erste an seinem Namen erkennen.
-           Harmlos benannt, gleiche Bauart wie oben: aus dem Fluss genommen,
-           aria-hidden, tabindex -1. Bleibt leer. -->
+      <!-- Zweites Fallenfeld fuer Bots, die eines der beiden auslassen.
+           Gleiche Bauart wie oben: aus dem Fluss genommen, aria-hidden,
+           tabindex -1. Bleibt leer. -->
       <div class="contact-trap" aria-hidden="true">
-        <label for="contact-company">Do not fill in this field</label>
-        <input type="text" id="contact-company" name="company" tabindex="-1" autocomplete="contact-trap" data-1p-ignore data-lpignore="true" data-bwignore>
+        <label for="contact-motif">Do not fill in this field</label>
+        <input type="text" id="contact-motif" name="motif" tabindex="-1" autocomplete="contact-trap" data-1p-ignore data-lpignore="true" data-bwignore>
       </div>
 
       <p class="contact-form-hint" id="contact-form-hint" role="alert" hidden></p>
@@ -2907,7 +2911,7 @@
 
       if (lastSentAt && now - lastSentAt < COOLDOWN) {
         e.preventDefault();
-        say('Your message is on its way. Please wait a minute before sending another one.');
+        say('This message was not sent. Please wait a minute, then send it again.');
         return;
       }
 
@@ -2938,7 +2942,7 @@
       pflicht: 'Please fill in your name, email and message, and tick the consent box.',
       adresse: 'That email address does not look right. Please check it and send again.',
       laenge:  'Your message is a little too long. Please shorten it and send again.',
-      warten:  'Your message is on its way. Please wait a minute before sending another one.',
+      warten:  'This message was not sent. Please wait a minute, then send it again.',
       versand: 'Your message could not be sent just now. Please try again in a few minutes.'
     };
     const code = new URLSearchParams(location.search).get('kontakt');
