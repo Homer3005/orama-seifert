@@ -12,10 +12,10 @@
    Fehler   -> index.html?kontakt=<code>#contact-form (Hinweiszeile im Formular) */
 
 // Wechselt die Adresse, wird hier geaendert.
-const KONTAKT_EMPFAENGER = 'orama@orama-coaching.com';
+const KONTAKT_EMPFAENGER = 'contact@oramaseifert.com';
 // Absender aus der eigenen Domain, nicht der des Besuchers: sonst faellt die
 // Mail bei SPF/DMARC der Empfaenger durch. Antwort-an traegt den Besucher.
-const KONTAKT_ABSENDER = 'noreply@orama-coaching.com';
+const KONTAKT_ABSENDER = 'noreply@oramaseifert.com';
 const KONTAKT_ABSENDER_NAME = 'Orama Seifert Website';
 const KONTAKT_BETREFF = 'Anfrage über die Website';
 const KONTAKT_SPERRE = 60;   // Sekunden zwischen zwei Sendungen derselben Sitzung
