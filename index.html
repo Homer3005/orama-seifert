@@ -800,8 +800,11 @@
     .contact-form-hint { font-family: var(--sans); font-size: 0.9rem; line-height: 1.6;
       color: var(--white); margin-bottom: 1rem; }
     .contact-form-block button.btn-filled { font-family: var(--sans); cursor: pointer; }
-    /* Spamschutz-Feld. Aus dem Fluss genommen statt display:none — ein per display
-       ausgeblendetes Feld fuellen manche Bots gerade deshalb aus. tabindex -1 und
+    /* Spamschutz-Feld. Aus dem Fluss genommen statt display:none: was die
+       Browser-Automatik sicher ueberspringt (display:none, visibility:hidden),
+       erkennt ein Bot, der das CSS auswertet, genauso und laesst das Feld leer.
+       Der Rahmen ist auf 1 px beschnitten; das Eingabefeld darin behaelt seine
+       eigene Groesse, misst man es allein, wirkt es sichtbar. tabindex -1 und
        aria-hidden halten Tastatur und Bildschirmleser heraus. */
     .contact-trap { position: absolute; width: 1px; height: 1px; margin: -1px;
       padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); }
@@ -2030,10 +2033,15 @@
       </div>
 
       <!-- Spamschutz: bleibt leer. Bots fuellen es, Menschen sehen es nicht.
-           Neutraler Name, kontakt.php prueft ihn. -->
+           Neutraler Name, kontakt.php prueft ihn.
+           autocomplete traegt einen Wert, den kein Browser als Feldart kennt:
+           "off" uebergeht Chrome bei Adress- und Firmenfeldern und fuellte
+           "company" trotzdem aus. Die data-Attribute halten 1Password, LastPass
+           und Bitwarden heraus. Faellt die Automatik dennoch hinein, raeumt das
+           Absende-Skript das Feld wieder (siehe Spamschutz im Skript). -->
       <div class="contact-trap" aria-hidden="true">
         <label for="contact-website">Leave this field empty</label>
-        <input type="text" id="contact-website" name="contact-website" tabindex="-1" autocomplete="off">
+        <input type="text" id="contact-website" name="contact-website" tabindex="-1" autocomplete="contact-trap" data-1p-ignore data-lpignore="true" data-bwignore>
       </div>
 
       <!-- Zweites Fallenfeld fuer Bots, die das erste an seinem Namen erkennen.
@@ -2041,7 +2049,7 @@
            aria-hidden, tabindex -1. Bleibt leer. -->
       <div class="contact-trap" aria-hidden="true">
         <label for="contact-company">Do not fill in this field</label>
-        <input type="text" id="contact-company" name="company" tabindex="-1" autocomplete="off">
+        <input type="text" id="contact-company" name="company" tabindex="-1" autocomplete="contact-trap" data-1p-ignore data-lpignore="true" data-bwignore>
       </div>
 
       <p class="contact-form-hint" id="contact-form-hint" role="alert" hidden></p>
@@ -2858,14 +2866,31 @@
     function say(text) { hint.textContent = text; hint.hidden = false; }
     function clearHint() { hint.textContent = ''; hint.hidden = true; }
 
+    // Vom Browser selbst ausgefuellt? :autofill setzen Chrome, Safari und Firefox,
+    // ein Bot, der das Feld per Skript oder Tastendruck fuellt, loest es nicht aus.
+    // Aeltere Browser kennen nur die Vorsilbe oder keines von beiden: dann false.
+    function autofilled(el) {
+      try { if (el.matches(':autofill')) return true; } catch (e) {}
+      try { if (el.matches(':-webkit-autofill')) return true; } catch (e) {}
+      return false;
+    }
+
     form.addEventListener('submit', function (e) {
       clearHint();
       const now = Date.now();
 
-      // Fallenfelder: gefuellt heisst Bot. Kommentarlos abbrechen, kein Hinweis —
-      // ein Hinweis waere nur eine Anleitung, es beim naechsten Mal besser zu machen.
+      /* Fallenfelder. Hat die Browser-Automatik eines Besuchers hineingeschrieben,
+         wird das Feld geleert und normal abgeschickt. Bis 21.10.2026 brach das
+         Skript hier still ab: keine Anfrage, keine Rueckmeldung, die Nachricht war
+         verloren. Ist ein Feld sonst gefuellt, heisst das Bot: dann ohne weitere
+         Pruefung und ohne Hinweis durchlassen. kontakt.php sendet nichts und
+         zeigt die Dankeseite, der Bot-Fall sieht also wie ein Erfolg aus und
+         entschieden wird allein an einer Stelle. */
       for (let i = 0; i < traps.length; i++) {
-        if (traps[i].value !== '') { e.preventDefault(); return; }
+        if (traps[i].value !== '' && autofilled(traps[i])) traps[i].value = '';
+      }
+      for (let i = 0; i < traps.length; i++) {
+        if (traps[i].value !== '') return;
       }
 
       if (now - openedAt < MIN_DWELL) {
