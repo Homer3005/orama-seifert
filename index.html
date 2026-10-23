@@ -972,14 +972,9 @@
     #privacy-page button.btn-filled { font-family: var(--sans); cursor: pointer; }
 
     /* LEGAL PAGES — Legal Notice / Privacy, linksbuendig, Measure ~65 Zeichen */
-    .legal-draft { max-width: 40rem; margin: 10.5rem auto 0; padding: 0.9rem 1.25rem;
-      border: 1px solid var(--gold); background: rgba(184,145,90,0.1); color: var(--bark);
-      font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
-      text-align: center; font-weight: 500; }
     /* DANKESEITE (F3)
-       Eigener Block statt .legal-page-body: dort traegt der Entwurfsbanner den
-       Abstand zum fixierten Kopf, den es hier nicht gibt. Werte deshalb aus
-       .legal-draft uebernommen (10.5rem, mobil 11.5rem — der Kopf ist dort hoeher).
+       Eigener Block statt .legal-page-body. Abstand zum fixierten Kopf wie dort:
+       10.5rem, mobil 11.5rem — der Kopf ist auf schmalen Breiten hoeher.
        Fliesstext in --ink statt im #5a4a6a der uebrigen Unterseiten: Farben
        ausschliesslich aus :root, keine neuen Hexwerte. */
     .thanks-page-body { max-width: 36rem; margin: 0 auto;
@@ -992,7 +987,7 @@
       margin-bottom: 1.5rem; }
     .thanks-page-body .btn-outline { margin-top: 1.5rem; }
 
-    .legal-page-body { max-width: 36rem; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+    .legal-page-body { max-width: 36rem; margin: 0 auto; padding: 10.5rem 1.25rem 5rem; }
     .legal-page-body .section-title { text-align: left; margin-bottom: 2.5rem; }
     .legal-page-body h3 { font-family: var(--serif); font-size: 1.45rem; font-weight: 500;
       color: var(--lilac); margin: 2.6rem 0 1rem; }
@@ -1332,8 +1327,7 @@
       .about-page-hero-overlay { padding: 2rem; }
       .substack-feature { padding: 4rem 1.5rem; }
       .substack-inner { padding: 2.5rem 1.8rem; }
-      .legal-draft { margin-top: 11.5rem; }
-      .legal-page-body { padding: 2.5rem 1.5rem 3rem; }
+      .legal-page-body { padding: 11.5rem 1.5rem 3rem; }
       .thanks-page-body { padding: 11.5rem 1.5rem 4rem; }
       /* 390px: der Rand traegt 1rem, das Fenster nimmt den Rest. Ueberschrift, zwei
          Zeilen Text und Knopf bleiben zusammen unter 340px hoch und sind damit ohne
@@ -2219,7 +2213,6 @@
 <!-- Seit Block Y eine Rechtslage, Spanien, in zwei Sprachfassungen (EN/ES).
      Die frueheren Varianten A Spanien / B Deutschland sind entfallen. -->
 <div id="imprint-page" style="display:none">
-  <p class="legal-draft">DRAFT — not for publication. Pending legal review.</p>
   <div class="legal-page-body">
     <!-- Y1: Sprachumschalter. Beide Fassungen stehen im Dokument, das Skript
          blendet um und merkt die Wahl (localStorage "orama-legal-lang"). Ohne
@@ -2306,7 +2299,6 @@
 
 <!-- PRIVACY POLICY -->
 <div id="privacy-page" style="display:none">
-  <p class="legal-draft">DRAFT — not for publication. Pending legal review.</p>
   <div class="legal-page-body">
     <!-- Y1: Sprachumschalter. Beide Fassungen stehen im Dokument, das Skript
          blendet um und merkt die Wahl (localStorage "orama-legal-lang"). Ohne
